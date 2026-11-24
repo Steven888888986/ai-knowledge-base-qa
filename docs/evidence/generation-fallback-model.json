@@ -1,0 +1,197 @@
+{
+  "passed": true,
+  "isolated_database": true,
+  "mocked_model": false,
+  "health": {
+    "model": {
+      "available": true,
+      "name": "local-qwen",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "embedding": {
+      "available": true,
+      "signature": "bge:bge-small-zh",
+      "mode": "pretrained-bge"
+    }
+  },
+  "supported": {
+    "answer": "RAG 是检索增强生成，[1] 证据来自：标题：RAG 入门；页码：不适用",
+    "citations": [
+      {
+        "id": 1,
+        "title": "RAG 入门",
+        "source": "fixture://rag",
+        "snippet": "RAG 是检索增强生成。先从知识库检索与问题相关的资料，再将资料作为上下文交给大模型生成回答。",
+        "chunk_id": "d1-p0-c1",
+        "page": null,
+        "document_id": 1
+      }
+    ],
+    "mode": "llm",
+    "refused": false,
+    "model": "local-qwen",
+    "retrieval": {
+      "method": "hybrid",
+      "hits": [
+        {
+          "chunk_id": "d1-p0-c1",
+          "page": null,
+          "content": "RAG 是检索增强生成。先从知识库检索与问题相关的资料，再将资料作为上下文交给大模型生成回答。",
+          "document_id": 1,
+          "title": "RAG 入门",
+          "source": "fixture://rag",
+          "bm25": 0.287682,
+          "cosine": 0.676861,
+          "score": 0.032787,
+          "snippet": "RAG 是检索增强生成。先从知识库检索与问题相关的资料，再将资料作为上下文交给大模型生成回答。"
+        }
+      ],
+      "supported_hits": [
+        {
+          "chunk_id": "d1-p0-c1",
+          "page": null,
+          "content": "RAG 是检索增强生成。先从知识库检索与问题相关的资料，再将资料作为上下文交给大模型生成回答。",
+          "document_id": 1,
+          "title": "RAG 入门",
+          "source": "fixture://rag",
+          "bm25": 0.287682,
+          "cosine": 0.676861,
+          "score": 0.032787,
+          "snippet": "RAG 是检索增强生成。先从知识库检索与问题相关的资料，再将资料作为上下文交给大模型生成回答。"
+        }
+      ]
+    },
+    "elapsed_ms": 1610,
+    "query_id": 1,
+    "auto_review": {
+      "answerable": true,
+      "expected_sources": [
+        "fixture://rag"
+      ],
+      "citation_verdicts": {
+        "1": true
+      },
+      "reason": "The evidence directly states that RAG is '检索增强生成' and provides a definition.",
+      "method": "local-model",
+      "model": "local-qwen",
+      "scope": {
+        "kind": "full-library",
+        "candidate_chunks": 1,
+        "total_chunks": 1
+      },
+      "evaluated_at": "2026-11-24T16:37:59.069803+00:00",
+      "elapsed_ms": 4829
+    },
+    "metrics": {
+      "total_questions": 1,
+      "refused_questions": 0,
+      "reviewed_questions": 0,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 1,
+      "model_evaluated_questions": 1,
+      "rule_evaluated_questions": 0,
+      "recall": {
+        "value": 1.0,
+        "hits": 1,
+        "total": 1
+      },
+      "citation_accuracy": {
+        "value": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "refusal_rate": {
+        "value": 0.0,
+        "refused": 0,
+        "total": 1
+      }
+    }
+  },
+  "refused": {
+    "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+    "citations": [],
+    "mode": "refusal",
+    "refused": true,
+    "model": null,
+    "retrieval": {
+      "method": "literal-equation",
+      "hits": [],
+      "supported_hits": []
+    },
+    "elapsed_ms": 6,
+    "query_id": 2,
+    "auto_review": {
+      "answerable": false,
+      "expected_sources": [],
+      "citation_verdicts": {},
+      "reason": "证据中没有提供关于1+1的计算结果，无法判断是否正确。",
+      "method": "local-model",
+      "model": "local-qwen",
+      "scope": {
+        "kind": "full-library",
+        "candidate_chunks": 1,
+        "total_chunks": 1
+      },
+      "evaluated_at": "2026-11-24T16:38:01.691372+00:00",
+      "elapsed_ms": 2598
+    },
+    "metrics": {
+      "total_questions": 2,
+      "refused_questions": 1,
+      "reviewed_questions": 0,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 2,
+      "model_evaluated_questions": 2,
+      "rule_evaluated_questions": 0,
+      "recall": {
+        "value": 1.0,
+        "hits": 1,
+        "total": 1
+      },
+      "citation_accuracy": {
+        "value": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "refusal_rate": {
+        "value": 0.5,
+        "refused": 1,
+        "total": 2
+      }
+    }
+  },
+  "generated": {
+    "answer": "1+1等于2。",
+    "citations": [],
+    "mode": "llm-general",
+    "model": "local-qwen",
+    "elapsed_ms": 615,
+    "query_id": 2
+  },
+  "history_unchanged_by_generation": true,
+  "metrics_unchanged_by_generation": true,
+  "final_metrics": {
+    "total_questions": 2,
+    "refused_questions": 1,
+    "reviewed_questions": 0,
+    "pending_questions": 0,
+    "auto_evaluated_questions": 2,
+    "model_evaluated_questions": 2,
+    "rule_evaluated_questions": 0,
+    "recall": {
+      "value": 1.0,
+      "hits": 1,
+      "total": 1
+    },
+    "citation_accuracy": {
+      "value": 1.0,
+      "correct": 1,
+      "total": 1
+    },
+    "refusal_rate": {
+      "value": 0.5,
+      "refused": 1,
+      "total": 2
+    }
+  }
+}

@@ -28,5 +28,6 @@
 | 22 | 用户要求知识库不限 AI、扩大到各领域 | 增补20张入门知识卡与参考来源；通用化首页、MCP和检索技能描述；增量导入保留原文档和3条问答；修复通用词误命中与模型漏引；27项应用、11项评估器测试及跨领域/UI验收通过，保留自动评估误判证据 | `data/knowledge/`、`docs/knowledge-sources.md`、`docs/test-report.md`、`docs/evidence/general-knowledge-*` |
 | 23 | 用户发现输入2仅有一条引用，明确选择列出全部包含该数字的文档及匹配原文 | 纯数字按正文连续子串查找，每文档一次，展示匹配片段与高亮原文；完整问题保持问答，查找不评估、不写问答历史；35项应用、11项评估器、19项查找验收和9项指标回归通过；现有网站查得9份文档，原21份文档、41片段与4条历史全部字段不变 | `app.py`、`server.py`、`static/`、`tests/test_app.py`、`docs/evidence/numeric-lookup-*` |
 | 24 | 2026-11-25，用户指出1+1无答案仍引用，并要求2的所有答案直接列在下方 | 复现运算符丢失导致3个错误来源；纯算式改为核对明确等式结果并摘录，无证据拒答；数字查找覆盖全部命中上下文并在主区直显；41项应用、11项评估器、17项HTTP/浏览器检查及32题原评测门槛通过；现有文档、片段和7条历史所有字段保留 | `app.py`、`static/`、`tests/test_app.py`、`docs/evidence/expression-lookup-*` |
+| 25 | 2026-11-25，用户要求知识库缺少依据时计入拒答，再弹窗选择是否用大模型生成 | 增加确认后的生成接口与独立结果区，按历史原问题调用Qwen，输出无知识库依据标识；取消不生成，补充内容不重复计数或改写拒答；真实Qwen生成1+1=2，拒答率保持1/2；隔离HTTP/浏览器验收与原评测通过，保留21文档、41片段及8条历史 | `docs/SPEC.md` A18–A20、`transcripts/requirements-interview.md`、`docs/evidence/generation-fallback-*` |
 
 GitHub 公开发布与实际 CI 结果见 [`docs/release.md`](../docs/release.md)，成员个人记录仍由本人据实补充。

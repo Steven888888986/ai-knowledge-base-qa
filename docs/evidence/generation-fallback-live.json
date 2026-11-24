@@ -1,0 +1,53 @@
+{
+  "production_writes": false,
+  "live_ui_updated": true,
+  "javascript_errors": [],
+  "health": {
+    "ok": true,
+    "service": "kbqa",
+    "model": {
+      "available": true,
+      "name": "local-qwen",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "retrieval": "BM25 + cosine / RRF",
+    "embedding_mode": {
+      "available": true,
+      "signature": "bge:bge-small-zh",
+      "mode": "pretrained-bge"
+    }
+  },
+  "metrics": {
+    "total_questions": 8,
+    "refused_questions": 2,
+    "reviewed_questions": 0,
+    "pending_questions": 0,
+    "auto_evaluated_questions": 8,
+    "model_evaluated_questions": 7,
+    "rule_evaluated_questions": 1,
+    "recall": {
+      "value": 0.8571428571428571,
+      "hits": 6,
+      "total": 7
+    },
+    "citation_accuracy": {
+      "value": 0.8333333333333334,
+      "correct": 5,
+      "total": 6
+    },
+    "refusal_rate": {
+      "value": 0.25,
+      "refused": 2,
+      "total": 8
+    }
+  },
+  "preserved_counts": {
+    "documents": 21,
+    "chunks": 41,
+    "query_events": 8
+  },
+  "passed": true,
+  "all_stored_fields_preserved": true,
+  "metrics_preserved": true,
+  "unconfirmed_generation_status": 400
+}

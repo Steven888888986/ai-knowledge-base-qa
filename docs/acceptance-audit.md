@@ -28,12 +28,13 @@
 | 用户追加：不限资料领域 | 新增20张多领域知识卡；8领域离线问答、3条非 AI 真实模型问答及原 RAG 回归通过；已有文档、历史和统计保留，见 `docs/evidence/general-knowledge-*` | 内置示例不穷尽全领域知识；自动估算可能误判，实际局限见测试报告 |
 | 用户追加：数字按内容查找 | 纯数字输入按文档分组，在摘要下方直接展示全部匹配原文并高亮；早期验收见 `docs/evidence/numeric-lookup-*`，全部片段的增量验收见 `docs/evidence/expression-lookup-*` | 按连续子串匹配，如2也匹配12；重叠上下文合并；完整问题仍按问答处理 |
 | 用户追加：算式无答案时不引用 | 纯算式须命中原文中的完整表达式及明确结果；只有操作数或练习题时拒答；复现、修复与回归见 `docs/test-report.md`、`docs/evidence/expression-lookup-*` | 只摘录资料中的明确算式结果，不提供通用数学推理；资料本身的正确性仍需核验 |
+| 用户追加：拒答后可选择大模型生成 | 知识库拒答先计入指标，弹窗确认后调用本地 Qwen；独立展示无知识库依据的结果；否、Escape或关闭直接返回，见 `docs/evidence/generation-fallback-*` | 补充生成不提供知识库引用，不改变原拒答或指标；内容只显示于当前页面，模型自身知识可能有误 |
 
 ## 仓库与工程要求
 
 | 原始要求 | 当前状态与证据 | 尚需处理或边界 |
 |---|---|---|
-| AI 采访产生 SPEC，含可测试验收标准 | `transcripts/requirements-interview.md` 保留实际问答；`docs/SPEC.md` 有 A1–A17 | 已有证据 |
+| AI 采访产生 SPEC，含可测试验收标准 | `transcripts/requirements-interview.md` 保留实际问答；`docs/SPEC.md` 有 A1–A20 | 已有证据 |
 | AGENTS 或 CLAUDE，并在 Git 历史体现演化 | 初始提交 `74ed939` 与实现提交 `b35cde6` 保存上下文演化；`docs/configuration-evolution.md` 提供复核命令 | 真实提交日期，不伪造早期开发时间线 |
 | ≥2 个自定义 skill，其中一个 verify | `.claude/skills/verify`、`kb-research`；`.agents/skills/` 提供对应版本 | `docs/skill-demo.md` 保存 kb-research 流程的一次真实调用；验证命令实测见测试报告 |
 | ≥1 个 MCP server，并说明为何不用 CLI | MCP 实现及测试存在；`docs/mcp-design.md` 说明结构化客户端调用的用途及 CLI 分工 | 已有实现与说明 |

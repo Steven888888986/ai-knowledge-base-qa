@@ -1,0 +1,215 @@
+{
+  "scope": "temporary SQLite; controlled model HTTP fixture; headless Edge",
+  "production_database_accessed": false,
+  "actual_model_used": false,
+  "human_reviews_submitted": 0,
+  "checks": [
+    {
+      "name": "supported QA uses grounded generation and citations without offering general generation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "1440 confirmation dialog fits viewport",
+      "passed": true,
+      "detail": {
+        "viewport": 1440,
+        "page": 1440,
+        "body": 1440,
+        "dialog": {
+          "width": 588,
+          "content": 588,
+          "height": 277,
+          "contentHeight": 277,
+          "top": 410.3125,
+          "bottom": 689.6875
+        }
+      }
+    },
+    {
+      "name": "refusal is counted before consent; No closes dialog, restores focus and never generates",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Escape cancels without generation or additional statistics",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "close button and backdrop both act as No without requesting generation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "1440 separate general result fits viewport",
+      "passed": true,
+      "detail": {
+        "viewport": 1440,
+        "page": 1440,
+        "body": 1440
+      }
+    },
+    {
+      "name": "375 general result fits viewport",
+      "passed": true,
+      "detail": {
+        "viewport": 375,
+        "page": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "Yes performs one general model call; separate uncited result preserves original refusal, history and metrics",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "manual review remains attached to the original knowledge-base refusal",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "numeric match and zero-match lookup remain separate, clear old generation and never prompt or change statistics",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "model failure is explicit and retry succeeds without history changes; generated HTML and bracket numbers stay plain text",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "375 literal HTML-like output wraps without overflow",
+      "passed": true,
+      "detail": {
+        "viewport": 375,
+        "page": 375,
+        "body": 375
+      }
+    },
+    {
+      "name": "375 consent dialog fits viewport",
+      "passed": true,
+      "detail": {
+        "viewport": 375,
+        "page": 375,
+        "body": 375,
+        "dialog": {
+          "width": 339,
+          "content": 339,
+          "height": 291,
+          "contentHeight": 291,
+          "top": 259.609375,
+          "bottom": 552.375
+        }
+      }
+    },
+    {
+      "name": "812 by 375 landscape dialog fits viewport",
+      "passed": true,
+      "detail": {
+        "viewport": 812,
+        "page": 812,
+        "body": 812,
+        "dialog": {
+          "width": 588,
+          "content": 588,
+          "height": 277,
+          "contentHeight": 277,
+          "top": 47.8125,
+          "bottom": 327.1875
+        }
+      }
+    },
+    {
+      "name": "stopping a pending general response keeps the original QA and does not display its late result",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "new knowledge-base question cancels pending general generation and restores normal cited results",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "HTTP rejects missing consent, supported QA and nonexistent query ids",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "disabled generation returns an explicit service error without contacting the model or changing statistics",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no browser JavaScript errors",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "browser": {
+    "name": "Microsoft Edge",
+    "version": "158.0.4370.33",
+    "headless": true
+  },
+  "modal_tab_order": [
+    {
+      "tag": "BUTTON",
+      "id": "generation-yes",
+      "inside": true,
+      "modal": true
+    },
+    {
+      "tag": "BODY",
+      "id": "",
+      "inside": false,
+      "modal": true
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "inside": true,
+      "modal": true
+    },
+    {
+      "tag": "BUTTON",
+      "id": "generation-no",
+      "inside": true,
+      "modal": true
+    },
+    {
+      "tag": "BUTTON",
+      "id": "generation-yes",
+      "inside": true,
+      "modal": true
+    }
+  ],
+  "final_metrics": {
+    "total_questions": 10,
+    "refused_questions": 8,
+    "reviewed_questions": 0,
+    "pending_questions": 0,
+    "auto_evaluated_questions": 10,
+    "model_evaluated_questions": 10,
+    "rule_evaluated_questions": 0,
+    "recall": {
+      "value": 1.0,
+      "hits": 2,
+      "total": 2
+    },
+    "citation_accuracy": {
+      "value": 1.0,
+      "correct": 2,
+      "total": 2
+    },
+    "refusal_rate": {
+      "value": 0.8,
+      "refused": 8,
+      "total": 10
+    }
+  },
+  "general_model_calls": 5,
+  "javascript_errors": [],
+  "passed": true
+}

@@ -12,7 +12,7 @@
     if (text !== undefined) node.textContent = text;
     return node;
   };
-  const state = { controller: null, sourceId: null, docMap: new Map() };
+  const state = { controller: null, generationController: null, fallbackQuery: null, sourceId: null, docMap: new Map() };
   const status = $('#service-status');
   const warning = $('#model-warning');
   const answer = $('#answer');
@@ -223,9 +223,59 @@
     }
     queryStatus.hidden = true;
   }
+  function clearGeneration() {
+    state.generationController?.abort();
+    state.generationController = null;
+    state.fallbackQuery = null;
+    if ($('#generation-dialog').open) $('#generation-dialog').close();
+    $('#generation-card').hidden = true;
+    $('#generation-card').setAttribute('aria-busy', 'false');
+    $('#generation-answer').textContent = '';
+    $('#generation-meta').textContent = '';
+    setFormStatus($('#generation-status'), '');
+    $('#retry-generation').hidden = true;
+    $('#cancel-generation').hidden = true;
+    $('#generation-yes').disabled = false;
+  }
+  async function generateFallback() {
+    const requested = state.fallbackQuery;
+    if (!requested || state.generationController || state.controller) return;
+    const controller = new AbortController();
+    state.generationController = controller;
+    $('#generation-yes').disabled = true;
+    $('#generation-card').hidden = false;
+    $('#generation-card').setAttribute('aria-busy', 'true');
+    $('#generation-answer').textContent = '';
+    $('#generation-meta').textContent = `问题：${requested.question}`;
+    $('#retry-generation').hidden = true;
+    $('#cancel-generation').hidden = false;
+    setFormStatus($('#generation-status'), '正在调用大模型，请稍候…');
+    $('#cancel-generation').focus();
+    try {
+      const data = await api('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query_id: requested.id, confirmed: true }), signal: controller.signal });
+      if (controller.signal.aborted || state.fallbackQuery !== requested) return;
+      $('#generation-answer').textContent = data.answer;
+      $('#generation-meta').textContent = `模型：${data.model} · 问题：${requested.question}`;
+      setFormStatus($('#generation-status'), `生成完成${data.elapsed_ms != null ? `，用时 ${(data.elapsed_ms / 1000).toFixed(1)} 秒` : ''}。本次知识库拒答仍计入统计。`);
+    } catch (error) {
+      if (state.fallbackQuery !== requested) return;
+      setFormStatus($('#generation-status'), error.name === 'AbortError' ? '已停止等待大模型生成，服务端计算可能仍在继续。本次知识库拒答保持不变。' : `生成失败：${error.message}。可重试或继续提问。`, error.name !== 'AbortError');
+      $('#retry-generation').hidden = false;
+    } finally {
+      if (state.generationController === controller) {
+        const returnFocus = document.activeElement === $('#cancel-generation');
+        state.generationController = null;
+        $('#generation-yes').disabled = false;
+        $('#cancel-generation').hidden = true;
+        $('#generation-card').setAttribute('aria-busy', 'false');
+        if (returnFocus) $('#generation-status').focus();
+      }
+    }
+  }
   async function submitQuestion(question) {
     const clean = question.trim();
     if (!clean || state.controller) return;
+    clearGeneration();
     const lookup = isLookup(clean);
     const controller = new AbortController();
     state.controller = controller;
@@ -250,6 +300,12 @@
       window.dispatchEvent(new CustomEvent('kbqa:answer', { detail: { question: clean, response: data } }));
       if (data.mode === 'llm') setModelStatus(`本地模型已连接 · ${data.model || 'ready'}`);
       else if (data.warning) setModelStatus('离线模式 · 请检查模型', 'warning');
+      if (!lookup && data.refused && Number.isInteger(data.query_id) && data.query_id > 0) {
+        state.fallbackQuery = { id: data.query_id, question: clean };
+        $('#generation-question').textContent = clean;
+        $('#generation-dialog').showModal();
+        $('#generation-no').focus();
+      }
     } catch (error) {
       if (error.name === 'AbortError') {
         queryStatus.className = 'query-status'; queryStatus.textContent = lookup ? '已停止等待内容查找。' : '已停止等待。模型计算可能仍会在服务端继续。'; queryStatus.hidden = false;
@@ -347,6 +403,12 @@
     if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); $('#question-form').requestSubmit(); }
   });
   $('#cancel-query').addEventListener('click', () => state.controller?.abort());
+  $('#generation-yes').addEventListener('click', () => { $('#generation-dialog').close(); generateFallback(); });
+  $('#generation-dialog').addEventListener('close', () => {
+    if (!state.generationController) $('#question').focus();
+  });
+  $('#retry-generation').addEventListener('click', generateFallback);
+  $('#cancel-generation').addEventListener('click', () => state.generationController?.abort());
   document.querySelectorAll('.suggestions button').forEach(button => button.addEventListener('click', () => {
     $('#question').value = button.textContent; $('#question').focus(); submitQuestion(button.textContent);
   }));

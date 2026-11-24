@@ -209,6 +209,33 @@ def stats() -> dict:
     return {"documents": len(documents), "chunks": sum(doc["chunks"] for doc in documents), "model": model_status(), "embedding_mode": embedding_status(), "retrieval": "BM25 + cosine / RRF"}
 
 
+def generate(q: str) -> dict:
+    """Generate an explicitly requested, ungrounded answer without changing QA statistics."""
+    _validate_query(q, 5, "hybrid")
+    if not q.strip():
+        raise ValueError("问题不能为空")
+    if os.getenv("KBQA_LLM_ENABLED", "1") == "0":
+        raise RuntimeError("生成模型已关闭，请启动本地模型后重试。")
+    start = time.monotonic()
+    base_url, model = model_config()
+    prompt = "你是中文助手。用户已明确选择使用模型自身知识回答，当前没有知识库依据。请直接、清楚地回答问题；不确定的内容请说明不确定。不要声称答案来自知识库，不要编造来源或引用编号。"
+    payload = {"model": model, "messages": [{"role": "system", "content": prompt}, {"role": "user", "content": q.strip()}],
+               "temperature": 0.2, "max_tokens": 800, "stream": False}
+    headers = {"Content-Type": "application/json"}
+    if os.getenv("OPENAI_API_KEY"):
+        headers["Authorization"] = "Bearer " + os.environ["OPENAI_API_KEY"]
+    try:
+        request = urllib.request.Request(base_url + "/chat/completions", data=json.dumps(payload).encode("utf-8"), headers=headers)
+        with urllib.request.urlopen(request, timeout=float(os.getenv("KBQA_MODEL_TIMEOUT", "180"))) as response:
+            output = json.loads(response.read())["choices"][0]["message"]["content"]
+        if not isinstance(output, str) or not output.strip():
+            raise ValueError("empty model output")
+    except (OSError, ValueError, KeyError, IndexError, TypeError) as error:
+        raise RuntimeError("本地模型暂不可用、响应超时或未返回有效内容，请稍后重试。") from error
+    return {"answer": output.strip(), "citations": [], "mode": "llm-general", "model": model,
+            "elapsed_ms": round((time.monotonic() - start) * 1000)}
+
+
 def answer(q: str, limit: int = 5, retrieval_mode: str = "hybrid") -> dict:
     start = time.monotonic()
     _validate_query(q, limit, retrieval_mode)

@@ -6,6 +6,8 @@
 
 纯算式（如 `1+1`）仍是问答：资料未明确提供算式及结果时拒答、引用为空，拒答会正常计入累计统计。它与纯数字内容查找的口径不同。
 
+知识库拒答完成并更新统计后，页面询问是否调用大模型补充。无论用户选择否、生成成功、生成失败或重试，原拒答记录都保留，三项指标不因补充生成而改变，也不增加第二条问答。例如先有1条有依据回答，再问1条库外问题，拒答率为1/2；确认生成后仍为1/2。补充内容没有知识库引用，只在当前页面展示；历史和人工核验针对原知识库答复。
+
 ## 使用步骤
 
 1. 正常提问，系统生成回答、自动评估并保存记录后，一起返回回答和三项指标。自动评估会增加一次模型调用的等待时间。
@@ -46,6 +48,7 @@
 
 - `GET /api/metrics`：累计分子/分母、比例、模型/规则估算次数、人工核验次数及无评估记录数。
 - `GET /api/history`：最近 50 条快照、auto_review 与 review。
+- `POST /api/generate`：接受 `{query_id, confirmed:true}`，根据已保存的拒答问题调用大模型；返回 `mode=llm-general`、生成内容、模型与空引用。显式确认及拒答记录检查通过后才调用，不运行自动评估，不修改历史或指标。
 - `POST /api/history/{id}/review`：保存或替换 `{answerable, expected_sources, citation_verdicts}`。引用键必须是实际引用编号；省略表示不作人工覆盖。
 - `POST /api/query`：问答完成时返回 query_id、auto_review 和更新后的 metrics；空问题不记录。纯数字查找返回 mode=lookup、lookup.matches、query_id=null、auto_review=null 及当前 metrics，不新增记录。每份匹配文档的 passages 列出全部命中上下文，原 snippet/chunk_id/page 字段保留为第一段信息。
 

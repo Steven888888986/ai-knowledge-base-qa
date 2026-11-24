@@ -1,6 +1,14 @@
 # 测试与验证报告
 
-最新增量（2026-11-25）：修复 `1+1` 因分词丢失运算符、仅凭数字 `1` 重合而引用无关文档的问题。[修复前](evidence/expression-lookup-before.json)在没有该表达式的内置资料中返回3个错误来源，[修复后](evidence/expression-lookup-after.json)拒答且引用为空。纯算式现在扫描全部片段，要求完整表达式与明确数值结果，直接摘录对应等式；只有练习题、不同算式或更长算式的局部命中均不能引用，不调用生成模型补算。分数、科学计数等未支持的结果形式保守拒答，避免截取成错误答案。
+最新增量（2026-11-25）：新增拒答后选择大模型生成。知识库先返回拒答并更新指标，再弹窗询问；确认后按保存的原问题调用 Qwen，单独显示无知识库依据的内容和空引用。取消不生成，生成成功、失败、取消及重试不更改原问答、核验或指标。纯数字查找与有依据问答保留原流程。
+
+真实 Qwen/BGE 隔离 HTTP 验证中，RAG 问题得到带引用的 `llm` 回答；`1+1` 在无数学依据时拒答，确认后返回 `llm-general` 的“1+1等于2。”。拒答率从0/1变为1/2，补充生成后仍为1/2，历史与全部指标一致。见 [实际模型结果](evidence/generation-fallback-model.json)与[复现脚本](evidence/generation-fallback-model.py)。这是一组功能集成样例，不代表一般知识准确率。
+
+独立 HTTP/无界面 Edge 的19项检查通过，覆盖先更新指标再询问、是/否/Escape/关闭、重复点击、失败重试、取消与迟到结果、原拒答核验、数字匹配及零结果不弹窗、纯文本安全、桌面/手机布局。浏览器测试使用受控模型 HTTP 服务，明确不冒充实际模型，见 [验收](evidence/generation-fallback-ui.json)、[弹窗](evidence/generation-fallback-dialog-desktop.png)、[手机生成结果](evidence/generation-fallback-result-mobile.png)。修复了用户停止等待时 JSON 响应写入断开连接产生异常日志的问题，并补回归。46项应用测试、11项评估器测试、提交前 hook 与原32题 AI 开发集门槛通过，见 [提交前检查](evidence/generation-fallback-preflight.txt)；原评测除时间外结果一致，历史文件恢复原字节，见 [比对](evidence/generation-fallback-ai-regression.json)。
+
+现有网站已加载新增界面，原21份文档、41个片段及8条历史的所有字段和三项统计均与本轮备份一致；只读检查没有添加测试问答，见 [现有网站验收](evidence/generation-fallback-live.json)。
+
+前次增量（2026-11-25）：修复 `1+1` 因分词丢失运算符、仅凭数字 `1` 重合而引用无关文档的问题。[修复前](evidence/expression-lookup-before.json)在没有该表达式的内置资料中返回3个错误来源，[修复后](evidence/expression-lookup-after.json)拒答且引用为空。纯算式现在扫描全部片段，要求完整表达式与明确数值结果，直接摘录对应等式；只有练习题、不同算式或更长算式的局部命中均不能引用，不调用生成模型补算。分数、科学计数等未支持的结果形式保守拒答，避免截取成错误答案。
 
 数字查找改为在主结果摘要下直接列出全部匹配原文，同文档远距命中保留，重叠上下文合并；页码无法可靠定位时留空并支持查看全文。**41项应用/HTTP/MCP测试、11项评估器测试**及32题原 AI 开发集门槛通过，见 [提交前检查](evidence/expression-lookup-preflight.txt)；原 AI 评测非时间结果一致，历史报告保留，见 [比对](evidence/expression-lookup-ai-regression.json)。独立 HTTP/Edge 的17项检查通过，包括模型开启时算式分支零网络调用、仅练习题拒答、明确等式正例、23份测试文档的25个片段全部直显、原文第7页定位、文本安全、零结果、QA恢复与统计隔离、1440px/375px布局，见 [验收](evidence/expression-lookup-ui.json)、[桌面](evidence/expression-lookup-desktop.png)、[手机](evidence/expression-lookup-mobile.png)。测试截图包含合成资料。规则自动估算仍可能把操作数重合判作可回答，原始误判结果保留；这些百分比不作为真实质量分数。
 

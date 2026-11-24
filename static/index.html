@@ -57,7 +57,7 @@
           <article class="metric-card"><h3>引用准确率 <span>自动估算</span></h3><strong id="metric-citations">—</strong><p id="metric-citations-count">等待统计</p><small>评估认为支持对应回答的引用占比</small></article>
           <article class="metric-card"><h3>拒答率</h3><strong id="metric-refusal">—</strong><p id="metric-refusal-count">等待统计</p><small>全部完成问答中拒答的占比</small></article>
         </div>
-        <div class="metrics-note"><p>每次问答完成后自动更新，纯数字内容查找不计入统计。前两项由本地模型估算，模型不可用时按词项规则估算；人工核验优先，估算可能有误。样本增加时百分比可能不变；无样本不显示 0%。拒答率不代表拒答是否正确。</p><button id="review-current" type="button" class="button secondary" hidden>人工核验 / 修正</button></div>
+        <div class="metrics-note"><p>每次知识库问答完成后自动更新，纯数字内容查找不计入统计。拒答后另行生成不增加问答次数，也不改变此次拒答。前两项由本地模型估算，模型不可用时按词项规则估算；人工核验优先，估算可能有误。样本增加时百分比可能不变；无样本不显示 0%。拒答率不代表拒答是否正确。</p><button id="review-current" type="button" class="button secondary" hidden>人工核验 / 修正</button></div>
         <p id="metrics-error" class="form-status error" role="alert" hidden></p>
       </section>
       <div id="query-status" class="query-status" role="status" aria-live="polite" hidden></div>
@@ -71,9 +71,18 @@
         </article>
         <aside class="panel evidence-panel" aria-labelledby="evidence-heading"><div class="panel-heading"><h2 id="evidence-heading">引用证据</h2><span id="citation-count" class="count-badge">0</span></div><div id="citations" class="citations"><p class="evidence-empty">检索结果将在这里展示。<br>展开引用，核对原文与出处。</p></div></aside>
       </section>
+      <article id="generation-card" class="panel generation-panel" aria-labelledby="generation-heading" aria-busy="false" hidden>
+        <div class="panel-heading"><h2 id="generation-heading">大模型生成结果</h2><span class="badge refusal">无知识库依据</span></div>
+        <div class="generation-content"><p class="generation-note">以下内容来自模型自身知识，未经知识库验证，可能有误；没有知识库引用。上方知识库回答及其统计保持不变。</p><p id="generation-meta" class="source-meta"></p><div id="generation-answer" class="generation-answer"></div><p id="generation-status" class="form-status" role="status" tabindex="-1"></p><div class="generation-actions"><button id="cancel-generation" class="button secondary" type="button" hidden>停止等待</button><button id="retry-generation" class="button secondary" type="button" hidden>重试大模型生成</button></div></div>
+      </article>
       <footer class="main-footer"><span>知源 · 通用知识库问答</span><span id="retrieval-description">关键词与向量融合检索 / RRF</span></footer>
     </main>
   </div>
+  <dialog id="generation-dialog" aria-labelledby="generation-title" aria-describedby="generation-help">
+    <div class="dialog-heading"><h2 id="generation-title">是否需要大模型生成？</h2><button class="icon-button" type="button" data-close="generation-dialog" aria-label="取消大模型生成"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+    <p id="generation-question" class="review-question"></p><p id="generation-help" class="review-help">知识库中没有找到足够依据，已记录此次拒答。选择“是”将调用大模型，基于模型自身知识回答，不提供知识库引用；此次拒答仍计入统计。</p>
+    <div class="dialog-actions"><button id="generation-no" class="button secondary" type="button" data-close="generation-dialog" autofocus>否，返回</button><button id="generation-yes" class="button primary" type="button">是，调用大模型</button></div>
+  </dialog>
   <dialog id="import-dialog" aria-labelledby="import-title"><div class="dialog-heading"><div><p class="eyebrow">BUILD YOUR LIBRARY</p><h2 id="import-title">导入知识资料</h2></div><button class="icon-button" type="button" data-close="import-dialog" aria-label="关闭导入窗口"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
     <form id="upload-form"><label class="form-label" for="file-input">选择本地文件</label><div class="upload-zone"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><input id="file-input" name="file" type="file" accept=".pdf,.md,.markdown,.txt,.html,.htm" required><p>PDF、Markdown、TXT 或 HTML；每份不超过 10 MB。PDF 需包含可提取文本。</p></div><button id="upload-submit" class="button primary" type="submit">上传并索引</button></form>
     <div class="form-divider">或者导入网页</div>

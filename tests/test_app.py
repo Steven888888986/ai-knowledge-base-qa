@@ -14,7 +14,7 @@ import tempfile
 import threading
 import time
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
@@ -294,6 +294,45 @@ class IsolatedAppTest(unittest.TestCase):
                 self.assertTrue(result.get("warning"))
                 self.assertEqual(original["answer"], result["answer"])
 
+    def test_general_generation_uses_model_without_knowledge_evidence_or_citations(self):
+        payload = json.dumps({"choices": [{"message": {"content": "1+1=2。"}}]}).encode()
+        with patch.dict(os.environ, {"KBQA_LLM_ENABLED": "1", "OPENAI_MODEL": "fixture-qwen"}), \
+                patch.object(app.urllib.request, "urlopen", return_value=io.BytesIO(payload)) as call, \
+                patch.object(app, "query", side_effect=AssertionError("general generation must not retrieve")):
+            result = app.generate("1+1")
+        self.assertEqual(("1+1=2。", [], "llm-general", "fixture-qwen"),
+                         (result["answer"], result["citations"], result["mode"], result["model"]))
+        request = call.call_args.args[0]
+        sent = json.loads(request.data)
+        self.assertEqual("1+1", sent["messages"][-1]["content"])
+        self.assertEqual(2, len(sent["messages"]))
+        self.assertNotIn("<evidence>", sent["messages"][0]["content"])
+        self.assertTrue(request.full_url.endswith("/chat/completions"))
+
+    def test_general_generation_fails_explicitly_when_disabled_or_model_fails(self):
+        with patch.object(app.urllib.request, "urlopen") as call:
+            with self.assertRaisesRegex(RuntimeError, "关闭"):
+                app.generate("1+1")
+            call.assert_not_called()
+        invalid_outputs = ({}, {"choices": []}, {"choices": [{"message": {"content": " "}}]},
+                           {"choices": [{"message": {"content": None}}]})
+        for output in invalid_outputs:
+            with self.subTest(output=output), patch.dict(os.environ, {"KBQA_LLM_ENABLED": "1"}), \
+                    patch.object(app.urllib.request, "urlopen", return_value=io.BytesIO(json.dumps(output).encode())):
+                with self.assertRaises(RuntimeError):
+                    app.generate("1+1")
+        with patch.dict(os.environ, {"KBQA_LLM_ENABLED": "1"}), \
+                patch.object(app.urllib.request, "urlopen", side_effect=TimeoutError("timeout")):
+            with self.assertRaisesRegex(RuntimeError, "不可用|超时"):
+                app.generate("1+1")
+
+    def test_general_generation_rejects_invalid_questions_before_network(self):
+        with patch.object(app.urllib.request, "urlopen") as call:
+            for question in (None, 2, "", "   ", "问" * 2001):
+                with self.subTest(question=question), self.assertRaises(ValueError):
+                    app.generate(question)
+            call.assert_not_called()
+
 
 class MCPSmokeTest(unittest.TestCase):
     def test_stdio_initialize_list_and_search(self):
@@ -440,6 +479,62 @@ class LiveMetricsTest(unittest.TestCase):
                 snapshot = self.metrics.history()[0]["response"]
                 self.assertNotIn("metrics", snapshot)
                 self.assertNotIn("auto_review", snapshot)
+            finally:
+                http.shutdown()
+                thread.join(timeout=3)
+
+    def test_http_general_generation_requires_confirmed_existing_refusal_and_keeps_metrics(self):
+        import server
+        refused = self.metrics.record_query("1+1", self.sample(refused=True),
+                                            {"answerable": False, "expected_sources": [], "citation_verdicts": {}, "method": "lexical-fallback"})
+        supported = self.metrics.record_query("RAG 是什么？", self.sample(), self.automatic_review())
+        before_history, before_metrics = self.metrics.history(), self.metrics.summary()
+        self.assertEqual({"value": 0.5, "refused": 1, "total": 2}, before_metrics["refusal_rate"])
+        with server.Server(("127.0.0.1", 0), server.Handler) as http:
+            thread = threading.Thread(target=http.serve_forever, daemon=True)
+            thread.start()
+            def send(payload):
+                request = Request(f"http://127.0.0.1:{http.server_port}/api/generate", data=json.dumps(payload).encode(), headers={"Content-Type": "application/json"}, method="POST")
+                return urlopen(request, timeout=3)
+            try:
+                generated = {"answer": "1+1=2。", "citations": [], "mode": "llm-general", "model": "fixture-qwen", "elapsed_ms": 1}
+                with patch.object(app, "generate", return_value=generated) as generate, \
+                        patch.object(server.auto_eval, "evaluate", side_effect=AssertionError("generation must not be evaluated")):
+                    cases = [({"query_id": refused}, 400),
+                             ({"query_id": refused, "confirmed": False}, 400),
+                             ({"query_id": refused, "confirmed": "true"}, 400),
+                             ({"query_id": refused, "confirmed": 1}, 400),
+                             ({"confirmed": True}, 400),
+                             ({"query_id": True, "confirmed": True}, 400),
+                             ({"query_id": -1, "confirmed": True}, 400),
+                             ({"query_id": str(refused), "confirmed": True}, 400),
+                             ({"query_id": 999999, "confirmed": True}, 404),
+                             ({"query_id": supported, "confirmed": True}, 409)]
+                    for payload, expected_code in cases:
+                        with self.subTest(payload=payload), self.assertRaises(HTTPError) as failure:
+                            send(payload)
+                        self.assertEqual(expected_code, failure.exception.code)
+                        failure.exception.close()
+                    generate.assert_not_called()
+                    # The saved original question wins over an arbitrary client field.
+                    with send({"query_id": refused, "confirmed": True, "question": "篡改问题"}) as response:
+                        result = json.load(response)
+                    self.assertEqual({**generated, "query_id": refused}, result)
+                    generate.assert_called_once_with("1+1")
+                with patch.object(app, "generate", side_effect=RuntimeError("本地模型暂不可用")):
+                    with self.assertRaises(HTTPError) as failure:
+                        send({"query_id": refused, "confirmed": True})
+                    self.assertEqual(503, failure.exception.code)
+                    self.assertIn("不可用", json.load(failure.exception)["error"])
+                    failure.exception.close()
+                # The real disabled-model path also fails without inventing output.
+                with self.assertRaises(HTTPError) as disabled:
+                    send({"query_id": refused, "confirmed": True})
+                self.assertEqual(503, disabled.exception.code)
+                self.assertIn("关闭", json.load(disabled.exception)["error"])
+                disabled.exception.close()
+                self.assertEqual(before_history, self.metrics.history())
+                self.assertEqual(before_metrics, self.metrics.summary())
             finally:
                 http.shutdown()
                 thread.join(timeout=3)
@@ -631,6 +726,25 @@ class SeedUpgradeTest(unittest.TestCase):
 
 class HTTPFlowTest(unittest.TestCase):
     """Real localhost end-to-end flow using a disposable DB and port."""
+
+    def test_json_response_tolerates_client_disconnect_without_retrying(self):
+        import server
+        for stage, error in (("headers", ConnectionAbortedError("client cancelled")),
+                             ("body", ConnectionResetError("client closed")),
+                             ("body", BrokenPipeError("client closed"))):
+            with self.subTest(stage=stage, error=type(error).__name__):
+                handler = Mock()
+                target = handler.end_headers if stage == "headers" else handler.wfile.write
+                target.side_effect = error
+                server.Handler.send_json(handler, {"answer": "done"})
+                handler.send_response.assert_called_once_with(200)
+                target.assert_called_once()
+                if stage == "headers":
+                    handler.wfile.write.assert_not_called()
+        handler = Mock()
+        handler.wfile.write.side_effect = ValueError("unexpected error")
+        with self.assertRaises(ValueError):
+            server.Handler.send_json(handler, {"answer": "done"})
 
     def test_import_query_citation_list_and_delete(self):
         with tempfile.TemporaryDirectory(prefix="kbqa-http-") as td:

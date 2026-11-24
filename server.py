@@ -24,8 +24,12 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Cache-Control", "no-store")
-        self.end_headers()
-        self.wfile.write(data)
+        try:
+            self.end_headers()
+            self.wfile.write(data)
+        except ConnectionError:
+            # A cancelled browser request has no client left to receive a response.
+            self.close_connection = True
 
     def read_json(self):
         length = int(self.headers.get("Content-Length", "0"))
@@ -88,6 +92,26 @@ class Handler(BaseHTTPRequestHandler):
         path = urlsplit(self.path).path
         try:
             payload = self.read_json()
+            if path == "/api/generate":
+                if payload.get("confirmed") is not True:
+                    raise ValueError("请先确认是否需要大模型生成结果")
+                query_id = payload.get("query_id")
+                if type(query_id) is not int or not 0 < query_id < 2 ** 63:
+                    raise ValueError("query_id 应为有效的正整数问答编号")
+                database = metrics.connection()
+                try:
+                    row = database.execute("SELECT question,response FROM query_events WHERE id=?", (query_id,)).fetchone()
+                finally:
+                    database.close()
+                if row is None:
+                    self.send_json({"error": "问答记录不存在"}, 404); return
+                if json.loads(row["response"]).get("refused") is not True:
+                    self.send_json({"error": "仅缺少知识库依据的拒答可继续生成"}, 409); return
+                try:
+                    response = app.generate(row["question"])
+                except RuntimeError as error:
+                    self.send_json({"error": str(error)}, 503); return
+                self.send_json({**response, "query_id": query_id}); return
             if path == "/api/query":
                 question = payload.get("question", "")
                 if not isinstance(question, str) or not question.strip():
