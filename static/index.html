@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172033">
+  <title>知源 · AI 知识库问答</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 5.5C9 3.5 5 3 2.5 4v15c3-1 6.5-.5 9.5 1.5 3-2 6.5-2.5 9.5-1.5V4c-2.5-1-6.5-.5-9.5 1.5Zm0 0v15"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H5v18h14V8Zm0 0v5h5M8 12h8M8 16h6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3m-5 5 5-5 5 5M4 15v6h16v-6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M6.4 6.4A8 8 0 0 1 20 12M4 12a8 8 0 0 0 13.6 5.6"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"/></symbol>
+  </svg>
+  <a class="skip-link" href="#question">跳到提问</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="知源首页"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg></span><span>知源<span class="brand-en">KNOWLEDGE</span></span></a>
+    <div class="topbar-center">AI 知识库 <span>/</span> 问答工作台</div>
+    <div id="service-status" class="service-status" role="status"><span class="status-dot"></span><span id="model-status">正在连接服务</span></div>
+  </header>
+  <div class="workspace">
+    <aside class="library" aria-labelledby="library-heading">
+      <div class="library-heading"><div><p class="eyebrow">YOUR KNOWLEDGE</p><h2 id="library-heading">知识资料</h2></div><button id="refresh" class="icon-button" aria-label="刷新知识库"><svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg></button></div>
+      <button id="open-import" class="button primary import-button"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>导入资料</button>
+      <div class="library-summary"><span><strong id="docs">—</strong> 份文档</span><span><strong id="chunks">—</strong> 个片段</span></div>
+      <p id="library-error" class="inline-error" role="alert" hidden></p>
+      <div id="document-list" class="document-list" aria-live="polite"><p class="muted">正在读取资料…</p></div>
+      <div class="library-note"><span class="small-label">支持的资料</span><p>PDF · Markdown · TXT · HTML · 网页</p><p>点击文档查看内容。回答中的引用可回溯到原文片段。</p></div>
+      <div class="sidebar-footer"><span class="local-dot"></span>本地存储 · 证据可追溯</div>
+    </aside>
+    <main id="main-content" class="main-content">
+      <section class="question-section" aria-labelledby="page-heading">
+        <div class="section-kicker"><span></span>AI KNOWLEDGE ASSISTANT</div>
+        <h1 id="page-heading">从资料出发，<br>找到有依据的答案。</h1>
+        <p class="intro">检索 AI 领域知识，用原文证据支持每一次回答。</p>
+        <form id="question-form" class="question-box">
+          <label for="question">你想了解什么？</label>
+          <textarea id="question" name="question" rows="2" maxlength="2000" placeholder="例如：RAG 与微调有什么区别？" required aria-describedby="question-hint"></textarea>
+          <div class="question-actions"><div class="retrieval-control"><label for="retrieval-mode">检索方式</label><select id="retrieval-mode" name="retrieval_mode"><option value="hybrid">混合检索</option><option value="bm25">BM25 关键词</option><option value="vector">向量检索</option></select></div><div class="submit-actions"><button id="cancel-query" type="button" class="button subtle" hidden>停止等待</button><button id="ask" type="submit" class="button primary">检索并回答<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div></div>
+        </form>
+        <div class="question-meta"><p id="question-hint">Enter 发送 · Shift + Enter 换行</p><span id="elapsed"></span></div>
+        <div class="suggestions" aria-label="示例问题"><span>试着问问</span><button type="button">什么是 RAG？</button><button type="button">如何评估问答系统？</button><button type="button">Transformer 的核心是什么？</button></div>
+      </section>
+      <div id="query-status" class="query-status" role="status" aria-live="polite" hidden></div>
+      <div id="model-warning" class="notice" role="status" hidden></div>
+      <section class="results-grid" aria-label="问答结果">
+        <article id="answer-card" class="panel answer-panel" aria-busy="false">
+          <div class="panel-heading"><h2><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>知识库回答</h2><span id="answer-mode" class="badge">等待提问</span></div>
+          <div id="answer" class="answer-body empty"><div class="empty-mark"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg></div><h3>答案，从可靠的来源开始</h3><p>输入问题后，在这里查看回答。右侧会列出检索到的原文证据。</p></div>
+          <div id="answer-footer" class="answer-footer" hidden>请结合右侧引用核对回答，模型可能出现理解偏差。</div>
+        </article>
+        <aside class="panel evidence-panel" aria-labelledby="evidence-heading"><div class="panel-heading"><h2 id="evidence-heading">引用证据</h2><span id="citation-count" class="count-badge">0</span></div><div id="citations" class="citations"><p class="evidence-empty">检索结果将在这里展示。<br>展开引用，核对原文与出处。</p></div></aside>
+      </section>
+      <footer class="main-footer"><span>知源 · AI 知识库问答</span><span id="retrieval-description">关键词与向量融合检索 / RRF</span></footer>
+    </main>
+  </div>
+  <dialog id="import-dialog" aria-labelledby="import-title"><div class="dialog-heading"><div><p class="eyebrow">BUILD YOUR LIBRARY</p><h2 id="import-title">导入知识资料</h2></div><button class="icon-button" type="button" data-close="import-dialog" aria-label="关闭导入窗口"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+    <form id="upload-form"><label class="form-label" for="file-input">选择本地文件</label><div class="upload-zone"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><input id="file-input" name="file" type="file" accept=".pdf,.md,.markdown,.txt,.html,.htm" required><p>PDF、Markdown、TXT 或 HTML；每份不超过 10 MB。PDF 需包含可提取文本。</p></div><button id="upload-submit" class="button primary" type="submit">上传并索引</button></form>
+    <div class="form-divider">或者导入网页</div>
+    <form id="url-form"><label class="form-label" for="url-input">公开网页地址</label><div class="url-row"><input id="url-input" type="url" placeholder="https://example.com/article" required><button id="url-submit" class="button secondary" type="submit">导入网页</button></div><p class="field-hint">导入可公开访问的 HTML 网页；需要登录或动态加载的内容可能无法提取。</p></form>
+    <p id="import-status" class="form-status" role="status" aria-live="polite"></p>
+  </dialog>
+  <dialog id="source-dialog" class="source-dialog" aria-labelledby="source-title"><div class="dialog-heading"><div><p class="eyebrow">SOURCE DOCUMENT</p><h2 id="source-title">原文资料</h2></div><button class="icon-button" type="button" data-close="source-dialog" aria-label="关闭原文窗口"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div><p id="source-meta" class="source-meta"></p><div id="source-content" class="source-content"></div><div class="dialog-actions"><button id="delete-document" class="button danger" type="button"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>删除文档</button><button class="button secondary" type="button" data-close="source-dialog">完成</button></div><p id="source-status" class="form-status" role="status"></p></dialog>
+  <noscript><p class="noscript">请启用 JavaScript 使用知识库工作台。也可通过 /api/query 调用问答接口。</p></noscript>
+</body>
+</html>

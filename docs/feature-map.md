@@ -1,7 +1,7 @@
 # 功能地图
 
-1. 导入：Markdown/HTML/TXT → 清洗 → 重复 source 更新 → chunk。
-2. 检索：问题 → FTS5 → 关键词回退 → 排序 → top-k。
-3. 回答：证据片段 → 离线拼接或 OpenAI 兼容接口 → 引用。
-4. 交互：输入问题、快捷问题、模式徽标、统计、引用卡片。
-5. 扩展：`/api/query`、`/api/ingest`、`/api/search`、`mcp_server.py`。
+1. 导入：Markdown/HTML/TXT/PDF/公开网页 → 清洗 → 重复 source 更新 → 保留页码的 chunks。
+2. 检索：问题 → BM25 和 BGE cosine → RRF 混合排序；可切换 BM25/vector 消融模式。
+3. 回答：证据阈值 → Qwen 引用生成（或离线原文摘录）→ 引用编号校验；证据不足明确拒答。
+4. 交互：导入、删除和预览文档；输入问题、选择检索模式、查看状态、用时和来源引用。
+5. 扩展：`/api/query`、`/api/ingest`、`/api/upload`、`/api/import-url`、`/api/search`、`mcp_server.py`。

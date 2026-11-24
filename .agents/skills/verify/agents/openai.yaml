@@ -1,0 +1,3 @@
+interface:
+  display_name: "KBQA Verification"
+  short_description: "Run retrieval and citation checks"

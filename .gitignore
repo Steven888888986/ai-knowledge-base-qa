@@ -2,3 +2,14 @@ __pycache__/
 *.pyc
 data/kb.sqlite3
 .env
+.venv/
+.runtime/
+models/
+.tmp/
+/presentation/AI领域知识库问答系统-答辩.pptx
+/presentation/AI领域知识库问答系统-答辩.pdf
+/presentation/*-修订-验证.pptx
+data/*.sqlite3*
+*.log
+!collab-log/**/*.log
+!docs/evidence/**/*.log
