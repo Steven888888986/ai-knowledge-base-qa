@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "actual_model_used": true,
+  "generated": {
+    "answer": "今天是2026年11月25日，星期三。",
+    "citations": [],
+    "mode": "llm-general",
+    "model": "local-qwen",
+    "elapsed_ms": 941,
+    "query_id": 9
+  },
+  "health": {
+    "ok": true,
+    "service": "kbqa",
+    "model": {
+      "available": true,
+      "name": "local-qwen",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "retrieval": "BM25 + cosine / RRF",
+    "embedding_mode": {
+      "available": true,
+      "signature": "bge:bge-small-zh",
+      "mode": "pretrained-bge"
+    }
+  },
+  "metrics": {
+    "total_questions": 9,
+    "refused_questions": 3,
+    "reviewed_questions": 0,
+    "pending_questions": 0,
+    "auto_evaluated_questions": 9,
+    "model_evaluated_questions": 8,
+    "rule_evaluated_questions": 1,
+    "recall": {
+      "value": 0.8571428571428571,
+      "hits": 6,
+      "total": 7
+    },
+    "citation_accuracy": {
+      "value": 0.8333333333333334,
+      "correct": 5,
+      "total": 6
+    },
+    "refusal_rate": {
+      "value": 0.3333333333333333,
+      "refused": 3,
+      "total": 9
+    }
+  },
+  "preserved_counts": {
+    "documents": 21,
+    "chunks": 41,
+    "query_events": 9
+  },
+  "all_database_fields_unchanged": true,
+  "metrics_unchanged": true
+}

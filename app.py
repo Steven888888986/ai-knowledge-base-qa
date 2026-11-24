@@ -8,6 +8,7 @@ import sqlite3
 import threading
 import time
 import urllib.request
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from ingestion import parse_document, fetch_webpage
@@ -218,7 +219,16 @@ def generate(q: str) -> dict:
         raise RuntimeError("生成模型已关闭，请启动本地模型后重试。")
     start = time.monotonic()
     base_url, model = model_config()
-    prompt = "你是中文助手。用户已明确选择使用模型自身知识回答，当前没有知识库依据。请直接、清楚地回答问题；不确定的内容请说明不确定。不要声称答案来自知识库，不要编造来源或引用编号。"
+    prompt = ("你是中文助手。用户已明确选择使用模型自身知识回答，当前没有知识库依据。请直接、清楚地回答问题；不确定的内容请说明不确定。不要声称答案来自知识库，不要编造来源或引用编号。"
+              "当前未提供联网搜索或其他实时数据；天气、新闻、行情等不能凭模型记忆猜测，应说明无法核实。")
+    calendar_question = re.search(r"日期|几号|几月|几日|星期|周几|礼拜|\b(today|tomorrow|yesterday|date|weekday)\b", q, re.I)
+    relative_date = re.search(r"今天|今日|明天|明日|昨天|昨日|现在|当前|目前|\b(today|tomorrow|yesterday|current)\b", q, re.I)
+    brief_calendar_question = re.fullmatch(r"(?:请问)?(?:日期|几号|几月|几日|星期几|周几|礼拜几)[？?。！!\s]*", q.strip())
+    if calendar_question and (relative_date or brief_calendar_question):
+        now = datetime.now(timezone(timedelta(hours=8), "Asia/Shanghai"))
+        calendar = "；".join(f"{label}是{day:%Y-%m-%d}，星期{'一二三四五六日'[day.weekday()]}"
+                             for label, day in (("昨天", now - timedelta(days=1)), ("今天", now), ("明天", now + timedelta(days=1))))
+        prompt += f"\n系统时钟提供的实时日历（北京时间，Asia/Shanghai，UTC+08:00）：{calendar}。回答当前日期、星期时必须使用这里的日历，不要猜测。"
     payload = {"model": model, "messages": [{"role": "system", "content": prompt}, {"role": "user", "content": q.strip()}],
                "temperature": 0.2, "max_tokens": 800, "stream": False}
     headers = {"Content-Type": "application/json"}

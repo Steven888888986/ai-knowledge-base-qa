@@ -35,6 +35,8 @@ Invoke-RestMethod http://127.0.0.1:8765/api/query -Method Post -ContentType 'app
 
 拒答后的大模型补充生成不修改原问答记录或三项指标，也不重复计数。生成内容仅显示在当前页面，不保存到问答历史或知识库；生成失败时显示错误，可重试，原拒答仍保留。接口 `POST /api/generate` 接受 `{"query_id": 已保存的拒答编号, "confirmed": true}`，问题从该记录读取；未确认、记录不存在或不是拒答时不能生成。
 
+“今天星期几”“今天几号”等日历问题会在每次生成时从系统时钟读取北京时间（Asia/Shanghai，UTC+08:00），并将日期和星期提供给模型。该时间上下文仅用于日历问题；没有联网天气、新闻或行情服务。默认模型是本地 Qwen2.5-1.5B-Instruct，日历修正不代表其他知识回答均已验证。
+
 模型文件和运行时保存在被 Git 忽略的 `models/`、`.runtime/` 目录中；下载脚本固定模型版本并验证 SHA-256。只想使用离线功能时，可跳过模型下载与启动步骤。模型来源、许可和限制见 [`docs/models.md`](docs/models.md)。
 
 文本导入接口 `/api/ingest` 接受 `title`、`source`、`content`；本地脚本用 `index_document()` 导入已提取的文本，用 `import_file()` 解析 PDF/HTML 等文件。网页界面也提供文件上传和 URL 导入。也可配置其它 OpenAI 兼容服务：`$env:OPENAI_BASE_URL='https://.../v1'`、`$env:OPENAI_API_KEY='本地填写'`、`$env:OPENAI_MODEL='...'`，不要提交密钥。

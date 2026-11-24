@@ -1,0 +1,63 @@
+test_development_set_has_labelled_ai_and_refusal_questions (__main__.EvaluationDatasetTest.test_development_set_has_labelled_ai_and_refusal_questions) ... ok
+test_secret_preflight_detects_a_synthetic_token (__main__.EvaluationDatasetTest.test_secret_preflight_detects_a_synthetic_token) ... ok
+test_secret_preflight_skips_downloaded_model_assets (__main__.EvaluationDatasetTest.test_secret_preflight_skips_downloaded_model_assets) ... ok
+test_import_query_citation_list_and_delete (__main__.HTTPFlowTest.test_import_query_citation_list_and_delete) ... ok
+test_json_response_tolerates_client_disconnect_without_retrying (__main__.HTTPFlowTest.test_json_response_tolerates_client_disconnect_without_retrying) ... ok
+test_citations_exclude_weaker_bge_match_when_bm25_is_close (__main__.IsolatedAppTest.test_citations_exclude_weaker_bge_match_when_bm25_is_close) ... ok
+test_general_generation_avoids_current_calendar_for_week_history_questions (__main__.IsolatedAppTest.test_general_generation_avoids_current_calendar_for_week_history_questions) ... ok
+test_general_generation_fails_explicitly_when_disabled_or_model_fails (__main__.IsolatedAppTest.test_general_generation_fails_explicitly_when_disabled_or_model_fails) ... ok
+test_general_generation_receives_fresh_beijing_calendar_across_midnight (__main__.IsolatedAppTest.test_general_generation_receives_fresh_beijing_calendar_across_midnight) ... ok
+test_general_generation_rejects_invalid_questions_before_network (__main__.IsolatedAppTest.test_general_generation_rejects_invalid_questions_before_network) ... ok
+test_general_generation_uses_model_without_knowledge_evidence_or_citations (__main__.IsolatedAppTest.test_general_generation_uses_model_without_knowledge_evidence_or_citations) ... ok
+test_generated_citation_gate_keeps_original_evidence_on_invalid_references (__main__.IsolatedAppTest.test_generated_citation_gate_keeps_original_evidence_on_invalid_references) ... ok
+test_indexes_chinese_queries_and_returns_traceable_citations (__main__.IsolatedAppTest.test_indexes_chinese_queries_and_returns_traceable_citations) ... ok
+test_numbers_in_natural_questions_and_non_ascii_digits_stay_in_qa (__main__.IsolatedAppTest.test_numbers_in_natural_questions_and_non_ascii_digits_stay_in_qa) ... ok
+test_numeric_lookup_keeps_long_matched_term_inside_snippet (__main__.IsolatedAppTest.test_numeric_lookup_keeps_long_matched_term_inside_snippet) ... ok
+test_numeric_lookup_matches_contiguous_substrings_only_in_body (__main__.IsolatedAppTest.test_numeric_lookup_matches_contiguous_substrings_only_in_body) ... ok
+test_numeric_lookup_preserves_later_page_locations_and_long_overlapping_matches (__main__.IsolatedAppTest.test_numeric_lookup_preserves_later_page_locations_and_long_overlapping_matches) ... ok
+test_numeric_lookup_preserves_question_and_retrieval_validation (__main__.IsolatedAppTest.test_numeric_lookup_preserves_question_and_retrieval_validation) ... ok
+test_numeric_lookup_returns_all_documents_once_without_retrieval_or_model (__main__.IsolatedAppTest.test_numeric_lookup_returns_all_documents_once_without_retrieval_or_model) ... ok
+test_numeric_lookup_returns_all_passages_and_merges_overlapping_context (__main__.IsolatedAppTest.test_numeric_lookup_returns_all_passages_and_merges_overlapping_context) ... ok
+test_numeric_lookup_shows_first_match_near_end_and_original_page (__main__.IsolatedAppTest.test_numeric_lookup_shows_first_match_near_end_and_original_page) ... ok
+test_numeric_lookup_with_no_match_is_an_empty_search_not_a_refusal (__main__.IsolatedAppTest.test_numeric_lookup_with_no_match_is_an_empty_search_not_a_refusal) ... ok
+test_page_aware_indexing_preserves_original_pdf_page (__main__.IsolatedAppTest.test_page_aware_indexing_preserves_original_pdf_page) ... ok
+test_prompt_injection_in_document_is_data_and_cited (__main__.IsolatedAppTest.test_prompt_injection_in_document_is_data_and_cited) ... ok
+test_pure_expression_does_not_truncate_unsupported_numeric_results (__main__.IsolatedAppTest.test_pure_expression_does_not_truncate_unsupported_numeric_results) ... ok
+test_pure_expression_normalizes_common_multiplication_and_division_symbols (__main__.IsolatedAppTest.test_pure_expression_normalizes_common_multiplication_and_division_symbols) ... ok
+test_pure_expression_uses_explicit_equation_beyond_topk_without_generating (__main__.IsolatedAppTest.test_pure_expression_uses_explicit_equation_beyond_topk_without_generating) ... ok
+test_pure_expression_without_explicit_result_refuses_and_never_generates (__main__.IsolatedAppTest.test_pure_expression_without_explicit_result_refuses_and_never_generates) ... ok
+test_replace_source_does_not_leave_old_chunks (__main__.IsolatedAppTest.test_replace_source_does_not_leave_old_chunks) ... ok
+test_retrieval_ablation_modes_are_supported (__main__.IsolatedAppTest.test_retrieval_ablation_modes_are_supported) ... ok
+test_split_respects_bounds_and_keeps_content (__main__.IsolatedAppTest.test_split_respects_bounds_and_keeps_content) ... ok
+test_unavailable_local_model_never_claims_success (__main__.IsolatedAppTest.test_unavailable_local_model_never_claims_success) ... ok
+test_unknown_question_refuses_without_inventing (__main__.IsolatedAppTest.test_unknown_question_refuses_without_inventing) ... ok
+test_automatic_scores_update_and_human_votes_override_individually (__main__.LiveMetricsTest.test_automatic_scores_update_and_human_votes_override_individually) ... ok
+test_backfill_is_idempotent_and_preserves_manual_overrides (__main__.LiveMetricsTest.test_backfill_is_idempotent_and_preserves_manual_overrides) ... ok
+test_empty_and_unreviewed_questions_do_not_invent_quality_scores (__main__.LiveMetricsTest.test_empty_and_unreviewed_questions_do_not_invent_quality_scores) ... ok
+test_http_evaluation_failure_keeps_the_answer_and_pending_record (__main__.LiveMetricsTest.test_http_evaluation_failure_keeps_the_answer_and_pending_record) ... ok
+test_http_general_generation_requires_confirmed_existing_refusal_and_keeps_metrics (__main__.LiveMetricsTest.test_http_general_generation_requires_confirmed_existing_refusal_and_keeps_metrics) ... ok
+test_http_numeric_lookup_does_not_evaluate_or_change_history_and_metrics (__main__.LiveMetricsTest.test_http_numeric_lookup_does_not_evaluate_or_change_history_and_metrics) ... ok
+test_invalid_reviews_do_not_change_saved_review (__main__.LiveMetricsTest.test_invalid_reviews_do_not_change_saved_review) ... ok
+test_migrates_old_history_without_changing_human_reviews (__main__.LiveMetricsTest.test_migrates_old_history_without_changing_human_reviews) ... ok
+test_review_replaces_votes_and_uses_only_top_three_saved_sources (__main__.LiveMetricsTest.test_review_replaces_votes_and_uses_only_top_three_saved_sources) ... ok
+test_snapshots_survive_document_deletion_and_database_reopen (__main__.LiveMetricsTest.test_snapshots_survive_document_deletion_and_database_reopen) ... ok
+test_stdio_initialize_list_and_search (__main__.MCPSmokeTest.test_stdio_initialize_list_and_search) ... ok
+test_bundled_general_knowledge_answers_across_domains (__main__.SeedUpgradeTest.test_bundled_general_knowledge_answers_across_domains) ... ok
+test_fresh_seed_keeps_ai_and_adds_general_documents_once (__main__.SeedUpgradeTest.test_fresh_seed_keeps_ai_and_adds_general_documents_once) ... ok
+test_old_seed_adds_new_batch_without_replacing_content_or_history (__main__.SeedUpgradeTest.test_old_seed_adds_new_batch_without_replacing_content_or_history) ... ok
+test_upgrade_does_not_restore_a_deleted_old_sample (__main__.SeedUpgradeTest.test_upgrade_does_not_restore_a_deleted_old_sample) ... ok
+
+----------------------------------------------------------------------
+Ran 48 tests in 11.872s
+
+OK
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.478s
+
+OK
+PASS: compile, deterministic app/MCP tests, and secret scan
+bm25 {"recall_at_1": 1.0, "recall_at_3": 1.0, "evidence_citation_accuracy": 1.0, "citation_traceability": 1.0, "correct_refusal_rate": 1.0, "false_refusal_rate": 0.0, "mean_latency_ms": 20.031, "p95_latency_ms": 23.653, "llm_answer_count": 0, "questions": 32}
+vector {"recall_at_1": 0.9583333333333334, "recall_at_3": 0.9583333333333334, "evidence_citation_accuracy": 1.0, "citation_traceability": 1.0, "correct_refusal_rate": 1.0, "false_refusal_rate": 0.041666666666666664, "mean_latency_ms": 19.81, "p95_latency_ms": 22.023, "llm_answer_count": 0, "questions": 32}
+hybrid {"recall_at_1": 1.0, "recall_at_3": 1.0, "evidence_citation_accuracy": 1.0, "citation_traceability": 1.0, "correct_refusal_rate": 1.0, "false_refusal_rate": 0.0, "mean_latency_ms": 20.028, "p95_latency_ms": 23.254, "llm_answer_count": 0, "questions": 32}
+PASS: evaluation gates

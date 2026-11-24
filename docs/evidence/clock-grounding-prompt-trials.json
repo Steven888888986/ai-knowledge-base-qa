@@ -1,0 +1,128 @@
+{
+  "scope": "Direct real local Qwen calls; no history writes",
+  "rejected_unconditional_clock": [
+    {
+      "question": "今天星期几",
+      "response": {
+        "answer": "今天是2026年11月25日，星期三。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 1337
+      }
+    },
+    {
+      "question": "今天几号？",
+      "response": {
+        "answer": "今天是2026年11月25日，星期三。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 766
+      }
+    },
+    {
+      "question": "明天星期几？",
+      "response": {
+        "answer": "明天是2026年11月26日，星期四。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 771
+      }
+    },
+    {
+      "question": "昨天星期几？",
+      "response": {
+        "answer": "昨天是星期二。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 273
+      }
+    },
+    {
+      "question": "今天星期几",
+      "response": {
+        "answer": "今天是2026年11月25日，星期三。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 726
+      }
+    },
+    {
+      "question": "1+1",
+      "response": {
+        "answer": "当前日期是2026年11月25日，星期三。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 806
+      }
+    }
+  ],
+  "adopted_calendar_questions_only": [
+    {
+      "question": "今天星期几",
+      "response": {
+        "answer": "今天是2026年11月25日，星期三。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 1166
+      }
+    },
+    {
+      "question": "今天几号？",
+      "response": {
+        "answer": "今天是2026年11月25日，星期三。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 648
+      }
+    },
+    {
+      "question": "明天星期几？",
+      "response": {
+        "answer": "明天是2026年11月26日，星期四。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 764
+      }
+    },
+    {
+      "question": "昨天星期几？",
+      "response": {
+        "answer": "昨天是星期二。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 236
+      }
+    },
+    {
+      "question": "1+1",
+      "response": {
+        "answer": "1+1等于2。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 309
+      }
+    },
+    {
+      "question": "什么是机器学习？",
+      "response": {
+        "answer": "机器学习是一种人工智能的分支，它使计算机能够通过经验自动改进性能。机器学习算法使用统计学方法来训练模型，以便它们可以对新的数据进行预测或决策。",
+        "citations": [],
+        "mode": "llm-general",
+        "model": "local-qwen",
+        "elapsed_ms": 1317
+      }
+    }
+  ],
+  "reason": "Unconditional calendar context distracted the small model on 1+1; calendar context is now limited to date/weekday questions."
+}

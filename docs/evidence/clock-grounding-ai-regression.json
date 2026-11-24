@@ -1,0 +1,10 @@
+{
+  "equal_apart_from_timing": true,
+  "baseline": "eval/results.json",
+  "ignored_time_fields": [
+    "generated_at",
+    "latency_ms",
+    "mean_latency_ms",
+    "p95_latency_ms"
+  ]
+}

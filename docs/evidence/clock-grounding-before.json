@@ -1,0 +1,13 @@
+{
+  "question": "今天星期几",
+  "local_clock": "2026-11-25T00:52:49.353410+08:00",
+  "weekday": 2,
+  "response": {
+    "answer": "今天是星期三。",
+    "citations": [],
+    "mode": "llm-general",
+    "model": "local-qwen",
+    "elapsed_ms": 213
+  },
+  "production_history_written": false
+}

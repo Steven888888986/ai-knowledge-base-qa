@@ -1,0 +1,158 @@
+{
+  "actual_model_used": true,
+  "model_output_mocked": false,
+  "production_database_accessed": false,
+  "checks": [
+    {
+      "name": "grounded question answers normally without general-generation prompt",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "actual clock weekday generated after consent; original refusal and all metrics preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "No dismisses the prompt without generation or statistics changes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "ordinary arithmetic still returns 2 rather than an irrelevant calendar answer",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "no browser JavaScript errors",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "real model uses supplied Beijing calendar across UTC midnight and year rollover",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "model": {
+    "available": true,
+    "name": "local-qwen",
+    "base_url": "http://127.0.0.1:8081/v1"
+  },
+  "browser": {
+    "name": "Microsoft Edge",
+    "version": "158.0.4370.33",
+    "headless": true
+  },
+  "current_clock_case": {
+    "clock_source": "actual system clock",
+    "beijing_now": "2026-11-25T00:56:56.679763+08:00",
+    "expected_weekday": "星期三",
+    "refused": {
+      "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+      "citations": [],
+      "mode": "refusal",
+      "refused": true,
+      "model": null,
+      "retrieval": {
+        "method": "hybrid",
+        "hits": []
+      },
+      "elapsed_ms": 21,
+      "query_id": 2,
+      "auto_review": {
+        "answerable": false,
+        "expected_sources": [],
+        "citation_verdicts": {},
+        "reason": "证据中没有提供今天是星期几的信息。",
+        "method": "local-model",
+        "model": "local-qwen",
+        "scope": {
+          "kind": "full-library",
+          "candidate_chunks": 1,
+          "total_chunks": 1
+        },
+        "evaluated_at": "2026-11-24T16:56:56.613576+00:00",
+        "elapsed_ms": 2905
+      },
+      "metrics": {
+        "total_questions": 2,
+        "refused_questions": 1,
+        "reviewed_questions": 0,
+        "pending_questions": 0,
+        "auto_evaluated_questions": 2,
+        "model_evaluated_questions": 2,
+        "rule_evaluated_questions": 0,
+        "recall": {
+          "value": 1.0,
+          "hits": 1,
+          "total": 1
+        },
+        "citation_accuracy": {
+          "value": 1.0,
+          "correct": 1,
+          "total": 1
+        },
+        "refusal_rate": {
+          "value": 0.5,
+          "refused": 1,
+          "total": 2
+        }
+      }
+    },
+    "generated": {
+      "answer": "今天是2026年11月25日，星期三。",
+      "citations": [],
+      "mode": "llm-general",
+      "model": "local-qwen",
+      "elapsed_ms": 1104,
+      "query_id": 2
+    }
+  },
+  "non_calendar_case": {
+    "answer": "1+1等于2。",
+    "citations": [],
+    "mode": "llm-general",
+    "model": "local-qwen",
+    "elapsed_ms": 335,
+    "query_id": 4
+  },
+  "javascript_errors": [],
+  "general_http_requests": 2,
+  "final_metrics": {
+    "total_questions": 4,
+    "refused_questions": 3,
+    "reviewed_questions": 0,
+    "pending_questions": 0,
+    "auto_evaluated_questions": 4,
+    "model_evaluated_questions": 4,
+    "rule_evaluated_questions": 0,
+    "recall": {
+      "value": 1.0,
+      "hits": 1,
+      "total": 1
+    },
+    "citation_accuracy": {
+      "value": 1.0,
+      "correct": 1,
+      "total": 1
+    },
+    "refusal_rate": {
+      "value": 0.75,
+      "refused": 3,
+      "total": 4
+    }
+  },
+  "cross_year_case": {
+    "clock_source": "fixed test clock only; actual model output",
+    "fixed_utc": "2026-12-31T16:00:00+00:00",
+    "response": {
+      "answer": "今天的日期是2027年1月1日，星期五。",
+      "citations": [],
+      "mode": "llm-general",
+      "model": "local-qwen",
+      "elapsed_ms": 1328
+    }
+  },
+  "passed": true
+}

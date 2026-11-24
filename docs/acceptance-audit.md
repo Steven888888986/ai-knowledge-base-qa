@@ -34,7 +34,7 @@
 
 | 原始要求 | 当前状态与证据 | 尚需处理或边界 |
 |---|---|---|
-| AI 采访产生 SPEC，含可测试验收标准 | `transcripts/requirements-interview.md` 保留实际问答；`docs/SPEC.md` 有 A1–A20 | 已有证据 |
+| AI 采访产生 SPEC，含可测试验收标准 | `transcripts/requirements-interview.md` 保留实际问答；`docs/SPEC.md` 有 A1–A21 | 已有证据 |
 | AGENTS 或 CLAUDE，并在 Git 历史体现演化 | 初始提交 `74ed939` 与实现提交 `b35cde6` 保存上下文演化；`docs/configuration-evolution.md` 提供复核命令 | 真实提交日期，不伪造早期开发时间线 |
 | ≥2 个自定义 skill，其中一个 verify | `.claude/skills/verify`、`kb-research`；`.agents/skills/` 提供对应版本 | `docs/skill-demo.md` 保存 kb-research 流程的一次真实调用；验证命令实测见测试报告 |
 | ≥1 个 MCP server，并说明为何不用 CLI | MCP 实现及测试存在；`docs/mcp-design.md` 说明结构化客户端调用的用途及 CLI 分工 | 已有实现与说明 |

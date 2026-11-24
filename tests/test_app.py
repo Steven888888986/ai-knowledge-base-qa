@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 import base64
 import io
 import os
@@ -307,6 +308,7 @@ class IsolatedAppTest(unittest.TestCase):
         self.assertEqual("1+1", sent["messages"][-1]["content"])
         self.assertEqual(2, len(sent["messages"]))
         self.assertNotIn("<evidence>", sent["messages"][0]["content"])
+        self.assertNotIn("系统时钟", sent["messages"][0]["content"])
         self.assertTrue(request.full_url.endswith("/chat/completions"))
 
     def test_general_generation_fails_explicitly_when_disabled_or_model_fails(self):
@@ -325,6 +327,33 @@ class IsolatedAppTest(unittest.TestCase):
                 patch.object(app.urllib.request, "urlopen", side_effect=TimeoutError("timeout")):
             with self.assertRaisesRegex(RuntimeError, "不可用|超时"):
                 app.generate("1+1")
+
+    def test_general_generation_receives_fresh_beijing_calendar_across_midnight(self):
+        cases = [(datetime(2026, 11, 24, 15, 59, tzinfo=timezone.utc), "2026-11-24", "星期二"),
+                 (datetime(2026, 11, 24, 16, 0, tzinfo=timezone.utc), "2026-11-25", "星期三"),
+                 (datetime(2026, 12, 31, 16, 0, tzinfo=timezone.utc), "2027-01-01", "星期五"),
+                 (datetime(2024, 2, 28, 16, 0, tzinfo=timezone.utc), "2024-02-29", "星期四")]
+        for instant, date, weekday in cases:
+            with self.subTest(date=date), patch.dict(os.environ, {"KBQA_LLM_ENABLED": "1"}), \
+                    patch.object(app, "datetime") as clock, \
+                    patch.object(app.urllib.request, "urlopen", return_value=io.BytesIO(json.dumps({"choices": [{"message": {"content": "测试回答"}}]}).encode())) as network:
+                clock.now.side_effect = lambda zone: instant.astimezone(zone)
+                result = app.generate("今天星期几")
+                sent = json.loads(network.call_args.args[0].data)
+                system = sent["messages"][0]["content"]
+                self.assertIn(date, system)
+                self.assertIn(weekday, system)
+                self.assertIn("Asia/Shanghai", system)
+                self.assertIn("未提供联网搜索", system)
+                self.assertEqual("今天星期几", sent["messages"][1]["content"])
+                self.assertEqual([], result["citations"])
+                self.assertEqual("llm-general", result["mode"])
+
+    def test_general_generation_avoids_current_calendar_for_week_history_questions(self):
+        with patch.dict(os.environ, {"KBQA_LLM_ENABLED": "1"}), \
+                patch.object(app.urllib.request, "urlopen", return_value=io.BytesIO(json.dumps({"choices": [{"message": {"content": "测试回答"}}]}).encode())) as network:
+            app.generate("为什么一星期是七天？")
+        self.assertNotIn("系统时钟", json.loads(network.call_args.args[0].data)["messages"][0]["content"])
 
     def test_general_generation_rejects_invalid_questions_before_network(self):
         with patch.object(app.urllib.request, "urlopen") as call:
