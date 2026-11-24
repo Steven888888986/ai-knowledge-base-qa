@@ -41,3 +41,7 @@ Qwen2.5-1.5B-Instruct 与 BGE-small-zh-v1.5 的来源、许可、校验和及启
 导入验收使用临时数据库和临时 HTTP 端口，关闭两个模型以单独验证解析、入库、检索与来源链路；回答如实标记为 `offline`。命令：`py -3 docs/evidence/import-smoke.py`。验收脚本：[import-smoke.py](evidence/import-smoke.py)；原始结果：[JSON](evidence/import-smoke.json)、[控制台输出](evidence/import-smoke.txt)。全部 5 个断言组通过。
 
 环境准备记录：首次在 `py -3` 环境执行时发现未安装可选 PDF 依赖；执行 `py -3 -m pip install -r requirements.txt` 后重试通过。[首次环境错误](evidence/import-smoke-initial-missing-pypdf.txt)、[安装输出](evidence/pdf-dependency-install.txt)。
+
+## 公开仓库 CI
+
+首次发布提交 `92925d4` 的 [GitHub Actions](https://github.com/Steven888888986/ai-knowledge-base-qa/actions/runs/45411516210) 已实际通过。Ubuntu / Python 3.12 下运行14项测试与32题无模型离线评测，详情与原始日志链接见 [`release.md`](release.md)。该结果与本机 BGE/Qwen 评测分开记录。

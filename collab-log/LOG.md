@@ -22,5 +22,6 @@
 | 16 | 保存真实 Git 演化 | 从初版 `74ed939` 创建实现提交 `b35cde6`，提交代码、测试和上下文修订 | `git log`、`docs/configuration-evolution.md` |
 | 17 | 按只读 reviewer 职责核对32题 | 发现 K04 生成角色混淆及漏答/限定词丢失；多种 prompt 试验没有稳定改善，未部署候选 | `docs/evidence-review.md`、`docs/evidence/prompt-trial*.json` |
 | 18 | 用户恢复浏览器并手动完成 GitHub 设备授权 | 创建公开仓库；发布前14项测试与32题评测再次通过；真实 Qwen/BGE 接口正常 | `docs/release.md`、`eval/release-check/` |
+| 19 | 推送并核对公开仓库 | Git 直连失败后使用既有本地代理成功推送；远端 tree 与本地一致；首次 Actions 的14项测试、32题评测通过 | `docs/release.md`、`docs/evidence/github-actions.json`、公开仓库 Actions |
 
-GitHub 公开发布状态以仓库 remote、提交和最终发布记录为准，本日志不将准备工作记为已发布。
+GitHub 公开发布与实际 CI 结果见 [`docs/release.md`](../docs/release.md)，成员个人记录仍由本人据实补充。
