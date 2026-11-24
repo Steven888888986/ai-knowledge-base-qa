@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\31663\Desktop\深度学习\kbqa\docs\evidence\import-smoke.py", line 23, in <module>
+    from pypdf import PdfWriter, __version__ as pypdf_version
+ModuleNotFoundError: No module named 'pypdf'

@@ -1,0 +1,13 @@
+{
+  "goal": {
+    "threadId": "01a20cbe-a46f-77d1-8ecb-066039c85b7d",
+    "objective": "完成 AI 领域知识库问答系统课程项目，覆盖文件要求与验证交付，明确跳过交叉红队；模型部署和公开 GitHub 发布纳入目标。",
+    "status": "active",
+    "tokensUsed": 4388305,
+    "timeUsedSeconds": 4441,
+    "createdAt": 1795522628,
+    "updatedAt": 1795527069
+  },
+  "remainingTokens": null,
+  "completionBudgetReport": null
+}

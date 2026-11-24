@@ -2,6 +2,8 @@
 
 一个可离线运行的 AI 领域知识库问答系统（RAG）。导入 Markdown、HTML、纯文本；安装 `pypdf` 后支持 PDF。系统结合 BM25 与本地 BGE 向量检索；有证据时可用本地 Qwen 生成带引用的回答，模型不可用或引用格式无效时会返回原文摘录并明确显示离线模式。无需 API 密钥。
 
+小模型仍可能概括错误或漏答：独立审阅发现过 Q/K/V 角色混淆，即使引用能追溯也需要核对原文。实际失败、未采用的提示词试验和边界见 [主张审阅记录](docs/evidence-review.md)。
+
 ## 运行
 
 ```powershell
@@ -30,3 +32,5 @@ powershell -ExecutionPolicy Bypass -File .claude/hooks/preflight.ps1
 ```
 
 项目材料在 `docs/`：SPEC、功能地图、评审检查点、演示/答辩材料和[测试报告](docs/test-report.md)。AI 需求访谈与关键 prompt 已保存在 `transcripts/requirements-interview.md`；真实缺陷及回归证据在 `collab-log/bugs/`。五位成员的真实姓名、分工及个人贡献记录由组员补充，见 `collab-log/team-template.md`。`mcp_server.py` 可通过 stdio 提供 `search_knowledge_base` 工具。
+
+答辩文件：[最终PPTX](presentation/AI领域知识库问答系统-答辩-最终.pptx)、[最终PDF](presentation/AI领域知识库问答系统-答辩-最终.pdf)、[备用API实录](presentation/AI领域知识库问答系统-API操作实录.mp4)。完整原始要求核对见 [验收审计](docs/acceptance-audit.md)。

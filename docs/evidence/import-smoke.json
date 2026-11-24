@@ -1,0 +1,235 @@
+{
+  "started_at_utc": "2026-11-24T13:30:41.477481+00:00",
+  "command": "py -3 docs/evidence/import-smoke.py",
+  "pypdf_version": "7.1.1",
+  "llm_enabled": false,
+  "embeddings_enabled": false,
+  "checks": {
+    "real_pdf_bytes_parsed": true,
+    "pdf_citation_page_2_and_upload_source": true,
+    "public_official_webpage_imported": true,
+    "web_citation_exact_source_and_excerpt": true,
+    "all_citations_match_stored_chunks_and_source": true
+  },
+  "isolated_database": "C:\\Users\\31663\\AppData\\Local\\Temp\\kbqa-import-smoke-py1dxmmm\\isolated.sqlite3",
+  "health": {
+    "http_status": 200,
+    "body": {
+      "ok": true,
+      "service": "kbqa",
+      "model": {
+        "available": false,
+        "name": "local-qwen",
+        "base_url": "http://127.0.0.1:8081/v1"
+      },
+      "retrieval": "BM25 + cosine / RRF",
+      "embedding_mode": {
+        "available": false,
+        "signature": "feature-hash-512-v1",
+        "mode": "local-lexical"
+      }
+    }
+  },
+  "pdf": {
+    "byte_length": 1127,
+    "sha256": "b21ace9786fa27bb86df04afe57d086f47a9f6ce29c429a3831cb97414d3b1a6",
+    "parsed_pages": [
+      [
+        1,
+        "RAG retrieves relevant evidence before generating an answer. Citations identify the source document."
+      ],
+      [
+        2,
+        "LoRA freezes the pretrained model weights and learns low-rank matrices. This reduces trainable parameters."
+      ]
+    ],
+    "upload": {
+      "http_status": 201,
+      "body": {
+        "ok": true,
+        "chunks": 2,
+        "source": "upload://acceptance-two-pages.pdf"
+      }
+    },
+    "question": "What does LoRA freeze?",
+    "query": {
+      "http_status": 200,
+      "body": {
+        "answer": "根据知识库原文摘录：\n\n[1] LoRA freezes the pretrained model weights and learns low-rank matrices. This reduces trainable parameters.",
+        "citations": [
+          {
+            "id": 1,
+            "title": "acceptance-two-pages.pdf",
+            "source": "upload://acceptance-two-pages.pdf",
+            "snippet": "LoRA freezes the pretrained model weights and learns low-rank matrices. This reduces trainable parameters.",
+            "chunk_id": "d1-p2-c2",
+            "page": 2,
+            "document_id": 1
+          }
+        ],
+        "mode": "offline",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "bm25",
+          "hits": [
+            {
+              "chunk_id": "d1-p2-c2",
+              "page": 2,
+              "content": "LoRA freezes the pretrained model weights and learns low-rank matrices. This reduces trainable parameters.",
+              "document_id": 1,
+              "title": "acceptance-two-pages.pdf",
+              "source": "upload://acceptance-two-pages.pdf",
+              "bm25": 0.679846,
+              "cosine": 0.204124,
+              "score": 0.404707,
+              "snippet": "LoRA freezes the pretrained model weights and learns low-rank matrices. This reduces trainable parameters."
+            }
+          ],
+          "supported_hits": [
+            {
+              "chunk_id": "d1-p2-c2",
+              "page": 2,
+              "content": "LoRA freezes the pretrained model weights and learns low-rank matrices. This reduces trainable parameters.",
+              "document_id": 1,
+              "title": "acceptance-two-pages.pdf",
+              "source": "upload://acceptance-two-pages.pdf",
+              "bm25": 0.679846,
+              "cosine": 0.204124,
+              "score": 0.404707,
+              "snippet": "LoRA freezes the pretrained model weights and learns low-rank matrices. This reduces trainable parameters."
+            }
+          ]
+        },
+        "elapsed_ms": 11,
+        "warning": "当前已关闭生成模型，显示检索原文摘录。"
+      }
+    }
+  },
+  "web": {
+    "requested_url": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+    "publisher": "Official PyTorch documentation",
+    "import": {
+      "http_status": 201,
+      "body": {
+        "ok": true,
+        "chunks": 49,
+        "source": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html"
+      }
+    },
+    "question": "What is the FashionMNIST dataset?",
+    "query": {
+      "http_status": 200,
+      "body": {
+        "answer": "根据知识库原文摘录：\n\n[1] , Dmitry Soshnikov , Ari Bornstein Most machine learning workflows involve working with data, creating models, optimizing model parameters, and saving the trained models. This tutorial introduces you to a complete ML workflow implemented in PyTorch, with links to learn more about each of these concepts. We’ll use the FashionMNIST dataset to train a neural ne\n\n[2] pts. We’ll use the FashionMNIST dataset to train a neural network that predicts if an input image belongs to one of the following classes: T-shirt/top, Trouser, Pullover, Dress, Coat, Sandal, Shirt, Sneaker, Bag, or Ankle boot. This tutorial assumes a basic familiarity with Python and Deep Learning concepts. Running the Tutorial Code # You can run this tutor",
+        "citations": [
+          {
+            "id": 1,
+            "title": "Learn the Basics — PyTorch Tutorials 2.15.0+cu132 documentation",
+            "source": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+            "snippet": ", Dmitry Soshnikov , Ari Bornstein Most machine learning workflows involve working with data, creating models, optimizing model parameters, and saving the trained models. This tutorial introduces you to a complete ML workflow implemented in PyTorch, with links to learn more about each of these concepts. We’ll use the FashionMNIST dataset to train a neural ne",
+            "chunk_id": "d2-p0-c39",
+            "page": null,
+            "document_id": 2
+          },
+          {
+            "id": 2,
+            "title": "Learn the Basics — PyTorch Tutorials 2.15.0+cu132 documentation",
+            "source": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+            "snippet": "pts. We’ll use the FashionMNIST dataset to train a neural network that predicts if an input image belongs to one of the following classes: T-shirt/top, Trouser, Pullover, Dress, Coat, Sandal, Shirt, Sneaker, Bag, or Ankle boot. This tutorial assumes a basic familiarity with Python and Deep Learning concepts. Running the Tutorial Code # You can run this tutor",
+            "chunk_id": "d2-p0-c40",
+            "page": null,
+            "document_id": 2
+          }
+        ],
+        "mode": "offline",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "bm25",
+          "hits": [
+            {
+              "chunk_id": "d2-p0-c39",
+              "page": null,
+              "content": ", Dmitry Soshnikov , Ari Bornstein Most machine learning workflows involve working with data, creating models, optimizing model parameters, and saving the trained models. This tutorial introduces you to a complete ML workflow implemented in PyTorch, with links to learn more about each of these concepts. We’ll use the FashionMNIST dataset to train a neural ne",
+              "document_id": 2,
+              "title": "Learn the Basics — PyTorch Tutorials 2.15.0+cu132 documentation",
+              "source": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+              "bm25": 5.986223,
+              "cosine": 0.218565,
+              "score": 0.856861,
+              "snippet": ", Dmitry Soshnikov , Ari Bornstein Most machine learning workflows involve working with data, creating models, optimizing model parameters, and saving the trained models. This tutorial introduces you to a complete ML workflow implemented in PyTorch, with links to learn more about each of these concepts. We’ll use the FashionMNIST dataset to train a neural ne"
+            },
+            {
+              "chunk_id": "d2-p0-c40",
+              "page": null,
+              "content": "pts. We’ll use the FashionMNIST dataset to train a neural network that predicts if an input image belongs to one of the following classes: T-shirt/top, Trouser, Pullover, Dress, Coat, Sandal, Shirt, Sneaker, Bag, or Ankle boot. This tutorial assumes a basic familiarity with Python and Deep Learning concepts. Running the Tutorial Code # You can run this tutor",
+              "document_id": 2,
+              "title": "Learn the Basics — PyTorch Tutorials 2.15.0+cu132 documentation",
+              "source": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+              "bm25": 5.792287,
+              "cosine": 0.209121,
+              "score": 0.852774,
+              "snippet": "pts. We’ll use the FashionMNIST dataset to train a neural network that predicts if an input image belongs to one of the following classes: T-shirt/top, Trouser, Pullover, Dress, Coat, Sandal, Shirt, Sneaker, Bag, or Ankle boot. This tutorial assumes a basic familiarity with Python and Deep Learning concepts. Running the Tutorial Code # You can run this tutor"
+            }
+          ],
+          "supported_hits": [
+            {
+              "chunk_id": "d2-p0-c39",
+              "page": null,
+              "content": ", Dmitry Soshnikov , Ari Bornstein Most machine learning workflows involve working with data, creating models, optimizing model parameters, and saving the trained models. This tutorial introduces you to a complete ML workflow implemented in PyTorch, with links to learn more about each of these concepts. We’ll use the FashionMNIST dataset to train a neural ne",
+              "document_id": 2,
+              "title": "Learn the Basics — PyTorch Tutorials 2.15.0+cu132 documentation",
+              "source": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+              "bm25": 5.986223,
+              "cosine": 0.218565,
+              "score": 0.856861,
+              "snippet": ", Dmitry Soshnikov , Ari Bornstein Most machine learning workflows involve working with data, creating models, optimizing model parameters, and saving the trained models. This tutorial introduces you to a complete ML workflow implemented in PyTorch, with links to learn more about each of these concepts. We’ll use the FashionMNIST dataset to train a neural ne"
+            },
+            {
+              "chunk_id": "d2-p0-c40",
+              "page": null,
+              "content": "pts. We’ll use the FashionMNIST dataset to train a neural network that predicts if an input image belongs to one of the following classes: T-shirt/top, Trouser, Pullover, Dress, Coat, Sandal, Shirt, Sneaker, Bag, or Ankle boot. This tutorial assumes a basic familiarity with Python and Deep Learning concepts. Running the Tutorial Code # You can run this tutor",
+              "document_id": 2,
+              "title": "Learn the Basics — PyTorch Tutorials 2.15.0+cu132 documentation",
+              "source": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+              "bm25": 5.792287,
+              "cosine": 0.209121,
+              "score": 0.852774,
+              "snippet": "pts. We’ll use the FashionMNIST dataset to train a neural network that predicts if an input image belongs to one of the following classes: T-shirt/top, Trouser, Pullover, Dress, Coat, Sandal, Shirt, Sneaker, Bag, or Ankle boot. This tutorial assumes a basic familiarity with Python and Deep Learning concepts. Running the Tutorial Code # You can run this tutor"
+            }
+          ]
+        },
+        "elapsed_ms": 23,
+        "warning": "当前已关闭生成模型，显示检索原文摘录。"
+      }
+    }
+  },
+  "documents": {
+    "http_status": 200,
+    "body": {
+      "documents": [
+        {
+          "id": 2,
+          "title": "Learn the Basics — PyTorch Tutorials 2.15.0+cu132 documentation",
+          "source": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+          "kind": "web",
+          "pages": 1,
+          "created_at": "2026-11-24 13:30:44",
+          "chunks": 49
+        },
+        {
+          "id": 1,
+          "title": "acceptance-two-pages.pdf",
+          "source": "upload://acceptance-two-pages.pdf",
+          "kind": "pdf",
+          "pages": 2,
+          "created_at": "2026-11-24 13:30:41",
+          "chunks": 2
+        }
+      ]
+    }
+  },
+  "result": "PASS",
+  "finished_at_utc": "2026-11-24T13:30:45.246597+00:00"
+}

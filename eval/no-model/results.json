@@ -1,0 +1,2865 @@
+{
+  "generated_at": "2026-11-24T21:28:21.166854+08:00",
+  "dataset": "KBQA AI development set v1 (24 answerable, 8 out-of-domain)",
+  "generation": "deterministic-offline",
+  "limitations": "Development corpus; evidence citation metrics do not prove generated-claim correctness.",
+  "modes": {
+    "bm25": {
+      "metrics": {
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "evidence_citation_accuracy": 0.96,
+        "citation_traceability": 1.0,
+        "correct_refusal_rate": 1.0,
+        "false_refusal_rate": 0.0,
+        "mean_latency_ms": 13.094,
+        "p95_latency_ms": 16.635,
+        "llm_answer_count": 0,
+        "questions": 32
+      },
+      "cases": [
+        {
+          "id": "K01",
+          "question": "RAG 回答前先做什么？",
+          "sources": [
+            "eval/rag.md"
+          ],
+          "evidence": "先从外部知识库查找相关证据",
+          "retrieved_sources": [
+            "eval/rag.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 14.845,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "RAG 基础",
+              "source": "eval/rag.md",
+              "snippet": "检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "document_id": 1
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K02",
+          "question": "检索增强生成缺少证据时应该怎样？",
+          "sources": [
+            "eval/rag.md"
+          ],
+          "evidence": "没有足够证据时应拒答",
+          "retrieved_sources": [
+            "eval/rag.md",
+            "eval/bm25.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 16.684,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "RAG 基础",
+              "source": "eval/rag.md",
+              "snippet": "检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "document_id": 1
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K03",
+          "question": "缩放点积注意力的分母是什么？",
+          "sources": [
+            "eval/attention.md"
+          ],
+          "evidence": "键向量维度的平方根",
+          "retrieved_sources": [
+            "eval/attention.md",
+            "eval/embedding.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 14.614,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "Transformer 注意力",
+              "source": "eval/attention.md",
+              "snippet": "Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+              "chunk_id": "d2-p0-c1",
+              "page": null,
+              "document_id": 2
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K04",
+          "question": "Transformer 的 Query、Key、Value 用来做什么？",
+          "sources": [
+            "eval/attention.md"
+          ],
+          "evidence": "对 Value 加权求和",
+          "retrieved_sources": [
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.898,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "Transformer 注意力",
+              "source": "eval/attention.md",
+              "snippet": "Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+              "chunk_id": "d2-p0-c1",
+              "page": null,
+              "document_id": 2
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K05",
+          "question": "余弦相似度如何计算？",
+          "sources": [
+            "eval/embedding.md"
+          ],
+          "evidence": "两向量点积除以各自范数的乘积",
+          "retrieved_sources": [
+            "eval/embedding.md",
+            "eval/bm25.md",
+            "eval/quantization.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 13.458,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "向量嵌入与相似度",
+              "source": "eval/embedding.md",
+              "snippet": "文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+              "chunk_id": "d3-p0-c1",
+              "page": null,
+              "document_id": 3
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K06",
+          "question": "字符哈希向量化是否等同于语义嵌入？",
+          "sources": [
+            "eval/embedding.md"
+          ],
+          "evidence": "不等同于预训练语义嵌入",
+          "retrieved_sources": [
+            "eval/embedding.md",
+            "eval/quantization.md",
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 14.043,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "向量嵌入与相似度",
+              "source": "eval/embedding.md",
+              "snippet": "文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+              "chunk_id": "d3-p0-c1",
+              "page": null,
+              "document_id": 3
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K07",
+          "question": "BM25 考虑哪些因素？",
+          "sources": [
+            "eval/bm25.md"
+          ],
+          "evidence": "词频、逆文档频率和文档长度归一化",
+          "retrieved_sources": [
+            "eval/bm25.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 13.192,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "BM25 与混合检索",
+              "source": "eval/bm25.md",
+              "snippet": "BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+              "chunk_id": "d4-p0-c1",
+              "page": null,
+              "document_id": 4
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K08",
+          "question": "RRF 融合是否要求检索器原始分数尺度相同？",
+          "sources": [
+            "eval/bm25.md"
+          ],
+          "evidence": "不要求不同检索器的原始分数处于相同尺度",
+          "retrieved_sources": [
+            "eval/bm25.md",
+            "eval/rag.md",
+            "eval/metrics.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.398,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "BM25 与混合检索",
+              "source": "eval/bm25.md",
+              "snippet": "BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+              "chunk_id": "d4-p0-c1",
+              "page": null,
+              "document_id": 4
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K09",
+          "question": "验证集和测试集分别用于什么？",
+          "sources": [
+            "eval/splits.md"
+          ],
+          "evidence": "验证集用于选择超参数和比较方案",
+          "retrieved_sources": [
+            "eval/splits.md",
+            "eval/overfitting.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.759,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "训练验证测试划分",
+              "source": "eval/splits.md",
+              "snippet": "训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+              "chunk_id": "d5-p0-c1",
+              "page": null,
+              "document_id": 5
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K10",
+          "question": "用测试集选择阈值有什么风险？",
+          "sources": [
+            "eval/splits.md"
+          ],
+          "evidence": "产生数据泄漏",
+          "retrieved_sources": [
+            "eval/splits.md",
+            "eval/overfitting.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.696,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "训练验证测试划分",
+              "source": "eval/splits.md",
+              "snippet": "训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+              "chunk_id": "d5-p0-c1",
+              "page": null,
+              "document_id": 5
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K11",
+          "question": "过拟合有哪些表现和缓解方法？",
+          "sources": [
+            "eval/overfitting.md"
+          ],
+          "evidence": "增加数据、使用权重衰减、Dropout 和早停",
+          "retrieved_sources": [
+            "eval/overfitting.md",
+            "eval/splits.md",
+            "eval/lora.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.996,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "过拟合与正则化",
+              "source": "eval/overfitting.md",
+              "snippet": "过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+              "chunk_id": "d6-p0-c1",
+              "page": null,
+              "document_id": 6
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K12",
+          "question": "早停应该依据哪个数据集的表现？",
+          "sources": [
+            "eval/overfitting.md"
+          ],
+          "evidence": "早停依据验证集表现",
+          "retrieved_sources": [
+            "eval/overfitting.md",
+            "eval/splits.md",
+            "eval/quantization.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.406,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "过拟合与正则化",
+              "source": "eval/overfitting.md",
+              "snippet": "过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+              "chunk_id": "d6-p0-c1",
+              "page": null,
+              "document_id": 6
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K13",
+          "question": "学习率过大会发生什么？",
+          "sources": [
+            "eval/gradient.md"
+          ],
+          "evidence": "训练震荡或发散",
+          "retrieved_sources": [
+            "eval/gradient.md",
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 9.955,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "梯度下降与学习率",
+              "source": "eval/gradient.md",
+              "snippet": "梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+              "chunk_id": "d7-p0-c1",
+              "page": null,
+              "document_id": 7
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K14",
+          "question": "显存受限时梯度累积有什么用途？",
+          "sources": [
+            "eval/gradient.md"
+          ],
+          "evidence": "模拟更大的有效批次",
+          "retrieved_sources": [
+            "eval/gradient.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.108,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "梯度下降与学习率",
+              "source": "eval/gradient.md",
+              "snippet": "梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+              "chunk_id": "d7-p0-c1",
+              "page": null,
+              "document_id": 7
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K15",
+          "question": "LoRA 如何减少微调参数？",
+          "sources": [
+            "eval/lora.md"
+          ],
+          "evidence": "冻结预训练权重",
+          "retrieved_sources": [
+            "eval/lora.md",
+            "eval/splits.md",
+            "eval/gradient.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.408,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "LoRA 参数高效微调",
+              "source": "eval/lora.md",
+              "snippet": "LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+              "chunk_id": "d8-p0-c1",
+              "page": null,
+              "document_id": 8
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K16",
+          "question": "LoRA 的秩 r 控制什么？",
+          "sources": [
+            "eval/lora.md"
+          ],
+          "evidence": "控制增量矩阵的容量",
+          "retrieved_sources": [
+            "eval/lora.md",
+            "eval/gradient.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 16.635,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "LoRA 参数高效微调",
+              "source": "eval/lora.md",
+              "snippet": "LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+              "chunk_id": "d8-p0-c1",
+              "page": null,
+              "document_id": 8
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K17",
+          "question": "模型量化有什么收益与代价？",
+          "sources": [
+            "eval/quantization.md"
+          ],
+          "evidence": "减少模型磁盘和内存占用，但可能损失精度",
+          "retrieved_sources": [
+            "eval/quantization.md",
+            "eval/embedding.md",
+            "eval/rag.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.467,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "量化与推理部署",
+              "source": "eval/quantization.md",
+              "snippet": "模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+              "chunk_id": "d9-p0-c1",
+              "page": null,
+              "document_id": 9
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K18",
+          "question": "GGUF 文件可以携带哪些内容？",
+          "sources": [
+            "eval/quantization.md"
+          ],
+          "evidence": "权重、分词器和元数据",
+          "retrieved_sources": [
+            "eval/quantization.md",
+            "eval/prompt.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.97,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "量化与推理部署",
+              "source": "eval/quantization.md",
+              "snippet": "模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+              "chunk_id": "d9-p0-c1",
+              "page": null,
+              "document_id": 9
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K19",
+          "question": "分类任务 Precision 的计算公式是什么？",
+          "sources": [
+            "eval/metrics.md"
+          ],
+          "evidence": "真正例除以真正例与假正例之和",
+          "retrieved_sources": [
+            "eval/metrics.md",
+            "eval/quantization.md",
+            "eval/cnn.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.555,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "分类评估指标",
+              "source": "eval/metrics.md",
+              "snippet": "分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+              "chunk_id": "d10-p0-c1",
+              "page": null,
+              "document_id": 10
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K20",
+          "question": "F1 和精确率、召回率是什么关系？",
+          "sources": [
+            "eval/metrics.md"
+          ],
+          "evidence": "精确率与召回率的调和平均数",
+          "retrieved_sources": [
+            "eval/metrics.md",
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.079,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "分类评估指标",
+              "source": "eval/metrics.md",
+              "snippet": "分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+              "chunk_id": "d10-p0-c1",
+              "page": null,
+              "document_id": 10
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K21",
+          "question": "卷积神经网络怎样利用权重共享？",
+          "sources": [
+            "eval/cnn.md"
+          ],
+          "evidence": "在输入不同位置复用同一组权重",
+          "retrieved_sources": [
+            "eval/cnn.md",
+            "eval/overfitting.md",
+            "eval/quantization.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.382,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "卷积神经网络",
+              "source": "eval/cnn.md",
+              "snippet": "卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+              "chunk_id": "d11-p0-c1",
+              "page": null,
+              "document_id": 11
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K22",
+          "question": "池化会对图像空间尺寸与细节产生什么影响？",
+          "sources": [
+            "eval/cnn.md"
+          ],
+          "evidence": "减小空间尺寸，但也可能丢失细节",
+          "retrieved_sources": [
+            "eval/cnn.md",
+            "eval/splits.md",
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 15.851,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "卷积神经网络",
+              "source": "eval/cnn.md",
+              "snippet": "卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+              "chunk_id": "d11-p0-c1",
+              "page": null,
+              "document_id": 11
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K23",
+          "question": "外部知识库资料中的提示注入应该如何看待？",
+          "sources": [
+            "eval/prompt.md"
+          ],
+          "evidence": "文档是待分析数据",
+          "retrieved_sources": [
+            "eval/prompt.md",
+            "eval/rag.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.354,
+          "supported_citations": 1,
+          "traceable_citations": 2,
+          "citation_count": 2,
+          "answer": "根据知识库原文摘录：\n\n[1] 提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。\n\n[2] 检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "提示注入与资料边界",
+              "source": "eval/prompt.md",
+              "snippet": "提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+              "chunk_id": "d12-p0-c1",
+              "page": null,
+              "document_id": 12
+            },
+            {
+              "id": 2,
+              "title": "RAG 基础",
+              "source": "eval/rag.md",
+              "snippet": "检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "document_id": 1
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K24",
+          "question": "引用标记格式正确能证明结论有依据吗？",
+          "sources": [
+            "eval/prompt.md"
+          ],
+          "evidence": "不代表引用内容真的支持结论",
+          "retrieved_sources": [
+            "eval/prompt.md",
+            "eval/overfitting.md",
+            "eval/rag.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 13.532,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "提示注入与资料边界",
+              "source": "eval/prompt.md",
+              "snippet": "提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+              "chunk_id": "d12-p0-c1",
+              "page": null,
+              "document_id": 12
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "U01",
+          "question": "今天北京天气多少摄氏度？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 16.352,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U02",
+          "question": "糖醋排骨需要多少白糖？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [
+            "eval/lora.md"
+          ],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 13.147,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U03",
+          "question": "我的银行卡密码是多少？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 14.275,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U04",
+          "question": "学校食堂周末几点关门？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 13.792,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U05",
+          "question": "水星公转周期具体是多少天？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 13.357,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U06",
+          "question": "高铁退票手续费是多少钱？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 13.161,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U07",
+          "question": "李白出生于哪一年？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 14.904,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U08",
+          "question": "长江源头在哪座山？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 13.744,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        }
+      ]
+    },
+    "vector": {
+      "metrics": {
+        "recall_at_1": 0.875,
+        "recall_at_3": 0.9166666666666666,
+        "evidence_citation_accuracy": 0.9565217391304348,
+        "citation_traceability": 1.0,
+        "correct_refusal_rate": 1.0,
+        "false_refusal_rate": 0.08333333333333333,
+        "mean_latency_ms": 11.982,
+        "p95_latency_ms": 14.284,
+        "llm_answer_count": 0,
+        "questions": 32
+      },
+      "cases": [
+        {
+          "id": "K01",
+          "question": "RAG 回答前先做什么？",
+          "sources": [
+            "eval/rag.md"
+          ],
+          "evidence": "先从外部知识库查找相关证据",
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 13.548,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "K02",
+          "question": "检索增强生成缺少证据时应该怎样？",
+          "sources": [
+            "eval/rag.md"
+          ],
+          "evidence": "没有足够证据时应拒答",
+          "retrieved_sources": [
+            "eval/rag.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 14.284,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "RAG 基础",
+              "source": "eval/rag.md",
+              "snippet": "检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "document_id": 1
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K03",
+          "question": "缩放点积注意力的分母是什么？",
+          "sources": [
+            "eval/attention.md"
+          ],
+          "evidence": "键向量维度的平方根",
+          "retrieved_sources": [
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 13.332,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "Transformer 注意力",
+              "source": "eval/attention.md",
+              "snippet": "Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+              "chunk_id": "d2-p0-c1",
+              "page": null,
+              "document_id": 2
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K04",
+          "question": "Transformer 的 Query、Key、Value 用来做什么？",
+          "sources": [
+            "eval/attention.md"
+          ],
+          "evidence": "对 Value 加权求和",
+          "retrieved_sources": [
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.152,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "Transformer 注意力",
+              "source": "eval/attention.md",
+              "snippet": "Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+              "chunk_id": "d2-p0-c1",
+              "page": null,
+              "document_id": 2
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K05",
+          "question": "余弦相似度如何计算？",
+          "sources": [
+            "eval/embedding.md"
+          ],
+          "evidence": "两向量点积除以各自范数的乘积",
+          "retrieved_sources": [
+            "eval/embedding.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.112,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "向量嵌入与相似度",
+              "source": "eval/embedding.md",
+              "snippet": "文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+              "chunk_id": "d3-p0-c1",
+              "page": null,
+              "document_id": 3
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K06",
+          "question": "字符哈希向量化是否等同于语义嵌入？",
+          "sources": [
+            "eval/embedding.md"
+          ],
+          "evidence": "不等同于预训练语义嵌入",
+          "retrieved_sources": [
+            "eval/embedding.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.278,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "向量嵌入与相似度",
+              "source": "eval/embedding.md",
+              "snippet": "文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+              "chunk_id": "d3-p0-c1",
+              "page": null,
+              "document_id": 3
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K07",
+          "question": "BM25 考虑哪些因素？",
+          "sources": [
+            "eval/bm25.md"
+          ],
+          "evidence": "词频、逆文档频率和文档长度归一化",
+          "retrieved_sources": [
+            "eval/bm25.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.434,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "BM25 与混合检索",
+              "source": "eval/bm25.md",
+              "snippet": "BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+              "chunk_id": "d4-p0-c1",
+              "page": null,
+              "document_id": 4
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K08",
+          "question": "RRF 融合是否要求检索器原始分数尺度相同？",
+          "sources": [
+            "eval/bm25.md"
+          ],
+          "evidence": "不要求不同检索器的原始分数处于相同尺度",
+          "retrieved_sources": [
+            "eval/bm25.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 13.026,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "BM25 与混合检索",
+              "source": "eval/bm25.md",
+              "snippet": "BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+              "chunk_id": "d4-p0-c1",
+              "page": null,
+              "document_id": 4
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K09",
+          "question": "验证集和测试集分别用于什么？",
+          "sources": [
+            "eval/splits.md"
+          ],
+          "evidence": "验证集用于选择超参数和比较方案",
+          "retrieved_sources": [
+            "eval/splits.md",
+            "eval/overfitting.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 16.276,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "训练验证测试划分",
+              "source": "eval/splits.md",
+              "snippet": "训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+              "chunk_id": "d5-p0-c1",
+              "page": null,
+              "document_id": 5
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K10",
+          "question": "用测试集选择阈值有什么风险？",
+          "sources": [
+            "eval/splits.md"
+          ],
+          "evidence": "产生数据泄漏",
+          "retrieved_sources": [
+            "eval/splits.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.132,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "训练验证测试划分",
+              "source": "eval/splits.md",
+              "snippet": "训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+              "chunk_id": "d5-p0-c1",
+              "page": null,
+              "document_id": 5
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K11",
+          "question": "过拟合有哪些表现和缓解方法？",
+          "sources": [
+            "eval/overfitting.md"
+          ],
+          "evidence": "增加数据、使用权重衰减、Dropout 和早停",
+          "retrieved_sources": [
+            "eval/overfitting.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 9.765,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "过拟合与正则化",
+              "source": "eval/overfitting.md",
+              "snippet": "过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+              "chunk_id": "d6-p0-c1",
+              "page": null,
+              "document_id": 6
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K12",
+          "question": "早停应该依据哪个数据集的表现？",
+          "sources": [
+            "eval/overfitting.md"
+          ],
+          "evidence": "早停依据验证集表现",
+          "retrieved_sources": [
+            "eval/overfitting.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.006,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "过拟合与正则化",
+              "source": "eval/overfitting.md",
+              "snippet": "过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+              "chunk_id": "d6-p0-c1",
+              "page": null,
+              "document_id": 6
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K13",
+          "question": "学习率过大会发生什么？",
+          "sources": [
+            "eval/gradient.md"
+          ],
+          "evidence": "训练震荡或发散",
+          "retrieved_sources": [
+            "eval/gradient.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.795,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "梯度下降与学习率",
+              "source": "eval/gradient.md",
+              "snippet": "梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+              "chunk_id": "d7-p0-c1",
+              "page": null,
+              "document_id": 7
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K14",
+          "question": "显存受限时梯度累积有什么用途？",
+          "sources": [
+            "eval/gradient.md"
+          ],
+          "evidence": "模拟更大的有效批次",
+          "retrieved_sources": [
+            "eval/gradient.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 9.076,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "梯度下降与学习率",
+              "source": "eval/gradient.md",
+              "snippet": "梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+              "chunk_id": "d7-p0-c1",
+              "page": null,
+              "document_id": 7
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K15",
+          "question": "LoRA 如何减少微调参数？",
+          "sources": [
+            "eval/lora.md"
+          ],
+          "evidence": "冻结预训练权重",
+          "retrieved_sources": [
+            "eval/lora.md",
+            "eval/splits.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.169,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "LoRA 参数高效微调",
+              "source": "eval/lora.md",
+              "snippet": "LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+              "chunk_id": "d8-p0-c1",
+              "page": null,
+              "document_id": 8
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K16",
+          "question": "LoRA 的秩 r 控制什么？",
+          "sources": [
+            "eval/lora.md"
+          ],
+          "evidence": "控制增量矩阵的容量",
+          "retrieved_sources": [
+            "eval/lora.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.401,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "LoRA 参数高效微调",
+              "source": "eval/lora.md",
+              "snippet": "LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+              "chunk_id": "d8-p0-c1",
+              "page": null,
+              "document_id": 8
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K17",
+          "question": "模型量化有什么收益与代价？",
+          "sources": [
+            "eval/quantization.md"
+          ],
+          "evidence": "减少模型磁盘和内存占用，但可能损失精度",
+          "retrieved_sources": [
+            "eval/quantization.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.143,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "量化与推理部署",
+              "source": "eval/quantization.md",
+              "snippet": "模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+              "chunk_id": "d9-p0-c1",
+              "page": null,
+              "document_id": 9
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K18",
+          "question": "GGUF 文件可以携带哪些内容？",
+          "sources": [
+            "eval/quantization.md"
+          ],
+          "evidence": "权重、分词器和元数据",
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 10.656,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "K19",
+          "question": "分类任务 Precision 的计算公式是什么？",
+          "sources": [
+            "eval/metrics.md"
+          ],
+          "evidence": "真正例除以真正例与假正例之和",
+          "retrieved_sources": [
+            "eval/metrics.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.02,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "分类评估指标",
+              "source": "eval/metrics.md",
+              "snippet": "分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+              "chunk_id": "d10-p0-c1",
+              "page": null,
+              "document_id": 10
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K20",
+          "question": "F1 和精确率、召回率是什么关系？",
+          "sources": [
+            "eval/metrics.md"
+          ],
+          "evidence": "精确率与召回率的调和平均数",
+          "retrieved_sources": [
+            "eval/metrics.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.249,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "分类评估指标",
+              "source": "eval/metrics.md",
+              "snippet": "分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+              "chunk_id": "d10-p0-c1",
+              "page": null,
+              "document_id": 10
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K21",
+          "question": "卷积神经网络怎样利用权重共享？",
+          "sources": [
+            "eval/cnn.md"
+          ],
+          "evidence": "在输入不同位置复用同一组权重",
+          "retrieved_sources": [
+            "eval/cnn.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.296,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "卷积神经网络",
+              "source": "eval/cnn.md",
+              "snippet": "卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+              "chunk_id": "d11-p0-c1",
+              "page": null,
+              "document_id": 11
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K22",
+          "question": "池化会对图像空间尺寸与细节产生什么影响？",
+          "sources": [
+            "eval/cnn.md"
+          ],
+          "evidence": "减小空间尺寸，但也可能丢失细节",
+          "retrieved_sources": [
+            "eval/cnn.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.021,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "卷积神经网络",
+              "source": "eval/cnn.md",
+              "snippet": "卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+              "chunk_id": "d11-p0-c1",
+              "page": null,
+              "document_id": 11
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K23",
+          "question": "外部知识库资料中的提示注入应该如何看待？",
+          "sources": [
+            "eval/prompt.md"
+          ],
+          "evidence": "文档是待分析数据",
+          "retrieved_sources": [
+            "eval/rag.md",
+            "eval/prompt.md"
+          ],
+          "recall_at_1": false,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.531,
+          "supported_citations": 1,
+          "traceable_citations": 2,
+          "citation_count": 2,
+          "answer": "根据知识库原文摘录：\n\n[1] 检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。\n\n[2] 提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "RAG 基础",
+              "source": "eval/rag.md",
+              "snippet": "检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "document_id": 1
+            },
+            {
+              "id": 2,
+              "title": "提示注入与资料边界",
+              "source": "eval/prompt.md",
+              "snippet": "提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+              "chunk_id": "d12-p0-c1",
+              "page": null,
+              "document_id": 12
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K24",
+          "question": "引用标记格式正确能证明结论有依据吗？",
+          "sources": [
+            "eval/prompt.md"
+          ],
+          "evidence": "不代表引用内容真的支持结论",
+          "retrieved_sources": [
+            "eval/prompt.md",
+            "eval/rag.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.858,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "提示注入与资料边界",
+              "source": "eval/prompt.md",
+              "snippet": "提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+              "chunk_id": "d12-p0-c1",
+              "page": null,
+              "document_id": 12
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "U01",
+          "question": "今天北京天气多少摄氏度？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 13.279,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U02",
+          "question": "糖醋排骨需要多少白糖？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 9.732,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U03",
+          "question": "我的银行卡密码是多少？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 12.032,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U04",
+          "question": "学校食堂周末几点关门？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 12.472,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U05",
+          "question": "水星公转周期具体是多少天？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 13.707,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U06",
+          "question": "高铁退票手续费是多少钱？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 9.814,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U07",
+          "question": "李白出生于哪一年？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 12.234,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U08",
+          "question": "长江源头在哪座山？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 10.583,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        }
+      ]
+    },
+    "hybrid": {
+      "metrics": {
+        "recall_at_1": 0.9583333333333334,
+        "recall_at_3": 1.0,
+        "evidence_citation_accuracy": 0.96,
+        "citation_traceability": 1.0,
+        "correct_refusal_rate": 1.0,
+        "false_refusal_rate": 0.0,
+        "mean_latency_ms": 10.979,
+        "p95_latency_ms": 13.382,
+        "llm_answer_count": 0,
+        "questions": 32
+      },
+      "cases": [
+        {
+          "id": "K01",
+          "question": "RAG 回答前先做什么？",
+          "sources": [
+            "eval/rag.md"
+          ],
+          "evidence": "先从外部知识库查找相关证据",
+          "retrieved_sources": [
+            "eval/rag.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.438,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "RAG 基础",
+              "source": "eval/rag.md",
+              "snippet": "检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "document_id": 1
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K02",
+          "question": "检索增强生成缺少证据时应该怎样？",
+          "sources": [
+            "eval/rag.md"
+          ],
+          "evidence": "没有足够证据时应拒答",
+          "retrieved_sources": [
+            "eval/rag.md",
+            "eval/bm25.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.995,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "RAG 基础",
+              "source": "eval/rag.md",
+              "snippet": "检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "document_id": 1
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K03",
+          "question": "缩放点积注意力的分母是什么？",
+          "sources": [
+            "eval/attention.md"
+          ],
+          "evidence": "键向量维度的平方根",
+          "retrieved_sources": [
+            "eval/attention.md",
+            "eval/embedding.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.95,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "Transformer 注意力",
+              "source": "eval/attention.md",
+              "snippet": "Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+              "chunk_id": "d2-p0-c1",
+              "page": null,
+              "document_id": 2
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K04",
+          "question": "Transformer 的 Query、Key、Value 用来做什么？",
+          "sources": [
+            "eval/attention.md"
+          ],
+          "evidence": "对 Value 加权求和",
+          "retrieved_sources": [
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.889,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "Transformer 注意力",
+              "source": "eval/attention.md",
+              "snippet": "Transformer 的缩放点积注意力使用 Query、Key、Value 三组向量。注意力分数是 Query 与 Key 的点积除以键向量维度的平方根，再用 softmax 归一化并对 Value 加权求和。多头注意力让不同投影子空间并行学习关系。",
+              "chunk_id": "d2-p0-c1",
+              "page": null,
+              "document_id": 2
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K05",
+          "question": "余弦相似度如何计算？",
+          "sources": [
+            "eval/embedding.md"
+          ],
+          "evidence": "两向量点积除以各自范数的乘积",
+          "retrieved_sources": [
+            "eval/embedding.md",
+            "eval/bm25.md",
+            "eval/quantization.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 13.382,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "向量嵌入与相似度",
+              "source": "eval/embedding.md",
+              "snippet": "文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+              "chunk_id": "d3-p0-c1",
+              "page": null,
+              "document_id": 3
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K06",
+          "question": "字符哈希向量化是否等同于语义嵌入？",
+          "sources": [
+            "eval/embedding.md"
+          ],
+          "evidence": "不等同于预训练语义嵌入",
+          "retrieved_sources": [
+            "eval/embedding.md",
+            "eval/quantization.md",
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.254,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "向量嵌入与相似度",
+              "source": "eval/embedding.md",
+              "snippet": "文本嵌入把文字映射为数值向量。语义嵌入通常由预训练模型产生；词频或字符哈希也能向量化，但不等同于预训练语义嵌入。余弦相似度是两向量点积除以各自范数的乘积，它比较方向而不是直接比较长度。",
+              "chunk_id": "d3-p0-c1",
+              "page": null,
+              "document_id": 3
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K07",
+          "question": "BM25 考虑哪些因素？",
+          "sources": [
+            "eval/bm25.md"
+          ],
+          "evidence": "词频、逆文档频率和文档长度归一化",
+          "retrieved_sources": [
+            "eval/bm25.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 9.862,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "BM25 与混合检索",
+              "source": "eval/bm25.md",
+              "snippet": "BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+              "chunk_id": "d4-p0-c1",
+              "page": null,
+              "document_id": 4
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K08",
+          "question": "RRF 融合是否要求检索器原始分数尺度相同？",
+          "sources": [
+            "eval/bm25.md"
+          ],
+          "evidence": "不要求不同检索器的原始分数处于相同尺度",
+          "retrieved_sources": [
+            "eval/bm25.md",
+            "eval/rag.md",
+            "eval/metrics.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 13.609,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "BM25 与混合检索",
+              "source": "eval/bm25.md",
+              "snippet": "BM25 是关键词检索评分函数，考虑词频、逆文档频率和文档长度归一化。RRF 倒数排名融合把多个检索列表的排名转为倒数分值相加，不要求不同检索器的原始分数处于相同尺度。混合检索可以融合 BM25 和向量相似度的排名。",
+              "chunk_id": "d4-p0-c1",
+              "page": null,
+              "document_id": 4
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K09",
+          "question": "验证集和测试集分别用于什么？",
+          "sources": [
+            "eval/splits.md"
+          ],
+          "evidence": "验证集用于选择超参数和比较方案",
+          "retrieved_sources": [
+            "eval/splits.md",
+            "eval/overfitting.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.542,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "训练验证测试划分",
+              "source": "eval/splits.md",
+              "snippet": "训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+              "chunk_id": "d5-p0-c1",
+              "page": null,
+              "document_id": 5
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K10",
+          "question": "用测试集选择阈值有什么风险？",
+          "sources": [
+            "eval/splits.md"
+          ],
+          "evidence": "产生数据泄漏",
+          "retrieved_sources": [
+            "eval/splits.md",
+            "eval/overfitting.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.905,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "训练验证测试划分",
+              "source": "eval/splits.md",
+              "snippet": "训练集用于拟合模型参数，验证集用于选择超参数和比较方案，测试集用于最终评估。把测试集用于选择阈值会产生数据泄漏，使最终指标过于乐观。数据预处理统计量也应只在训练集上拟合。",
+              "chunk_id": "d5-p0-c1",
+              "page": null,
+              "document_id": 5
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K11",
+          "question": "过拟合有哪些表现和缓解方法？",
+          "sources": [
+            "eval/overfitting.md"
+          ],
+          "evidence": "增加数据、使用权重衰减、Dropout 和早停",
+          "retrieved_sources": [
+            "eval/overfitting.md",
+            "eval/splits.md",
+            "eval/lora.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 9.701,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "过拟合与正则化",
+              "source": "eval/overfitting.md",
+              "snippet": "过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+              "chunk_id": "d6-p0-c1",
+              "page": null,
+              "document_id": 6
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K12",
+          "question": "早停应该依据哪个数据集的表现？",
+          "sources": [
+            "eval/overfitting.md"
+          ],
+          "evidence": "早停依据验证集表现",
+          "retrieved_sources": [
+            "eval/overfitting.md",
+            "eval/splits.md",
+            "eval/quantization.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.764,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "过拟合与正则化",
+              "source": "eval/overfitting.md",
+              "snippet": "过拟合表现为模型在训练集上误差很小，但在未见样本上表现较差。缓解方法包括增加数据、使用权重衰减、Dropout 和早停。早停依据验证集表现，在继续训练不再改善时停止，不能依据测试集做训练决策。",
+              "chunk_id": "d6-p0-c1",
+              "page": null,
+              "document_id": 6
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K13",
+          "question": "学习率过大会发生什么？",
+          "sources": [
+            "eval/gradient.md"
+          ],
+          "evidence": "训练震荡或发散",
+          "retrieved_sources": [
+            "eval/gradient.md",
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.773,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "梯度下降与学习率",
+              "source": "eval/gradient.md",
+              "snippet": "梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+              "chunk_id": "d7-p0-c1",
+              "page": null,
+              "document_id": 7
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K14",
+          "question": "显存受限时梯度累积有什么用途？",
+          "sources": [
+            "eval/gradient.md"
+          ],
+          "evidence": "模拟更大的有效批次",
+          "retrieved_sources": [
+            "eval/gradient.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.45,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "梯度下降与学习率",
+              "source": "eval/gradient.md",
+              "snippet": "梯度下降沿损失函数对参数梯度的反方向更新参数。学习率控制单次更新的步长；过大会使训练震荡或发散，过小则收敛缓慢。梯度累积把多个小批次的梯度累加再更新，用于显存受限时模拟更大的有效批次。",
+              "chunk_id": "d7-p0-c1",
+              "page": null,
+              "document_id": 7
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K15",
+          "question": "LoRA 如何减少微调参数？",
+          "sources": [
+            "eval/lora.md"
+          ],
+          "evidence": "冻结预训练权重",
+          "retrieved_sources": [
+            "eval/lora.md",
+            "eval/splits.md",
+            "eval/gradient.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.277,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "LoRA 参数高效微调",
+              "source": "eval/lora.md",
+              "snippet": "LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+              "chunk_id": "d8-p0-c1",
+              "page": null,
+              "document_id": 8
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K16",
+          "question": "LoRA 的秩 r 控制什么？",
+          "sources": [
+            "eval/lora.md"
+          ],
+          "evidence": "控制增量矩阵的容量",
+          "retrieved_sources": [
+            "eval/lora.md",
+            "eval/gradient.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 9.757,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "LoRA 参数高效微调",
+              "source": "eval/lora.md",
+              "snippet": "LoRA 是低秩适配方法。它冻结预训练权重，使用两个可训练的低秩矩阵表示权重增量，从而减少需要训练和保存的参数。LoRA 的秩 r 控制增量矩阵的容量；参数更少并不保证所有任务的效果都优于全量微调。",
+              "chunk_id": "d8-p0-c1",
+              "page": null,
+              "document_id": 8
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K17",
+          "question": "模型量化有什么收益与代价？",
+          "sources": [
+            "eval/quantization.md"
+          ],
+          "evidence": "减少模型磁盘和内存占用，但可能损失精度",
+          "retrieved_sources": [
+            "eval/quantization.md",
+            "eval/embedding.md",
+            "eval/rag.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.19,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "量化与推理部署",
+              "source": "eval/quantization.md",
+              "snippet": "模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+              "chunk_id": "d9-p0-c1",
+              "page": null,
+              "document_id": 9
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K18",
+          "question": "GGUF 文件可以携带哪些内容？",
+          "sources": [
+            "eval/quantization.md"
+          ],
+          "evidence": "权重、分词器和元数据",
+          "retrieved_sources": [
+            "eval/quantization.md",
+            "eval/prompt.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.817,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "量化与推理部署",
+              "source": "eval/quantization.md",
+              "snippet": "模型量化用较低数值精度存储权重或进行计算，例如四位权重量化。量化通常减少模型磁盘和内存占用，但可能损失精度，速度收益取决于硬件和实现。GGUF 是 llama.cpp 常用的模型文件格式，可携带权重、分词器和元数据。",
+              "chunk_id": "d9-p0-c1",
+              "page": null,
+              "document_id": 9
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K19",
+          "question": "分类任务 Precision 的计算公式是什么？",
+          "sources": [
+            "eval/metrics.md"
+          ],
+          "evidence": "真正例除以真正例与假正例之和",
+          "retrieved_sources": [
+            "eval/metrics.md",
+            "eval/quantization.md",
+            "eval/cnn.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 12.467,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "分类评估指标",
+              "source": "eval/metrics.md",
+              "snippet": "分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+              "chunk_id": "d10-p0-c1",
+              "page": null,
+              "document_id": 10
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K20",
+          "question": "F1 和精确率、召回率是什么关系？",
+          "sources": [
+            "eval/metrics.md"
+          ],
+          "evidence": "精确率与召回率的调和平均数",
+          "retrieved_sources": [
+            "eval/metrics.md",
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 8.7,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "分类评估指标",
+              "source": "eval/metrics.md",
+              "snippet": "分类任务的精确率 Precision 等于真正例除以真正例与假正例之和。召回率 Recall 等于真正例除以真正例与假负例之和。F1 分数是精确率与召回率的调和平均数；类别失衡时仅看准确率可能掩盖少数类错误。",
+              "chunk_id": "d10-p0-c1",
+              "page": null,
+              "document_id": 10
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K21",
+          "question": "卷积神经网络怎样利用权重共享？",
+          "sources": [
+            "eval/cnn.md"
+          ],
+          "evidence": "在输入不同位置复用同一组权重",
+          "retrieved_sources": [
+            "eval/cnn.md",
+            "eval/overfitting.md",
+            "eval/quantization.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.622,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "卷积神经网络",
+              "source": "eval/cnn.md",
+              "snippet": "卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+              "chunk_id": "d11-p0-c1",
+              "page": null,
+              "document_id": 11
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K22",
+          "question": "池化会对图像空间尺寸与细节产生什么影响？",
+          "sources": [
+            "eval/cnn.md"
+          ],
+          "evidence": "减小空间尺寸，但也可能丢失细节",
+          "retrieved_sources": [
+            "eval/cnn.md",
+            "eval/splits.md",
+            "eval/attention.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 10.638,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "卷积神经网络",
+              "source": "eval/cnn.md",
+              "snippet": "卷积神经网络通过局部感受野和权重共享提取空间模式。卷积核在输入不同位置复用同一组权重。池化常用于下采样以减小空间尺寸，但也可能丢失细节；图像分类和目标检测是常见应用。",
+              "chunk_id": "d11-p0-c1",
+              "page": null,
+              "document_id": 11
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K23",
+          "question": "外部知识库资料中的提示注入应该如何看待？",
+          "sources": [
+            "eval/prompt.md"
+          ],
+          "evidence": "文档是待分析数据",
+          "retrieved_sources": [
+            "eval/rag.md",
+            "eval/prompt.md"
+          ],
+          "recall_at_1": false,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.036,
+          "supported_citations": 1,
+          "traceable_citations": 2,
+          "citation_count": 2,
+          "answer": "根据知识库原文摘录：\n\n[1] 检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。\n\n[2] 提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "RAG 基础",
+              "source": "eval/rag.md",
+              "snippet": "检索增强生成（RAG）先从外部知识库查找相关证据，再将检索片段放入语言模型上下文生成回答。RAG 的引用应指向实际检索片段和原始文档位置。没有足够证据时应拒答，不能用模型印象补充资料中没有的事实。",
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "document_id": 1
+            },
+            {
+              "id": 2,
+              "title": "提示注入与资料边界",
+              "source": "eval/prompt.md",
+              "snippet": "提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+              "chunk_id": "d12-p0-c1",
+              "page": null,
+              "document_id": 12
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "K24",
+          "question": "引用标记格式正确能证明结论有依据吗？",
+          "sources": [
+            "eval/prompt.md"
+          ],
+          "evidence": "不代表引用内容真的支持结论",
+          "retrieved_sources": [
+            "eval/prompt.md",
+            "eval/rag.md",
+            "eval/overfitting.md"
+          ],
+          "recall_at_1": true,
+          "recall_at_3": true,
+          "refused": false,
+          "answer_mode": "offline",
+          "latency_ms": 11.073,
+          "supported_citations": 1,
+          "traceable_citations": 1,
+          "citation_count": 1,
+          "answer": "根据知识库原文摘录：\n\n[1] 提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+          "citations": [
+            {
+              "id": 1,
+              "title": "提示注入与资料边界",
+              "source": "eval/prompt.md",
+              "snippet": "提示注入是把恶意指令放入外部资料等不可信输入，试图改变模型既定任务。知识库文档是待分析数据，其中的“忽略规则”等文字不应成为系统指令。引用标记格式正确只说明标记能解析，不代表引用内容真的支持结论，仍需逐项核对。",
+              "chunk_id": "d12-p0-c1",
+              "page": null,
+              "document_id": 12
+            }
+          ],
+          "warning": "当前已关闭生成模型，显示检索原文摘录。"
+        },
+        {
+          "id": "U01",
+          "question": "今天北京天气多少摄氏度？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 9.874,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U02",
+          "question": "糖醋排骨需要多少白糖？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [
+            "eval/lora.md"
+          ],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 8.961,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U03",
+          "question": "我的银行卡密码是多少？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 9.669,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U04",
+          "question": "学校食堂周末几点关门？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 11.329,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U05",
+          "question": "水星公转周期具体是多少天？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 9.046,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U06",
+          "question": "高铁退票手续费是多少钱？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 10.764,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U07",
+          "question": "李白出生于哪一年？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 12.389,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        },
+        {
+          "id": "U08",
+          "question": "长江源头在哪座山？",
+          "sources": [],
+          "evidence": null,
+          "retrieved_sources": [],
+          "recall_at_1": false,
+          "recall_at_3": false,
+          "refused": true,
+          "answer_mode": "refusal",
+          "latency_ms": 11.212,
+          "supported_citations": 0,
+          "traceable_citations": 0,
+          "citation_count": 0,
+          "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+          "citations": [],
+          "warning": null
+        }
+      ]
+    }
+  }
+}

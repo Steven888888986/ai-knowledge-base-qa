@@ -1,0 +1,144 @@
+{
+  "schema": "kbqa-api-demo-v1",
+  "recorded_at": "2026-11-24T21:34:16.158+08:00",
+  "recording_type": "Real HTTP request log, rendered as video; not a UI screen recording",
+  "database": "Temporary isolated empty SQLite database; no seed data",
+  "requests": [
+    {
+      "step": "health",
+      "method": "GET",
+      "path": "/api/health",
+      "request": null,
+      "started_at": "2026-11-24T21:34:16.834+08:00",
+      "status": 200,
+      "response": {
+        "ok": true,
+        "service": "kbqa",
+        "model": {
+          "available": true,
+          "name": "local-qwen",
+          "base_url": "http://127.0.0.1:8081/v1"
+        },
+        "retrieval": "BM25 + cosine / RRF",
+        "embedding_mode": {
+          "available": true,
+          "signature": "bge:bge-small-zh",
+          "mode": "pretrained-bge"
+        }
+      },
+      "response_text": "{\"ok\": true, \"service\": \"kbqa\", \"model\": {\"available\": true, \"name\": \"local-qwen\", \"base_url\": \"http://127.0.0.1:8081/v1\"}, \"retrieval\": \"BM25 + cosine / RRF\", \"embedding_mode\": {\"available\": true, \"signature\": \"bge:bge-small-zh\", \"mode\": \"pretrained-bge\"}}",
+      "finished_at": "2026-11-24T21:34:16.937+08:00",
+      "wall_ms": 103.21
+    },
+    {
+      "step": "ingest",
+      "method": "POST",
+      "path": "/api/ingest",
+      "request": {
+        "title": "AI 知识样本：RAG",
+        "source": "demo://ai-rag-basics",
+        "content": "检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。"
+      },
+      "started_at": "2026-11-24T21:34:16.937+08:00",
+      "status": 200,
+      "response": {
+        "ok": true,
+        "chunks": 1
+      },
+      "response_text": "{\"ok\": true, \"chunks\": 1}",
+      "finished_at": "2026-11-24T21:34:16.969+08:00",
+      "wall_ms": 31.568
+    },
+    {
+      "step": "answer",
+      "method": "POST",
+      "path": "/api/query",
+      "request": {
+        "question": "RAG 在生成回答之前会做什么？",
+        "retrieval_mode": "hybrid"
+      },
+      "started_at": "2026-11-24T21:34:16.969+08:00",
+      "status": 200,
+      "response": {
+        "answer": "答案：RAG 在生成回答之前会先检索相关资料。[1]",
+        "citations": [
+          {
+            "id": 1,
+            "title": "AI 知识样本：RAG",
+            "source": "demo://ai-rag-basics",
+            "snippet": "检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。",
+            "chunk_id": "d1-p0-c1",
+            "page": null,
+            "document_id": 1
+          }
+        ],
+        "mode": "llm",
+        "refused": false,
+        "model": "local-qwen",
+        "retrieval": {
+          "method": "hybrid",
+          "hits": [
+            {
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "content": "检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。",
+              "document_id": 1,
+              "title": "AI 知识样本：RAG",
+              "source": "demo://ai-rag-basics",
+              "bm25": 1.520605,
+              "cosine": 0.658659,
+              "score": 0.032787,
+              "snippet": "检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。"
+            }
+          ],
+          "supported_hits": [
+            {
+              "chunk_id": "d1-p0-c1",
+              "page": null,
+              "content": "检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。",
+              "document_id": 1,
+              "title": "AI 知识样本：RAG",
+              "source": "demo://ai-rag-basics",
+              "bm25": 1.520605,
+              "cosine": 0.658659,
+              "score": 0.032787,
+              "snippet": "检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。"
+            }
+          ]
+        },
+        "elapsed_ms": 3031
+      },
+      "response_text": "{\"answer\": \"答案：RAG 在生成回答之前会先检索相关资料。[1]\", \"citations\": [{\"id\": 1, \"title\": \"AI 知识样本：RAG\", \"source\": \"demo://ai-rag-basics\", \"snippet\": \"检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。\", \"chunk_id\": \"d1-p0-c1\", \"page\": null, \"document_id\": 1}], \"mode\": \"llm\", \"refused\": false, \"model\": \"local-qwen\", \"retrieval\": {\"method\": \"hybrid\", \"hits\": [{\"chunk_id\": \"d1-p0-c1\", \"page\": null, \"content\": \"检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。\", \"document_id\": 1, \"title\": \"AI 知识样本：RAG\", \"source\": \"demo://ai-rag-basics\", \"bm25\": 1.520605, \"cosine\": 0.658659, \"score\": 0.032787, \"snippet\": \"检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。\"}], \"supported_hits\": [{\"chunk_id\": \"d1-p0-c1\", \"page\": null, \"content\": \"检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。\", \"document_id\": 1, \"title\": \"AI 知识样本：RAG\", \"source\": \"demo://ai-rag-basics\", \"bm25\": 1.520605, \"cosine\": 0.658659, \"score\": 0.032787, \"snippet\": \"检索增强生成（RAG）先从外部知识库检索相关片段，再把片段交给语言模型生成回答。RAG 回答应显示来源与原文片段，证据不足时明确拒答。\"}]}, \"elapsed_ms\": 3031}",
+      "finished_at": "2026-11-24T21:34:20.001+08:00",
+      "wall_ms": 3032.128
+    },
+    {
+      "step": "refusal",
+      "method": "POST",
+      "path": "/api/query",
+      "request": {
+        "question": "明天的天气如何？",
+        "retrieval_mode": "hybrid"
+      },
+      "started_at": "2026-11-24T21:34:20.001+08:00",
+      "status": 200,
+      "response": {
+        "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+        "citations": [],
+        "mode": "refusal",
+        "refused": true,
+        "model": null,
+        "retrieval": {
+          "method": "hybrid",
+          "hits": []
+        },
+        "elapsed_ms": 31
+      },
+      "response_text": "{\"answer\": \"知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。\", \"citations\": [], \"mode\": \"refusal\", \"refused\": true, \"model\": null, \"retrieval\": {\"method\": \"hybrid\", \"hits\": []}, \"elapsed_ms\": 31}",
+      "finished_at": "2026-11-24T21:34:20.030+08:00",
+      "wall_ms": 29.207
+    }
+  ],
+  "base_url": "http://127.0.0.1:52204",
+  "finished_at": "2026-11-24T21:34:20.038+08:00"
+}

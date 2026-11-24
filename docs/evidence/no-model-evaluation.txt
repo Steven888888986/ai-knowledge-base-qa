@@ -1,0 +1,5 @@
+bm25 {"recall_at_1": 1.0, "recall_at_3": 1.0, "evidence_citation_accuracy": 0.96, "citation_traceability": 1.0, "correct_refusal_rate": 1.0, "false_refusal_rate": 0.0, "mean_latency_ms": 13.094, "p95_latency_ms": 16.635, "llm_answer_count": 0, "questions": 32}
+vector {"recall_at_1": 0.875, "recall_at_3": 0.9166666666666666, "evidence_citation_accuracy": 0.9565217391304348, "citation_traceability": 1.0, "correct_refusal_rate": 1.0, "false_refusal_rate": 0.08333333333333333, "mean_latency_ms": 11.982, "p95_latency_ms": 14.284, "llm_answer_count": 0, "questions": 32}
+hybrid {"recall_at_1": 0.9583333333333334, "recall_at_3": 1.0, "evidence_citation_accuracy": 0.96, "citation_traceability": 1.0, "correct_refusal_rate": 1.0, "false_refusal_rate": 0.0, "mean_latency_ms": 10.979, "p95_latency_ms": 13.382, "llm_answer_count": 0, "questions": 32}
+PASS: evaluation gates
+EXIT_CODE=0
