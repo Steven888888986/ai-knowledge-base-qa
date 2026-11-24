@@ -76,6 +76,90 @@ class IsolatedAppTest(unittest.TestCase):
         self.assertTrue(result["refused"])
         self.assertEqual([], result["citations"])
 
+    def test_numeric_lookup_returns_all_documents_once_without_retrieval_or_model(self):
+        for i in range(10):
+            app.index_document(f"资料 {i}", f"note-{i}.md", "正文包含 2 项配置。" + "背景说明。" * 100 + "末尾再次出现 2。")
+        with patch.dict(os.environ, {"KBQA_LLM_ENABLED": "1"}), \
+                patch.object(app, "query") as query, patch.object(app, "embed_text") as embed, \
+                patch.object(app.urllib.request, "urlopen") as model:
+            for mode in ("hybrid", "bm25", "vector"):
+                with self.subTest(retrieval_mode=mode):
+                    result = app.answer("  2\n", limit=1, retrieval_mode=mode)
+                    self.assertEqual("lookup", result["mode"])
+                    self.assertEqual("2", result["lookup"]["term"])
+                    self.assertEqual(10, result["lookup"]["matched_documents"])
+                    matches = result["lookup"]["matches"]
+                    self.assertEqual(10, len(matches))
+                    self.assertEqual(10, len({match["document_id"] for match in matches}))
+                    self.assertTrue(all("2" in match["snippet"] for match in matches))
+                    self.assertTrue(all(match["chunk_id"] for match in matches))
+                    self.assertEqual([], result["citations"])
+                    self.assertEqual({"method": "literal", "hits": []}, result["retrieval"])
+                    self.assertFalse(result["refused"])
+                    self.assertIsNone(result["model"])
+                    self.assertGreaterEqual(result["elapsed_ms"], 0)
+            query.assert_not_called()
+            embed.assert_not_called()
+            model.assert_not_called()
+
+    def test_numeric_lookup_shows_first_match_near_end_and_original_page(self):
+        first_page = "第一部分没有目标内容。" * 80
+        second_page = "第二部分介绍背景。" * 80 + "\n\t原文记录 2024 年的情况。" + "后续说明。" * 80 + "后面也有 2024 年记录。"
+        app.index_pages("年度记录", "upload://annual.pdf", [(1, first_page), (2, second_page)], kind="pdf")
+        match = app.answer("2024")["lookup"]["matches"][0]
+        self.assertIn("原文记录 2024 年的情况。", match["snippet"])
+        self.assertIn("\n\t", match["snippet"])
+        self.assertLessEqual(len(match["snippet"]), 220)
+        self.assertEqual(2, match["page"])
+        document = app.get_document(match["document_id"])
+        self.assertIn(match["snippet"], document["document"]["content"])
+        chunk = next(item for item in document["chunks"] if item["chunk_id"] == match["chunk_id"])
+        self.assertIn("2024", chunk["content"])
+        self.assertEqual(2, chunk["page"])
+
+    def test_numeric_lookup_matches_contiguous_substrings_only_in_body(self):
+        app.index_document("双位数", "twelve.md", "共 12 项。")
+        app.index_document("年份", "year.md", "发表于 2024 年。")
+        app.index_document("2 和 2024", "2024-2.md", "正文没有任何数字。")
+        app.index_document("分隔数字", "separated.md", "数字顺序为 2 024。")
+        result = app.answer("2")
+        self.assertEqual({"twelve.md", "year.md", "separated.md"}, {item["source"] for item in result["lookup"]["matches"]})
+        result = app.answer("2024")
+        self.assertEqual(["year.md"], [item["source"] for item in result["lookup"]["matches"]])
+
+    def test_numeric_lookup_with_no_match_is_an_empty_search_not_a_refusal(self):
+        app.index_document("无数字", "empty.md", "正文没有数字。")
+        result = app.answer("999")
+        self.assertEqual("lookup", result["mode"])
+        self.assertFalse(result["refused"])
+        self.assertEqual({"term": "999", "matched_documents": 0, "matches": []}, result["lookup"])
+        self.assertEqual([], result["citations"])
+        self.assertIn("未找到", result["answer"])
+
+    def test_numeric_lookup_keeps_long_matched_term_inside_snippet(self):
+        term = "1234567890" * 30
+        app.index_document("长编号", "identifier.md", "背景" * 200 + term + "结束")
+        match = app.answer(term)["lookup"]["matches"][0]
+        self.assertIn(term, match["snippet"])
+        self.assertIsNone(match["chunk_id"])
+        self.assertIsNone(match["page"])
+
+    def test_numbers_in_natural_questions_and_non_ascii_digits_stay_in_qa(self):
+        for question in ("2 的三次方是多少？", "２", "٢", "2.0", "-2", "2 3"):
+            with self.subTest(question=question), patch.object(app, "query", return_value=[]) as query:
+                result = app.answer(question)
+                self.assertEqual("refusal", result["mode"])
+                self.assertNotIn("lookup", result)
+                query.assert_called_once_with(question, 5, "hybrid")
+
+    def test_numeric_lookup_preserves_question_and_retrieval_validation(self):
+        invalid = ((2, 5, "hybrid"), ("2" * 2001, 5, "hybrid"), ("2", 0, "hybrid"),
+                   ("2", 9, "hybrid"), ("2", True, "hybrid"), ("2", 1.5, "hybrid"),
+                   ("2", "1", "hybrid"), ("2", 5, "literal"))
+        for question, limit, mode in invalid:
+            with self.subTest(question=str(question)[:10], limit=limit, mode=mode), self.assertRaises(ValueError):
+                app.answer(question, limit, mode)
+
     def test_replace_source_does_not_leave_old_chunks(self):
         app.index_document("概念", "one.md", "旧内容 蓝色三角形")
         app.index_document("概念更新", "one.md", "新内容 红色圆形")
@@ -285,6 +369,39 @@ class LiveMetricsTest(unittest.TestCase):
                 snapshot = self.metrics.history()[0]["response"]
                 self.assertNotIn("metrics", snapshot)
                 self.assertNotIn("auto_review", snapshot)
+            finally:
+                http.shutdown()
+                thread.join(timeout=3)
+
+    def test_http_numeric_lookup_does_not_evaluate_or_change_history_and_metrics(self):
+        import server
+        app.index_document("数学", "math.md", "2 的三次方等于 8。")
+        self.metrics.record_query("已有问题", self.sample(), self.automatic_review())
+        before_history, before_metrics = self.metrics.history(), self.metrics.summary()
+        with server.Server(("127.0.0.1", 0), server.Handler) as http:
+            thread = threading.Thread(target=http.serve_forever, daemon=True)
+            thread.start()
+            try:
+                with patch.object(server.auto_eval, "evaluate", return_value=None) as evaluate:
+                    for question in ("2", "999"):
+                        request = Request(f"http://127.0.0.1:{http.server_port}/api/query", data=json.dumps({"question": question}).encode(), headers={"Content-Type": "application/json"}, method="POST")
+                        with urlopen(request, timeout=3) as response:
+                            result = json.load(response)
+                        self.assertEqual("lookup", result["mode"])
+                        self.assertIsNone(result["query_id"])
+                        self.assertIsNone(result["auto_review"])
+                        self.assertEqual(before_metrics, result["metrics"])
+                    evaluate.assert_not_called()
+                    self.assertEqual(before_history, self.metrics.history())
+                    self.assertEqual(before_metrics, self.metrics.summary())
+                    request = Request(f"http://127.0.0.1:{http.server_port}/api/query", data=json.dumps({"question": "2 的三次方是多少？"}).encode(), headers={"Content-Type": "application/json"}, method="POST")
+                    with urlopen(request, timeout=3) as response:
+                        result = json.load(response)
+                    self.assertNotEqual("lookup", result["mode"])
+                    self.assertIsInstance(result["query_id"], int)
+                    self.assertEqual(before_metrics["total_questions"] + 1, result["metrics"]["total_questions"])
+                    self.assertEqual(len(before_history) + 1, len(self.metrics.history()))
+                    evaluate.assert_called_once()
             finally:
                 http.shutdown()
                 thread.join(timeout=3)

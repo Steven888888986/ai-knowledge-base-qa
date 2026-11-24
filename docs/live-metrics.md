@@ -2,6 +2,8 @@
 
 页面“问答质量统计”在每次 HTTP 问答完成后自动更新。召回率与引用准确率明确标为**自动估算**，默认由已配置的本地 Qwen 评估；模型关闭、不可用或输出格式无效时使用标明方法的词项规则回退。拒答率直接统计实际响应。三种检索方式的问答共同累计，当前不按检索方式分组。
 
+纯数字输入（如 `2`）属于内容查找，展示全部包含该数字串的文档及原文片段。它不生成问答、自动评估或历史记录，因此不改变这里的分子、分母和核验次数；查找结果没有“本次问答核验”。此前已经保存的数字问答记录作为历史保留，不追溯删除。
+
 ## 使用步骤
 
 1. 正常提问，系统生成回答、自动评估并保存记录后，一起返回回答和三项指标。自动评估会增加一次模型调用的等待时间。
@@ -43,7 +45,7 @@
 - `GET /api/metrics`：累计分子/分母、比例、模型/规则估算次数、人工核验次数及无评估记录数。
 - `GET /api/history`：最近 50 条快照、auto_review 与 review。
 - `POST /api/history/{id}/review`：保存或替换 `{answerable, expected_sources, citation_verdicts}`。引用键必须是实际引用编号；省略表示不作人工覆盖。
-- `POST /api/query`：完成时返回 query_id、auto_review 和更新后的 metrics；空问题不记录。
+- `POST /api/query`：问答完成时返回 query_id、auto_review 和更新后的 metrics；空问题不记录。纯数字查找返回 mode=lookup、lookup.matches、query_id=null、auto_review=null 及当前 metrics，不新增记录。
 
 补评已保存且没有自动结果的记录：
 

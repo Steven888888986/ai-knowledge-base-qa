@@ -45,9 +45,9 @@
         <form id="question-form" class="question-box">
           <label for="question">你想了解什么？</label>
           <textarea id="question" name="question" rows="2" maxlength="2000" placeholder="例如：地球为什么会出现四季？" required aria-describedby="question-hint"></textarea>
-          <div class="question-actions"><div class="retrieval-control"><label for="retrieval-mode">检索方式</label><select id="retrieval-mode" name="retrieval_mode"><option value="hybrid">混合检索</option><option value="bm25">BM25 关键词</option><option value="vector">向量检索</option></select></div><div class="submit-actions"><button id="cancel-query" type="button" class="button subtle" hidden>停止等待</button><button id="ask" type="submit" class="button primary">检索并回答<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div></div>
+          <div class="question-actions"><div class="retrieval-control"><label for="retrieval-mode">检索方式</label><select id="retrieval-mode" name="retrieval_mode"><option value="hybrid">混合检索</option><option value="bm25">BM25 关键词</option><option value="vector">向量检索</option></select></div><div class="submit-actions"><button id="cancel-query" type="button" class="button subtle" hidden>停止等待</button><button id="ask" type="submit" class="button primary"><span id="ask-label">检索并回答</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div></div>
         </form>
-        <div class="question-meta"><p id="question-hint">Enter 发送 · Shift + Enter 换行</p><span id="elapsed"></span></div>
+        <div class="question-meta"><p id="question-hint">Enter 发送 · Shift + Enter 换行 · 纯数字（如 2、2024）可查找原文内容</p><span id="elapsed"></span></div>
         <div class="suggestions" aria-label="示例问题"><span>试着问问</span><button type="button">地球为什么会出现四季？</button><button type="button">什么是机会成本？</button><button type="button">Python 列表和元组有什么区别？</button><button type="button">什么是 RAG？</button></div>
       </section>
       <section class="metrics-panel" aria-labelledby="metrics-heading">
@@ -57,14 +57,14 @@
           <article class="metric-card"><h3>引用准确率 <span>自动估算</span></h3><strong id="metric-citations">—</strong><p id="metric-citations-count">等待统计</p><small>评估认为支持对应回答的引用占比</small></article>
           <article class="metric-card"><h3>拒答率</h3><strong id="metric-refusal">—</strong><p id="metric-refusal-count">等待统计</p><small>全部完成问答中拒答的占比</small></article>
         </div>
-        <div class="metrics-note"><p>每次问答完成后自动更新。前两项由本地模型估算，模型不可用时按词项规则估算；人工核验优先，估算可能有误。样本增加时百分比可能不变；无样本不显示 0%。拒答率不代表拒答是否正确。</p><button id="review-current" type="button" class="button secondary" hidden>人工核验 / 修正</button></div>
+        <div class="metrics-note"><p>每次问答完成后自动更新，纯数字内容查找不计入统计。前两项由本地模型估算，模型不可用时按词项规则估算；人工核验优先，估算可能有误。样本增加时百分比可能不变；无样本不显示 0%。拒答率不代表拒答是否正确。</p><button id="review-current" type="button" class="button secondary" hidden>人工核验 / 修正</button></div>
         <p id="metrics-error" class="form-status error" role="alert" hidden></p>
       </section>
       <div id="query-status" class="query-status" role="status" aria-live="polite" hidden></div>
       <div id="model-warning" class="notice" role="status" hidden></div>
       <section class="results-grid" aria-label="问答结果">
         <article id="answer-card" class="panel answer-panel" aria-busy="false">
-          <div class="panel-heading"><h2><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg>知识库回答</h2><span id="answer-mode" class="badge">等待提问</span></div>
+          <div class="panel-heading"><h2><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg><span id="answer-heading">知识库回答</span></h2><span id="answer-mode" class="badge">等待提问</span></div>
           <div id="answer" class="answer-body empty"><div class="empty-mark"><svg class="icon" aria-hidden="true"><use href="#i-spark"/></svg></div><h3>答案，从可靠的来源开始</h3><p>输入问题后，在这里查看回答。右侧会列出检索到的原文证据。</p></div>
           <div id="answer-footer" class="answer-footer" hidden>请结合右侧引用核对回答，模型可能出现理解偏差。</div>
         </article>

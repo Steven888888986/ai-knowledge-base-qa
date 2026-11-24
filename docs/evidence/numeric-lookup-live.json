@@ -1,0 +1,62 @@
+{
+  "checked_at": "2026-11-24T15:59:28.970355+00:00",
+  "site": "http://127.0.0.1:8765",
+  "health": {
+    "ok": true,
+    "service": "kbqa",
+    "model": {
+      "available": true,
+      "name": "local-qwen",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "retrieval": "BM25 + cosine / RRF",
+    "embedding_mode": {
+      "available": true,
+      "signature": "bge:bge-small-zh",
+      "mode": "pretrained-bge"
+    }
+  },
+  "stats": {
+    "documents": 21,
+    "chunks": 41,
+    "model": {
+      "available": true,
+      "name": "local-qwen",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "embedding_mode": {
+      "available": true,
+      "signature": "bge:bge-small-zh",
+      "mode": "pretrained-bge"
+    },
+    "retrieval": "BM25 + cosine / RRF"
+  },
+  "lookup": {
+    "term": "2",
+    "matched_documents": 9,
+    "all_expected_documents_returned": true,
+    "every_snippet_contains_term": true,
+    "query_id": null,
+    "auto_review": null
+  },
+  "browser": {
+    "engine": "headless Edge",
+    "version": "158.0.4370.33",
+    "rendered_documents": 9,
+    "snippet_and_source_highlight_verified": true,
+    "current_review_hidden_and_disabled": true,
+    "question_count_after_lookup": 4,
+    "page_errors": []
+  },
+  "preservation": {
+    "all_columns_identical_to_prechange_backup": true,
+    "row_counts": {
+      "documents": 21,
+      "chunks": 41,
+      "query_events": 4
+    },
+    "metrics_unchanged": true,
+    "no_private_history_exported": true
+  },
+  "passed": true
+}

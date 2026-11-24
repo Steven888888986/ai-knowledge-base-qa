@@ -145,13 +145,17 @@ def delete_document(doc_id: int) -> bool:
         connection.close()
 
 
-def query(q: str, limit: int = 5, retrieval_mode: str = "hybrid") -> list[dict]:
+def _validate_query(q: str, limit: int, retrieval_mode: str) -> None:
     if not isinstance(q, str) or len(q) > 2000:
         raise ValueError("问题应为不超过 2000 字符的文本")
     if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 8:
         raise ValueError("limit 应为 1 到 8 之间的整数")
     if retrieval_mode not in {"hybrid", "bm25", "vector"}:
         raise ValueError("retrieval_mode 只能是 hybrid、bm25 或 vector")
+
+
+def query(q: str, limit: int = 5, retrieval_mode: str = "hybrid") -> list[dict]:
+    _validate_query(q, limit, retrieval_mode)
     if not q.strip():
         return []
     connection = db()
@@ -207,6 +211,26 @@ def stats() -> dict:
 
 def answer(q: str, limit: int = 5, retrieval_mode: str = "hybrid") -> dict:
     start = time.monotonic()
+    _validate_query(q, limit, retrieval_mode)
+    term = q.strip()
+    if re.fullmatch(r"[0-9]+", term):
+        connection = db()
+        try:
+            rows = connection.execute("SELECT d.id AS document_id,d.title,d.source,d.content,c.chunk_id,c.page FROM documents d LEFT JOIN chunks c ON c.rowid=(SELECT rowid FROM chunks WHERE doc_id=d.id AND instr(content,?)>0 ORDER BY rowid LIMIT 1) WHERE instr(d.content,?)>0 ORDER BY d.id", (term, term)).fetchall()
+        finally:
+            connection.close()
+        matches = []
+        for row in rows:
+            content = row["content"]
+            position = content.index(term)
+            size = max(220, len(term))
+            begin = max(0, min(position - (size - len(term)) // 2, len(content) - size))
+            matches.append({"title": row["title"], "source": row["source"], "snippet": content[begin:begin + size], "document_id": row["document_id"], "chunk_id": row["chunk_id"], "page": row["page"]})
+        summary = f"在 {len(matches)} 份文档正文中找到“{term}”，以下列出每份文档的首处匹配原文。" if matches else f"未找到正文包含“{term}”的文档。"
+        return {"answer": summary, "citations": [], "mode": "lookup", "refused": False, "model": None,
+                "retrieval": {"method": "literal", "hits": []},
+                "lookup": {"term": term, "matched_documents": len(matches), "matches": matches},
+                "elapsed_ms": round((time.monotonic() - start) * 1000)}
     hits = query(q, limit, retrieval_mode)
     result = {"answer": REFUSAL, "citations": [], "mode": "refusal", "refused": True, "model": None, "retrieval": {"method": retrieval_mode, "hits": hits}, "elapsed_ms": 0}
     question_terms = set(terms(q))

@@ -1,6 +1,12 @@
 # 测试与验证报告
 
-最新增量（2026-11-24）：知识库从 AI 扩展为不限领域，新增20张入门资料卡并保留原 AI 示例。**27 项后端/HTTP/MCP 回归 + 11 项评估器测试**、编译、密钥扫描和32题原 AI 开发集评测门槛通过，见 [`general-knowledge-preflight.txt`](evidence/general-knowledge-preflight.txt)。本轮 AI 开发集的非时间结果与原报告一致，新输出单独保存在 [报告](evidence/general-knowledge-ai-regression-report.md) 与 [逐题数据](evidence/general-knowledge-ai-regression-results.json)，不覆盖历史证据。
+最新增量（2026-11-24）：用户选择将纯数字输入改为内容查找。修复前，内置资料中9份正文含 `2`，旧问答流程仅返回1条引用，见 [复现记录](evidence/numeric-lookup-repro.json)。现在纯数字按正文连续子串查找全部匹配文档，每份展示首处匹配附近原文；`2` 也匹配 `12`、`2024`。不受问答 TopK 限制，不调用生成或评估模型，不新增问答记录。完整问题仍走问答流程。
+
+本轮 **35 项后端/HTTP/MCP 回归 + 11 项评估器测试**、编译、密钥扫描与32题原 AI 开发集评测门槛通过，见 [提交前检查](evidence/numeric-lookup-preflight.txt)。原 AI 评测的非时间结果保持一致，见 [比对结果](evidence/numeric-lookup-ai-regression.json)，历史报告未覆盖。隔离 HTTP/Edge 的19项检查覆盖25份匹配全列、长前缀/跨片段数字、高亮与原文定位、文本安全、零结果、问答模式恢复、统计隔离和1440px/375px布局，见 [结果](evidence/numeric-lookup-ui.json)、[桌面](evidence/numeric-lookup-desktop.png)、[手机](evidence/numeric-lookup-mobile.png)。原指标9项回归亦通过，见 [指标回归](evidence/numeric-lookup-metrics-regression.json)；旧证据逐字节恢复。截图中的25份匹配包含合成测试资料。
+
+现有网站已重启并用 HTTP 与无界面 Edge 验证：输入 `2` 列出全部9份匹配文档，片段和原文均高亮，当前核验入口隐藏并禁用；21份文档、41个片段、4条历史问答的所有字段与升级前备份一致，三项统计不变，Qwen/BGE 服务正常，见 [现有网站验收](evidence/numeric-lookup-live.json)。此前已保存的数字问答记录不追溯删除；私人历史正文与数据库未提交。
+
+前次增量（2026-11-24）：知识库从 AI 扩展为不限领域，新增20张入门资料卡并保留原 AI 示例。**27 项后端/HTTP/MCP 回归 + 11 项评估器测试**、编译、密钥扫描和32题原 AI 开发集评测门槛通过，见 [`general-knowledge-preflight.txt`](evidence/general-knowledge-preflight.txt)。本轮 AI 开发集的非时间结果与原报告一致，新输出单独保存在 [报告](evidence/general-knowledge-ai-regression-report.md) 与 [逐题数据](evidence/general-knowledge-ai-regression-results.json)，不覆盖历史证据。
 
 新增跨领域验收在隔离数据库进行：8个非 AI 领域的离线问题均命中预期来源，个人密码问题拒答；真实 Qwen/BGE 完成四季、机会成本、Python 列表/元组和原 RAG 问题，生成回答均带有效引用。Edge 实际点击示例后，三项指标与 HTTP 返回一致；1440px/375px布局无横向溢出或脚本错误。见 [完整结果](evidence/general-knowledge-smoke.json)、[桌面](evidence/general-knowledge-desktop.png)、[手机](evidence/general-knowledge-mobile.png)。原指标9组回归亦通过，见 [指标回归](evidence/general-knowledge-metrics-regression.json)。这些题目取自内置示例，仅验证集成与来源链路，不代表全领域准确率。
 

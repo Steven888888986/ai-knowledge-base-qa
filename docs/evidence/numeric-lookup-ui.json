@@ -1,0 +1,1675 @@
+{
+  "scope": "temporary SQLite, bundled seed plus synthetic fixtures, localhost HTTP, headless Edge",
+  "human_reviews_submitted": 0,
+  "checks": [
+    {
+      "name": "HTTP lookup follows body substring semantics, trims ASCII digits, preserves leading zeros",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "lookup independent of top-K and retrieval mode; retrieval, embeddings and evaluator never invoked",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "HTTP numeric lookups do not alter QA metrics or create history",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "ordinary QA creates one reviewable QA event",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "all matching document sources listed, including more than top-K",
+      "detail": {
+        "count": 25,
+        "titles": [
+          "生物：光合作用",
+          "化学：pH 与酸碱性",
+          "经济学：机会成本",
+          "金融基础：复利",
+          "数学：指数与乘方",
+          "计算机网络：HTTP 请求与响应",
+          "物理：牛顿第二定律",
+          "编程：Python 列表与元组",
+          "统计：均值与中位数",
+          "独立查找资料 00",
+          "独立查找资料 01",
+          "独立查找资料 02",
+          "独立查找资料 03",
+          "独立查找资料 04",
+          "独立查找资料 05",
+          "独立查找资料 06",
+          "独立查找资料 07",
+          "独立查找资料 08",
+          "独立查找资料 09",
+          "独立查找资料 10",
+          "独立查找资料 11",
+          "长前缀命中",
+          "安全文本片段",
+          "星槎协议阶段",
+          "跨片段长数字"
+        ]
+      },
+      "passed": true
+    },
+    {
+      "name": "lookup hides/disables stale review target and preserves QA metrics",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "1440 source dialog has no horizontal page overflow",
+      "detail": {
+        "width": 1440,
+        "scroll": 1440,
+        "body": 1440
+      },
+      "passed": true
+    },
+    {
+      "name": "late body match is visible in snippet, highlights digit, opens correct page/chunk",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "XSS-looking snippets and full text render as literal text without DOM injection",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "1440 lookup has no horizontal page overflow",
+      "detail": {
+        "width": 1440,
+        "scroll": 1440,
+        "body": 1440
+      },
+      "passed": true
+    },
+    {
+      "name": "375 lookup has no horizontal page overflow",
+      "detail": {
+        "width": 375,
+        "scroll": 375,
+        "body": 375
+      },
+      "passed": true
+    },
+    {
+      "name": "375 source dialog has no horizontal page overflow",
+      "detail": {
+        "width": 375,
+        "scroll": 375,
+        "body": 375
+      },
+      "passed": true
+    },
+    {
+      "name": "zero matches has lookup empty state, no refusal or QA metric increment",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "375 long digit source has no horizontal page overflow",
+      "detail": {
+        "width": 375,
+        "scroll": 375,
+        "body": 375
+      },
+      "passed": true
+    },
+    {
+      "name": "numeric term crossing chunks is found in full document and highlighted whole on opening",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "375 restored QA has no horizontal page overflow",
+      "detail": {
+        "width": 375,
+        "scroll": 375,
+        "body": 375
+      },
+      "passed": true
+    },
+    {
+      "name": "complete question containing digits restores QA headings, cited source, citation jump, and QA count",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "isolated history contains only two QA events and zero human reviews",
+      "detail": null,
+      "passed": true
+    },
+    {
+      "name": "no browser JavaScript errors",
+      "detail": null,
+      "passed": true
+    }
+  ],
+  "fixture": {
+    "matching_documents_for_2": 25,
+    "database": "isolated temporary SQLite",
+    "production_history_accessed": false
+  },
+  "api_results": [
+    {
+      "input": " 2 ",
+      "limit": 1,
+      "retrieval_mode": "vector",
+      "response": {
+        "answer": "在 25 份文档正文中找到“2”，以下列出每份文档的首处匹配原文。",
+        "citations": [],
+        "mode": "lookup",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "literal",
+          "hits": []
+        },
+        "lookup": {
+          "term": "2",
+          "matched_documents": 25,
+          "matches": [
+            {
+              "title": "生物：光合作用",
+              "source": "example://general-biology-photosynthesis.md",
+              "snippet": "物质。\n\n植物通过气孔进行气体交换，光照、二氧化碳供应、温度和水分都可能影响光合作用速率。植物也会进行细胞呼吸，不能把“植物只吸收二氧化碳、只放出氧气”当作任何时候都成立的描述。讨论气体净交换时，应区分光合作用和呼吸作用的综合结果。\n\n参考来源（本文为自编中文入门概述，不是原文逐字翻译）：\nhttps://openstax.org/books/biology-2e/pages/8-1-overview-of-photosynthesis",
+              "document_id": 3,
+              "chunk_id": "d3-p0-c2",
+              "page": null
+            },
+            {
+              "title": "化学：pH 与酸碱性",
+              "source": "example://general-chemistry-ph.md",
+              "snippet": "一种对数尺度。在稀溶液的入门近似中，pH=-log10[H3O+]，方括号表示水合氢离子的摩尔浓度；更严格的定义使用活度。pH 较小通常表示酸性较强，pH 每相差 1，所对应的水合氢离子量级相差约 10 倍。\n\n约在 25 摄氏度时，中性水溶液 pH 约为 7，酸性溶液通常低于 7，碱性溶液通常高于 7。中性的本质是水合氢离子与氢氧根离子浓度相等；温度改变时，中性对应的 pH 也会改变，不能把任何温度下的中性都固定为 7。\n\npH 不是",
+              "document_id": 4,
+              "chunk_id": "d4-p0-c1",
+              "page": null
+            },
+            {
+              "title": "经济学：机会成本",
+              "source": "example://general-economics-opportunity-cost.md",
+              "snippet": "会成本应先确定哪些替代方案真实可行，再比较它们的价值。这里给出的是一般经济学概念与自编例子，不构成对某个个人、企业或具体投资的决策建议。\n\n参考来源（本文为自编中文入门概述，不是原文逐字翻译）：\nhttps://openstax.org/books/principles-economics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint",
+              "document_id": 5,
+              "chunk_id": "d5-p0-c2",
+              "page": null
+            },
+            {
+              "title": "金融基础：复利",
+              "source": "example://general-finance-compound-interest.md",
+              "snippet": "在本金 P、每期固定利率 r、每期末计息一次、利息全部留存、没有追加投入或取款的假设下，n 期后的金额为 P×(1+r)^n。自编算例：本金 1000 元，每期利率 5%，两期后为 1000×1.05×1.05=1102.5 元；这里的 5% 仅为演示数字。\n\n比较结果时，应统一计息周期、利率口径和时间长度。实际产品可能有费用、税费、通货膨胀影响、利率变化和本金损失风险，公式本身不能替代这些条件。不同现金流时点需要额外计算。本卡介绍复利",
+              "document_id": 8,
+              "chunk_id": "d8-p0-c1",
+              "page": null
+            },
+            {
+              "title": "数学：指数与乘方",
+              "source": "example://general-math-exponents.md",
+              "snippet": "# 数学：指数与乘方\n\n示例问题：指数运算中 2 的三次方是多少？\n\n正整数指数表示相同因子重复相乘。a 的 n 次方写作 a^n，其中 a 是底数，n 是指数；当 n 是正整数时，它表示 n 个 a 相乘。2 的三次方等于 2×2×2=8，而不是 2×3=6。“平方”指二次方，“立方”指三次方。\n\n非零底数的零次方等于 1。负整数指数表示正整数次幂的倒数：当 a 不等于 0 时，a^(-n)=1/a^n，例如 2^(-3)=1/8。这",
+              "document_id": 16,
+              "chunk_id": "d16-p0-c1",
+              "page": null
+            },
+            {
+              "title": "计算机网络：HTTP 请求与响应",
+              "source": "example://general-network-http.md",
+              "snippet": "览器等客户端发出请求，服务器返回响应。请求包含方法、目标资源和头部等信息，可能带有正文；响应包含状态码、头部和可能的响应正文。\n\nGET 常用于读取资源，POST 常用于向服务器提交数据。状态码用于描述处理结果，例如 200 通常表示成功，404 表示未找到目标资源。具体接口还可能规定参数、认证方式与数据格式，单看一个状态码无法得知全部业务含义。\n\nHTTP 的核心语义是无状态的，即协议本身不自动把每次请求连接成同一个用户会话。网站可通",
+              "document_id": 17,
+              "chunk_id": "d17-p0-c1",
+              "page": null
+            },
+            {
+              "title": "物理：牛顿第二定律",
+              "source": "example://general-physics-newton.md",
+              "snippet": "合外力方向相同；质量相同时，合外力越大，加速度越大；合外力相同时，质量越大，加速度越小。\n\n力是向量，需要把作用于研究对象的外力按方向合成，不能只看某一个力。例如水平方向两力相反时，应先求合力，再计算加速度。若质量为 2 千克，合外力为 6 牛顿，加速度大小为每二次方秒 3 米。\n\n加速度表示速度改变的快慢，不是速度本身。合外力为零意味着加速度为零，物体可以静止，也可以保持匀速直线运动。分析多物体问题时，应先选定研究系统并区分内力与外力",
+              "document_id": 19,
+              "chunk_id": "d19-p0-c1",
+              "page": null
+            },
+            {
+              "title": "编程：Python 列表与元组",
+              "source": "example://general-programming-python.md",
+              "snippet": "Python 列表与元组\n\n示例问题：Python 列表和元组有什么区别？\n\nPython 列表是可变序列，能够修改已有元素，或添加、删除元素；元组是不可变序列，创建后不能给其中某个位置重新赋值。列表通常写成 [1, 2]，元组可以写成 (1, 2)。两者都可以按索引访问，也支持遍历。\n\n不可变说的是元组中的元素引用不能被替换，并不表示其中引用的所有对象都不可变。例如元组中可以放一个列表，该列表自身仍可改变。把“元组不可变”理解为任何嵌",
+              "document_id": 20,
+              "chunk_id": "d20-p0-c1",
+              "page": null
+            },
+            {
+              "title": "统计：均值与中位数",
+              "source": "example://general-statistics-center.md",
+              "snippet": "问题：均值和中位数有什么区别？\n\n算术均值是所有数值相加后除以数值个数。中位数先把数据从小到大排列：数据个数为奇数时取中间一个数；为偶数时通常取中间两个数的均值。两者都描述数据中心，但回答的角度不同。\n\n例如数据 1、2、3、4、100 的均值是 22，中位数是 3。较大的极端值明显拉高均值，而中位数主要由排序后的中间位置决定。收入等偏态分布中，中位数常能补充均值无法呈现的信息，不能仅凭一个平均数推断每个个体的情况。\n\n众数指出现频率最",
+              "document_id": 21,
+              "chunk_id": "d21-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 00",
+              "source": "fixture://numeric-00",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 00。",
+              "document_id": 22,
+              "chunk_id": "d22-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 01",
+              "source": "fixture://numeric-01",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 01。",
+              "document_id": 23,
+              "chunk_id": "d23-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 02",
+              "source": "fixture://numeric-02",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 02。",
+              "document_id": 24,
+              "chunk_id": "d24-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 03",
+              "source": "fixture://numeric-03",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 03。",
+              "document_id": 25,
+              "chunk_id": "d25-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 04",
+              "source": "fixture://numeric-04",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 04。",
+              "document_id": 26,
+              "chunk_id": "d26-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 05",
+              "source": "fixture://numeric-05",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 05。",
+              "document_id": 27,
+              "chunk_id": "d27-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 06",
+              "source": "fixture://numeric-06",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 06。",
+              "document_id": 28,
+              "chunk_id": "d28-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 07",
+              "source": "fixture://numeric-07",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 07。",
+              "document_id": 29,
+              "chunk_id": "d29-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 08",
+              "source": "fixture://numeric-08",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 08。",
+              "document_id": 30,
+              "chunk_id": "d30-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 09",
+              "source": "fixture://numeric-09",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 09。",
+              "document_id": 31,
+              "chunk_id": "d31-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 10",
+              "source": "fixture://numeric-10",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 10。",
+              "document_id": 32,
+              "chunk_id": "d32-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 11",
+              "source": "fixture://numeric-11",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 11。",
+              "document_id": 33,
+              "chunk_id": "d33-p0-c1",
+              "page": null
+            },
+            {
+              "title": "长前缀命中",
+              "source": "fixture://late-hit",
+              "snippet": "很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。这里末尾首次出现 2，前面不含任何数字。",
+              "document_id": 34,
+              "chunk_id": "d34-p7-c7",
+              "page": 7
+            },
+            {
+              "title": "安全文本片段",
+              "source": "fixture://xss",
+              "snippet": "<img src=x onerror=\"window.numericXss=1\"> 2 <script>window.numericXss=1</script>",
+              "document_id": 35,
+              "chunk_id": "d35-p0-c1",
+              "page": null
+            },
+            {
+              "title": "星槎协议阶段",
+              "source": "fixture://normal-question",
+              "snippet": "星槎协议有 2 个阶段。第一个阶段叫对齐，第二个阶段叫确认。星槎协议用于演示问答恢复。",
+              "document_id": 37,
+              "chunk_id": "d37-p0-c1",
+              "page": null
+            },
+            {
+              "title": "跨片段长数字",
+              "source": "fixture://cross-chunk",
+              "snippet": "甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979",
+              "document_id": 38,
+              "chunk_id": "d38-p0-c1",
+              "page": null
+            }
+          ]
+        },
+        "elapsed_ms": 6,
+        "query_id": null,
+        "auto_review": null,
+        "metrics": {
+          "total_questions": 0,
+          "refused_questions": 0,
+          "reviewed_questions": 0,
+          "pending_questions": 0,
+          "auto_evaluated_questions": 0,
+          "model_evaluated_questions": 0,
+          "rule_evaluated_questions": 0,
+          "recall": {
+            "value": null,
+            "hits": 0,
+            "total": 0
+          },
+          "citation_accuracy": {
+            "value": null,
+            "correct": 0,
+            "total": 0
+          },
+          "refusal_rate": {
+            "value": null,
+            "refused": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "input": "2",
+      "limit": 8,
+      "retrieval_mode": "hybrid",
+      "response": {
+        "answer": "在 25 份文档正文中找到“2”，以下列出每份文档的首处匹配原文。",
+        "citations": [],
+        "mode": "lookup",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "literal",
+          "hits": []
+        },
+        "lookup": {
+          "term": "2",
+          "matched_documents": 25,
+          "matches": [
+            {
+              "title": "生物：光合作用",
+              "source": "example://general-biology-photosynthesis.md",
+              "snippet": "物质。\n\n植物通过气孔进行气体交换，光照、二氧化碳供应、温度和水分都可能影响光合作用速率。植物也会进行细胞呼吸，不能把“植物只吸收二氧化碳、只放出氧气”当作任何时候都成立的描述。讨论气体净交换时，应区分光合作用和呼吸作用的综合结果。\n\n参考来源（本文为自编中文入门概述，不是原文逐字翻译）：\nhttps://openstax.org/books/biology-2e/pages/8-1-overview-of-photosynthesis",
+              "document_id": 3,
+              "chunk_id": "d3-p0-c2",
+              "page": null
+            },
+            {
+              "title": "化学：pH 与酸碱性",
+              "source": "example://general-chemistry-ph.md",
+              "snippet": "一种对数尺度。在稀溶液的入门近似中，pH=-log10[H3O+]，方括号表示水合氢离子的摩尔浓度；更严格的定义使用活度。pH 较小通常表示酸性较强，pH 每相差 1，所对应的水合氢离子量级相差约 10 倍。\n\n约在 25 摄氏度时，中性水溶液 pH 约为 7，酸性溶液通常低于 7，碱性溶液通常高于 7。中性的本质是水合氢离子与氢氧根离子浓度相等；温度改变时，中性对应的 pH 也会改变，不能把任何温度下的中性都固定为 7。\n\npH 不是",
+              "document_id": 4,
+              "chunk_id": "d4-p0-c1",
+              "page": null
+            },
+            {
+              "title": "经济学：机会成本",
+              "source": "example://general-economics-opportunity-cost.md",
+              "snippet": "会成本应先确定哪些替代方案真实可行，再比较它们的价值。这里给出的是一般经济学概念与自编例子，不构成对某个个人、企业或具体投资的决策建议。\n\n参考来源（本文为自编中文入门概述，不是原文逐字翻译）：\nhttps://openstax.org/books/principles-economics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint",
+              "document_id": 5,
+              "chunk_id": "d5-p0-c2",
+              "page": null
+            },
+            {
+              "title": "金融基础：复利",
+              "source": "example://general-finance-compound-interest.md",
+              "snippet": "在本金 P、每期固定利率 r、每期末计息一次、利息全部留存、没有追加投入或取款的假设下，n 期后的金额为 P×(1+r)^n。自编算例：本金 1000 元，每期利率 5%，两期后为 1000×1.05×1.05=1102.5 元；这里的 5% 仅为演示数字。\n\n比较结果时，应统一计息周期、利率口径和时间长度。实际产品可能有费用、税费、通货膨胀影响、利率变化和本金损失风险，公式本身不能替代这些条件。不同现金流时点需要额外计算。本卡介绍复利",
+              "document_id": 8,
+              "chunk_id": "d8-p0-c1",
+              "page": null
+            },
+            {
+              "title": "数学：指数与乘方",
+              "source": "example://general-math-exponents.md",
+              "snippet": "# 数学：指数与乘方\n\n示例问题：指数运算中 2 的三次方是多少？\n\n正整数指数表示相同因子重复相乘。a 的 n 次方写作 a^n，其中 a 是底数，n 是指数；当 n 是正整数时，它表示 n 个 a 相乘。2 的三次方等于 2×2×2=8，而不是 2×3=6。“平方”指二次方，“立方”指三次方。\n\n非零底数的零次方等于 1。负整数指数表示正整数次幂的倒数：当 a 不等于 0 时，a^(-n)=1/a^n，例如 2^(-3)=1/8。这",
+              "document_id": 16,
+              "chunk_id": "d16-p0-c1",
+              "page": null
+            },
+            {
+              "title": "计算机网络：HTTP 请求与响应",
+              "source": "example://general-network-http.md",
+              "snippet": "览器等客户端发出请求，服务器返回响应。请求包含方法、目标资源和头部等信息，可能带有正文；响应包含状态码、头部和可能的响应正文。\n\nGET 常用于读取资源，POST 常用于向服务器提交数据。状态码用于描述处理结果，例如 200 通常表示成功，404 表示未找到目标资源。具体接口还可能规定参数、认证方式与数据格式，单看一个状态码无法得知全部业务含义。\n\nHTTP 的核心语义是无状态的，即协议本身不自动把每次请求连接成同一个用户会话。网站可通",
+              "document_id": 17,
+              "chunk_id": "d17-p0-c1",
+              "page": null
+            },
+            {
+              "title": "物理：牛顿第二定律",
+              "source": "example://general-physics-newton.md",
+              "snippet": "合外力方向相同；质量相同时，合外力越大，加速度越大；合外力相同时，质量越大，加速度越小。\n\n力是向量，需要把作用于研究对象的外力按方向合成，不能只看某一个力。例如水平方向两力相反时，应先求合力，再计算加速度。若质量为 2 千克，合外力为 6 牛顿，加速度大小为每二次方秒 3 米。\n\n加速度表示速度改变的快慢，不是速度本身。合外力为零意味着加速度为零，物体可以静止，也可以保持匀速直线运动。分析多物体问题时，应先选定研究系统并区分内力与外力",
+              "document_id": 19,
+              "chunk_id": "d19-p0-c1",
+              "page": null
+            },
+            {
+              "title": "编程：Python 列表与元组",
+              "source": "example://general-programming-python.md",
+              "snippet": "Python 列表与元组\n\n示例问题：Python 列表和元组有什么区别？\n\nPython 列表是可变序列，能够修改已有元素，或添加、删除元素；元组是不可变序列，创建后不能给其中某个位置重新赋值。列表通常写成 [1, 2]，元组可以写成 (1, 2)。两者都可以按索引访问，也支持遍历。\n\n不可变说的是元组中的元素引用不能被替换，并不表示其中引用的所有对象都不可变。例如元组中可以放一个列表，该列表自身仍可改变。把“元组不可变”理解为任何嵌",
+              "document_id": 20,
+              "chunk_id": "d20-p0-c1",
+              "page": null
+            },
+            {
+              "title": "统计：均值与中位数",
+              "source": "example://general-statistics-center.md",
+              "snippet": "问题：均值和中位数有什么区别？\n\n算术均值是所有数值相加后除以数值个数。中位数先把数据从小到大排列：数据个数为奇数时取中间一个数；为偶数时通常取中间两个数的均值。两者都描述数据中心，但回答的角度不同。\n\n例如数据 1、2、3、4、100 的均值是 22，中位数是 3。较大的极端值明显拉高均值，而中位数主要由排序后的中间位置决定。收入等偏态分布中，中位数常能补充均值无法呈现的信息，不能仅凭一个平均数推断每个个体的情况。\n\n众数指出现频率最",
+              "document_id": 21,
+              "chunk_id": "d21-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 00",
+              "source": "fixture://numeric-00",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 00。",
+              "document_id": 22,
+              "chunk_id": "d22-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 01",
+              "source": "fixture://numeric-01",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 01。",
+              "document_id": 23,
+              "chunk_id": "d23-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 02",
+              "source": "fixture://numeric-02",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 02。",
+              "document_id": 24,
+              "chunk_id": "d24-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 03",
+              "source": "fixture://numeric-03",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 03。",
+              "document_id": 25,
+              "chunk_id": "d25-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 04",
+              "source": "fixture://numeric-04",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 04。",
+              "document_id": 26,
+              "chunk_id": "d26-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 05",
+              "source": "fixture://numeric-05",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 05。",
+              "document_id": 27,
+              "chunk_id": "d27-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 06",
+              "source": "fixture://numeric-06",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 06。",
+              "document_id": 28,
+              "chunk_id": "d28-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 07",
+              "source": "fixture://numeric-07",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 07。",
+              "document_id": 29,
+              "chunk_id": "d29-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 08",
+              "source": "fixture://numeric-08",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 08。",
+              "document_id": 30,
+              "chunk_id": "d30-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 09",
+              "source": "fixture://numeric-09",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 09。",
+              "document_id": 31,
+              "chunk_id": "d31-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 10",
+              "source": "fixture://numeric-10",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 10。",
+              "document_id": 32,
+              "chunk_id": "d32-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 11",
+              "source": "fixture://numeric-11",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 11。",
+              "document_id": 33,
+              "chunk_id": "d33-p0-c1",
+              "page": null
+            },
+            {
+              "title": "长前缀命中",
+              "source": "fixture://late-hit",
+              "snippet": "很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。这里末尾首次出现 2，前面不含任何数字。",
+              "document_id": 34,
+              "chunk_id": "d34-p7-c7",
+              "page": 7
+            },
+            {
+              "title": "安全文本片段",
+              "source": "fixture://xss",
+              "snippet": "<img src=x onerror=\"window.numericXss=1\"> 2 <script>window.numericXss=1</script>",
+              "document_id": 35,
+              "chunk_id": "d35-p0-c1",
+              "page": null
+            },
+            {
+              "title": "星槎协议阶段",
+              "source": "fixture://normal-question",
+              "snippet": "星槎协议有 2 个阶段。第一个阶段叫对齐，第二个阶段叫确认。星槎协议用于演示问答恢复。",
+              "document_id": 37,
+              "chunk_id": "d37-p0-c1",
+              "page": null
+            },
+            {
+              "title": "跨片段长数字",
+              "source": "fixture://cross-chunk",
+              "snippet": "甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979",
+              "document_id": 38,
+              "chunk_id": "d38-p0-c1",
+              "page": null
+            }
+          ]
+        },
+        "elapsed_ms": 6,
+        "query_id": null,
+        "auto_review": null,
+        "metrics": {
+          "total_questions": 0,
+          "refused_questions": 0,
+          "reviewed_questions": 0,
+          "pending_questions": 0,
+          "auto_evaluated_questions": 0,
+          "model_evaluated_questions": 0,
+          "rule_evaluated_questions": 0,
+          "recall": {
+            "value": null,
+            "hits": 0,
+            "total": 0
+          },
+          "citation_accuracy": {
+            "value": null,
+            "correct": 0,
+            "total": 0
+          },
+          "refusal_rate": {
+            "value": null,
+            "refused": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "input": "12",
+      "limit": 5,
+      "retrieval_mode": "bm25",
+      "response": {
+        "answer": "在 12 份文档正文中找到“12”，以下列出每份文档的首处匹配原文。",
+        "citations": [],
+        "mode": "lookup",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "literal",
+          "hits": []
+        },
+        "lookup": {
+          "term": "12",
+          "matched_documents": 12,
+          "matches": [
+            {
+              "title": "独立查找资料 00",
+              "source": "fixture://numeric-00",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 00。",
+              "document_id": 22,
+              "chunk_id": "d22-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 01",
+              "source": "fixture://numeric-01",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 01。",
+              "document_id": 23,
+              "chunk_id": "d23-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 02",
+              "source": "fixture://numeric-02",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 02。",
+              "document_id": 24,
+              "chunk_id": "d24-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 03",
+              "source": "fixture://numeric-03",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 03。",
+              "document_id": 25,
+              "chunk_id": "d25-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 04",
+              "source": "fixture://numeric-04",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 04。",
+              "document_id": 26,
+              "chunk_id": "d26-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 05",
+              "source": "fixture://numeric-05",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 05。",
+              "document_id": 27,
+              "chunk_id": "d27-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 06",
+              "source": "fixture://numeric-06",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 06。",
+              "document_id": 28,
+              "chunk_id": "d28-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 07",
+              "source": "fixture://numeric-07",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 07。",
+              "document_id": 29,
+              "chunk_id": "d29-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 08",
+              "source": "fixture://numeric-08",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 08。",
+              "document_id": 30,
+              "chunk_id": "d30-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 09",
+              "source": "fixture://numeric-09",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 09。",
+              "document_id": 31,
+              "chunk_id": "d31-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 10",
+              "source": "fixture://numeric-10",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 10。",
+              "document_id": 32,
+              "chunk_id": "d32-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 11",
+              "source": "fixture://numeric-11",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 11。",
+              "document_id": 33,
+              "chunk_id": "d33-p0-c1",
+              "page": null
+            }
+          ]
+        },
+        "elapsed_ms": 4,
+        "query_id": null,
+        "auto_review": null,
+        "metrics": {
+          "total_questions": 0,
+          "refused_questions": 0,
+          "reviewed_questions": 0,
+          "pending_questions": 0,
+          "auto_evaluated_questions": 0,
+          "model_evaluated_questions": 0,
+          "rule_evaluated_questions": 0,
+          "recall": {
+            "value": null,
+            "hits": 0,
+            "total": 0
+          },
+          "citation_accuracy": {
+            "value": null,
+            "correct": 0,
+            "total": 0
+          },
+          "refusal_rate": {
+            "value": null,
+            "refused": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "input": "2024",
+      "limit": 5,
+      "retrieval_mode": "hybrid",
+      "response": {
+        "answer": "在 12 份文档正文中找到“2024”，以下列出每份文档的首处匹配原文。",
+        "citations": [],
+        "mode": "lookup",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "literal",
+          "hits": []
+        },
+        "lookup": {
+          "term": "2024",
+          "matched_documents": 12,
+          "matches": [
+            {
+              "title": "独立查找资料 00",
+              "source": "fixture://numeric-00",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 00。",
+              "document_id": 22,
+              "chunk_id": "d22-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 01",
+              "source": "fixture://numeric-01",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 01。",
+              "document_id": 23,
+              "chunk_id": "d23-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 02",
+              "source": "fixture://numeric-02",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 02。",
+              "document_id": 24,
+              "chunk_id": "d24-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 03",
+              "source": "fixture://numeric-03",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 03。",
+              "document_id": 25,
+              "chunk_id": "d25-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 04",
+              "source": "fixture://numeric-04",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 04。",
+              "document_id": 26,
+              "chunk_id": "d26-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 05",
+              "source": "fixture://numeric-05",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 05。",
+              "document_id": 27,
+              "chunk_id": "d27-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 06",
+              "source": "fixture://numeric-06",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 06。",
+              "document_id": 28,
+              "chunk_id": "d28-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 07",
+              "source": "fixture://numeric-07",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 07。",
+              "document_id": 29,
+              "chunk_id": "d29-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 08",
+              "source": "fixture://numeric-08",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 08。",
+              "document_id": 30,
+              "chunk_id": "d30-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 09",
+              "source": "fixture://numeric-09",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 09。",
+              "document_id": 31,
+              "chunk_id": "d31-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 10",
+              "source": "fixture://numeric-10",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 10。",
+              "document_id": 32,
+              "chunk_id": "d32-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 11",
+              "source": "fixture://numeric-11",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 11。",
+              "document_id": 33,
+              "chunk_id": "d33-p0-c1",
+              "page": null
+            }
+          ]
+        },
+        "elapsed_ms": 4,
+        "query_id": null,
+        "auto_review": null,
+        "metrics": {
+          "total_questions": 0,
+          "refused_questions": 0,
+          "reviewed_questions": 0,
+          "pending_questions": 0,
+          "auto_evaluated_questions": 0,
+          "model_evaluated_questions": 0,
+          "rule_evaluated_questions": 0,
+          "recall": {
+            "value": null,
+            "hits": 0,
+            "total": 0
+          },
+          "citation_accuracy": {
+            "value": null,
+            "correct": 0,
+            "total": 0
+          },
+          "refusal_rate": {
+            "value": null,
+            "refused": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "input": "0",
+      "limit": 5,
+      "retrieval_mode": "hybrid",
+      "response": {
+        "answer": "在 18 份文档正文中找到“0”，以下列出每份文档的首处匹配原文。",
+        "citations": [],
+        "mode": "lookup",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "literal",
+          "hits": []
+        },
+        "lookup": {
+          "term": "0",
+          "matched_documents": 18,
+          "matches": [
+            {
+              "title": "化学：pH 与酸碱性",
+              "source": "example://general-chemistry-ph.md",
+              "snippet": "# 化学：pH 与酸碱性\n\n示例问题：pH 如何表示水溶液的酸碱性？\n\npH 是表示水溶液酸碱性的一种对数尺度。在稀溶液的入门近似中，pH=-log10[H3O+]，方括号表示水合氢离子的摩尔浓度；更严格的定义使用活度。pH 较小通常表示酸性较强，pH 每相差 1，所对应的水合氢离子量级相差约 10 倍。\n\n约在 25 摄氏度时，中性水溶液 pH 约为 7，酸性溶液通常低于 7，碱性溶液通常高于 7。中性的本质是水合氢离子与氢氧根离子浓",
+              "document_id": 4,
+              "chunk_id": "d4-p0-c1",
+              "page": null
+            },
+            {
+              "title": "金融基础：复利",
+              "source": "example://general-finance-compound-interest.md",
+              "snippet": "利息变化。它是一种计算方式，并不意味着任何投资都能获得固定或保证收益。\n\n在本金 P、每期固定利率 r、每期末计息一次、利息全部留存、没有追加投入或取款的假设下，n 期后的金额为 P×(1+r)^n。自编算例：本金 1000 元，每期利率 5%，两期后为 1000×1.05×1.05=1102.5 元；这里的 5% 仅为演示数字。\n\n比较结果时，应统一计息周期、利率口径和时间长度。实际产品可能有费用、税费、通货膨胀影响、利率变化和本金损",
+              "document_id": 8,
+              "chunk_id": "d8-p0-c1",
+              "page": null
+            },
+            {
+              "title": "数学：指数与乘方",
+              "source": "example://general-math-exponents.md",
+              "snippet": "数；当 n 是正整数时，它表示 n 个 a 相乘。2 的三次方等于 2×2×2=8，而不是 2×3=6。“平方”指二次方，“立方”指三次方。\n\n非零底数的零次方等于 1。负整数指数表示正整数次幂的倒数：当 a 不等于 0 时，a^(-n)=1/a^n，例如 2^(-3)=1/8。这里的非零条件不能省略，因为不能除以零。\n\n计算含指数的表达式时应注意括号：(-2)^2=4，而 -2^2 按通常运算顺序等于 -(2^2)=-4。指数写法把重",
+              "document_id": 16,
+              "chunk_id": "d16-p0-c1",
+              "page": null
+            },
+            {
+              "title": "计算机网络：HTTP 请求与响应",
+              "source": "example://general-network-http.md",
+              "snippet": "器等客户端发出请求，服务器返回响应。请求包含方法、目标资源和头部等信息，可能带有正文；响应包含状态码、头部和可能的响应正文。\n\nGET 常用于读取资源，POST 常用于向服务器提交数据。状态码用于描述处理结果，例如 200 通常表示成功，404 表示未找到目标资源。具体接口还可能规定参数、认证方式与数据格式，单看一个状态码无法得知全部业务含义。\n\nHTTP 的核心语义是无状态的，即协议本身不自动把每次请求连接成同一个用户会话。网站可通过",
+              "document_id": 17,
+              "chunk_id": "d17-p0-c1",
+              "page": null
+            },
+            {
+              "title": "统计：均值与中位数",
+              "source": "example://general-statistics-center.md",
+              "snippet": "位数有什么区别？\n\n算术均值是所有数值相加后除以数值个数。中位数先把数据从小到大排列：数据个数为奇数时取中间一个数；为偶数时通常取中间两个数的均值。两者都描述数据中心，但回答的角度不同。\n\n例如数据 1、2、3、4、100 的均值是 22，中位数是 3。较大的极端值明显拉高均值，而中位数主要由排序后的中间位置决定。收入等偏态分布中，中位数常能补充均值无法呈现的信息，不能仅凭一个平均数推断每个个体的情况。\n\n众数指出现频率最高的数值，可能",
+              "document_id": 21,
+              "chunk_id": "d21-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 00",
+              "source": "fixture://numeric-00",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 00。",
+              "document_id": 22,
+              "chunk_id": "d22-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 01",
+              "source": "fixture://numeric-01",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 01。",
+              "document_id": 23,
+              "chunk_id": "d23-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 02",
+              "source": "fixture://numeric-02",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 02。",
+              "document_id": 24,
+              "chunk_id": "d24-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 03",
+              "source": "fixture://numeric-03",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 03。",
+              "document_id": 25,
+              "chunk_id": "d25-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 04",
+              "source": "fixture://numeric-04",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 04。",
+              "document_id": 26,
+              "chunk_id": "d26-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 05",
+              "source": "fixture://numeric-05",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 05。",
+              "document_id": 27,
+              "chunk_id": "d27-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 06",
+              "source": "fixture://numeric-06",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 06。",
+              "document_id": 28,
+              "chunk_id": "d28-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 07",
+              "source": "fixture://numeric-07",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 07。",
+              "document_id": 29,
+              "chunk_id": "d29-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 08",
+              "source": "fixture://numeric-08",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 08。",
+              "document_id": 30,
+              "chunk_id": "d30-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 09",
+              "source": "fixture://numeric-09",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 09。",
+              "document_id": 31,
+              "chunk_id": "d31-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 10",
+              "source": "fixture://numeric-10",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 10。",
+              "document_id": 32,
+              "chunk_id": "d32-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 11",
+              "source": "fixture://numeric-11",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 11。",
+              "document_id": 33,
+              "chunk_id": "d33-p0-c1",
+              "page": null
+            },
+            {
+              "title": "跨片段长数字",
+              "source": "fixture://cross-chunk",
+              "snippet": "甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲31415926535897932384626433832795028841971693993751031415926535897932384626433832795028841971693993751031415926535897932384626433832795028841971",
+              "document_id": 38,
+              "chunk_id": "d38-p0-c1",
+              "page": null
+            }
+          ]
+        },
+        "elapsed_ms": 4,
+        "query_id": null,
+        "auto_review": null,
+        "metrics": {
+          "total_questions": 0,
+          "refused_questions": 0,
+          "reviewed_questions": 0,
+          "pending_questions": 0,
+          "auto_evaluated_questions": 0,
+          "model_evaluated_questions": 0,
+          "rule_evaluated_questions": 0,
+          "recall": {
+            "value": null,
+            "hits": 0,
+            "total": 0
+          },
+          "citation_accuracy": {
+            "value": null,
+            "correct": 0,
+            "total": 0
+          },
+          "refusal_rate": {
+            "value": null,
+            "refused": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "input": "000",
+      "limit": 5,
+      "retrieval_mode": "hybrid",
+      "response": {
+        "answer": "在 13 份文档正文中找到“000”，以下列出每份文档的首处匹配原文。",
+        "citations": [],
+        "mode": "lookup",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "literal",
+          "hits": []
+        },
+        "lookup": {
+          "term": "000",
+          "matched_documents": 13,
+          "matches": [
+            {
+              "title": "金融基础：复利",
+              "source": "example://general-finance-compound-interest.md",
+              "snippet": "息变化。它是一种计算方式，并不意味着任何投资都能获得固定或保证收益。\n\n在本金 P、每期固定利率 r、每期末计息一次、利息全部留存、没有追加投入或取款的假设下，n 期后的金额为 P×(1+r)^n。自编算例：本金 1000 元，每期利率 5%，两期后为 1000×1.05×1.05=1102.5 元；这里的 5% 仅为演示数字。\n\n比较结果时，应统一计息周期、利率口径和时间长度。实际产品可能有费用、税费、通货膨胀影响、利率变化和本金损失",
+              "document_id": 8,
+              "chunk_id": "d8-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 00",
+              "source": "fixture://numeric-00",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 00。",
+              "document_id": 22,
+              "chunk_id": "d22-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 01",
+              "source": "fixture://numeric-01",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 01。",
+              "document_id": 23,
+              "chunk_id": "d23-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 02",
+              "source": "fixture://numeric-02",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 02。",
+              "document_id": 24,
+              "chunk_id": "d24-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 03",
+              "source": "fixture://numeric-03",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 03。",
+              "document_id": 25,
+              "chunk_id": "d25-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 04",
+              "source": "fixture://numeric-04",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 04。",
+              "document_id": 26,
+              "chunk_id": "d26-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 05",
+              "source": "fixture://numeric-05",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 05。",
+              "document_id": 27,
+              "chunk_id": "d27-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 06",
+              "source": "fixture://numeric-06",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 06。",
+              "document_id": 28,
+              "chunk_id": "d28-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 07",
+              "source": "fixture://numeric-07",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 07。",
+              "document_id": 29,
+              "chunk_id": "d29-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 08",
+              "source": "fixture://numeric-08",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 08。",
+              "document_id": 30,
+              "chunk_id": "d30-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 09",
+              "source": "fixture://numeric-09",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 09。",
+              "document_id": 31,
+              "chunk_id": "d31-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 10",
+              "source": "fixture://numeric-10",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 10。",
+              "document_id": 32,
+              "chunk_id": "d32-p0-c1",
+              "page": null
+            },
+            {
+              "title": "独立查找资料 11",
+              "source": "fixture://numeric-11",
+              "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 11。",
+              "document_id": 33,
+              "chunk_id": "d33-p0-c1",
+              "page": null
+            }
+          ]
+        },
+        "elapsed_ms": 4,
+        "query_id": null,
+        "auto_review": null,
+        "metrics": {
+          "total_questions": 0,
+          "refused_questions": 0,
+          "reviewed_questions": 0,
+          "pending_questions": 0,
+          "auto_evaluated_questions": 0,
+          "model_evaluated_questions": 0,
+          "rule_evaluated_questions": 0,
+          "recall": {
+            "value": null,
+            "hits": 0,
+            "total": 0
+          },
+          "citation_accuracy": {
+            "value": null,
+            "correct": 0,
+            "total": 0
+          },
+          "refusal_rate": {
+            "value": null,
+            "refused": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "input": "999999999999",
+      "limit": 5,
+      "retrieval_mode": "hybrid",
+      "response": {
+        "answer": "未找到正文包含“999999999999”的文档。",
+        "citations": [],
+        "mode": "lookup",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "literal",
+          "hits": []
+        },
+        "lookup": {
+          "term": "999999999999",
+          "matched_documents": 0,
+          "matches": []
+        },
+        "elapsed_ms": 4,
+        "query_id": null,
+        "auto_review": null,
+        "metrics": {
+          "total_questions": 0,
+          "refused_questions": 0,
+          "reviewed_questions": 0,
+          "pending_questions": 0,
+          "auto_evaluated_questions": 0,
+          "model_evaluated_questions": 0,
+          "rule_evaluated_questions": 0,
+          "recall": {
+            "value": null,
+            "hits": 0,
+            "total": 0
+          },
+          "citation_accuracy": {
+            "value": null,
+            "correct": 0,
+            "total": 0
+          },
+          "refusal_rate": {
+            "value": null,
+            "refused": 0,
+            "total": 0
+          }
+        }
+      }
+    },
+    {
+      "input": "314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510",
+      "limit": 1,
+      "retrieval_mode": "hybrid",
+      "response": {
+        "answer": "在 1 份文档正文中找到“314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510”，以下列出每份文档的首处匹配原文。",
+        "citations": [],
+        "mode": "lookup",
+        "refused": false,
+        "model": null,
+        "retrieval": {
+          "method": "literal",
+          "hits": []
+        },
+        "lookup": {
+          "term": "314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510",
+          "matched_documents": 1,
+          "matches": [
+            {
+              "title": "跨片段长数字",
+              "source": "fixture://cross-chunk",
+              "snippet": "314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510",
+              "document_id": 38,
+              "chunk_id": null,
+              "page": null
+            }
+          ]
+        },
+        "elapsed_ms": 4,
+        "query_id": null,
+        "auto_review": null,
+        "metrics": {
+          "total_questions": 0,
+          "refused_questions": 0,
+          "reviewed_questions": 0,
+          "pending_questions": 0,
+          "auto_evaluated_questions": 0,
+          "model_evaluated_questions": 0,
+          "rule_evaluated_questions": 0,
+          "recall": {
+            "value": null,
+            "hits": 0,
+            "total": 0
+          },
+          "citation_accuracy": {
+            "value": null,
+            "correct": 0,
+            "total": 0
+          },
+          "refusal_rate": {
+            "value": null,
+            "refused": 0,
+            "total": 0
+          }
+        }
+      }
+    }
+  ],
+  "browser": {
+    "engine": "Microsoft Edge",
+    "version": "158.0.4370.33",
+    "headless": true
+  },
+  "ui_lookup": {
+    "answer": "在 25 份文档正文中找到“2”，以下列出每份文档的首处匹配原文。",
+    "citations": [],
+    "mode": "lookup",
+    "refused": false,
+    "model": null,
+    "retrieval": {
+      "method": "literal",
+      "hits": []
+    },
+    "lookup": {
+      "term": "2",
+      "matched_documents": 25,
+      "matches": [
+        {
+          "title": "生物：光合作用",
+          "source": "example://general-biology-photosynthesis.md",
+          "snippet": "物质。\n\n植物通过气孔进行气体交换，光照、二氧化碳供应、温度和水分都可能影响光合作用速率。植物也会进行细胞呼吸，不能把“植物只吸收二氧化碳、只放出氧气”当作任何时候都成立的描述。讨论气体净交换时，应区分光合作用和呼吸作用的综合结果。\n\n参考来源（本文为自编中文入门概述，不是原文逐字翻译）：\nhttps://openstax.org/books/biology-2e/pages/8-1-overview-of-photosynthesis",
+          "document_id": 3,
+          "chunk_id": "d3-p0-c2",
+          "page": null
+        },
+        {
+          "title": "化学：pH 与酸碱性",
+          "source": "example://general-chemistry-ph.md",
+          "snippet": "一种对数尺度。在稀溶液的入门近似中，pH=-log10[H3O+]，方括号表示水合氢离子的摩尔浓度；更严格的定义使用活度。pH 较小通常表示酸性较强，pH 每相差 1，所对应的水合氢离子量级相差约 10 倍。\n\n约在 25 摄氏度时，中性水溶液 pH 约为 7，酸性溶液通常低于 7，碱性溶液通常高于 7。中性的本质是水合氢离子与氢氧根离子浓度相等；温度改变时，中性对应的 pH 也会改变，不能把任何温度下的中性都固定为 7。\n\npH 不是",
+          "document_id": 4,
+          "chunk_id": "d4-p0-c1",
+          "page": null
+        },
+        {
+          "title": "经济学：机会成本",
+          "source": "example://general-economics-opportunity-cost.md",
+          "snippet": "会成本应先确定哪些替代方案真实可行，再比较它们的价值。这里给出的是一般经济学概念与自编例子，不构成对某个个人、企业或具体投资的决策建议。\n\n参考来源（本文为自编中文入门概述，不是原文逐字翻译）：\nhttps://openstax.org/books/principles-economics-3e/pages/2-1-how-individuals-make-choices-based-on-their-budget-constraint",
+          "document_id": 5,
+          "chunk_id": "d5-p0-c2",
+          "page": null
+        },
+        {
+          "title": "金融基础：复利",
+          "source": "example://general-finance-compound-interest.md",
+          "snippet": "在本金 P、每期固定利率 r、每期末计息一次、利息全部留存、没有追加投入或取款的假设下，n 期后的金额为 P×(1+r)^n。自编算例：本金 1000 元，每期利率 5%，两期后为 1000×1.05×1.05=1102.5 元；这里的 5% 仅为演示数字。\n\n比较结果时，应统一计息周期、利率口径和时间长度。实际产品可能有费用、税费、通货膨胀影响、利率变化和本金损失风险，公式本身不能替代这些条件。不同现金流时点需要额外计算。本卡介绍复利",
+          "document_id": 8,
+          "chunk_id": "d8-p0-c1",
+          "page": null
+        },
+        {
+          "title": "数学：指数与乘方",
+          "source": "example://general-math-exponents.md",
+          "snippet": "# 数学：指数与乘方\n\n示例问题：指数运算中 2 的三次方是多少？\n\n正整数指数表示相同因子重复相乘。a 的 n 次方写作 a^n，其中 a 是底数，n 是指数；当 n 是正整数时，它表示 n 个 a 相乘。2 的三次方等于 2×2×2=8，而不是 2×3=6。“平方”指二次方，“立方”指三次方。\n\n非零底数的零次方等于 1。负整数指数表示正整数次幂的倒数：当 a 不等于 0 时，a^(-n)=1/a^n，例如 2^(-3)=1/8。这",
+          "document_id": 16,
+          "chunk_id": "d16-p0-c1",
+          "page": null
+        },
+        {
+          "title": "计算机网络：HTTP 请求与响应",
+          "source": "example://general-network-http.md",
+          "snippet": "览器等客户端发出请求，服务器返回响应。请求包含方法、目标资源和头部等信息，可能带有正文；响应包含状态码、头部和可能的响应正文。\n\nGET 常用于读取资源，POST 常用于向服务器提交数据。状态码用于描述处理结果，例如 200 通常表示成功，404 表示未找到目标资源。具体接口还可能规定参数、认证方式与数据格式，单看一个状态码无法得知全部业务含义。\n\nHTTP 的核心语义是无状态的，即协议本身不自动把每次请求连接成同一个用户会话。网站可通",
+          "document_id": 17,
+          "chunk_id": "d17-p0-c1",
+          "page": null
+        },
+        {
+          "title": "物理：牛顿第二定律",
+          "source": "example://general-physics-newton.md",
+          "snippet": "合外力方向相同；质量相同时，合外力越大，加速度越大；合外力相同时，质量越大，加速度越小。\n\n力是向量，需要把作用于研究对象的外力按方向合成，不能只看某一个力。例如水平方向两力相反时，应先求合力，再计算加速度。若质量为 2 千克，合外力为 6 牛顿，加速度大小为每二次方秒 3 米。\n\n加速度表示速度改变的快慢，不是速度本身。合外力为零意味着加速度为零，物体可以静止，也可以保持匀速直线运动。分析多物体问题时，应先选定研究系统并区分内力与外力",
+          "document_id": 19,
+          "chunk_id": "d19-p0-c1",
+          "page": null
+        },
+        {
+          "title": "编程：Python 列表与元组",
+          "source": "example://general-programming-python.md",
+          "snippet": "Python 列表与元组\n\n示例问题：Python 列表和元组有什么区别？\n\nPython 列表是可变序列，能够修改已有元素，或添加、删除元素；元组是不可变序列，创建后不能给其中某个位置重新赋值。列表通常写成 [1, 2]，元组可以写成 (1, 2)。两者都可以按索引访问，也支持遍历。\n\n不可变说的是元组中的元素引用不能被替换，并不表示其中引用的所有对象都不可变。例如元组中可以放一个列表，该列表自身仍可改变。把“元组不可变”理解为任何嵌",
+          "document_id": 20,
+          "chunk_id": "d20-p0-c1",
+          "page": null
+        },
+        {
+          "title": "统计：均值与中位数",
+          "source": "example://general-statistics-center.md",
+          "snippet": "问题：均值和中位数有什么区别？\n\n算术均值是所有数值相加后除以数值个数。中位数先把数据从小到大排列：数据个数为奇数时取中间一个数；为偶数时通常取中间两个数的均值。两者都描述数据中心，但回答的角度不同。\n\n例如数据 1、2、3、4、100 的均值是 22，中位数是 3。较大的极端值明显拉高均值，而中位数主要由排序后的中间位置决定。收入等偏态分布中，中位数常能补充均值无法呈现的信息，不能仅凭一个平均数推断每个个体的情况。\n\n众数指出现频率最",
+          "document_id": 21,
+          "chunk_id": "d21-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 00",
+          "source": "fixture://numeric-00",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 00。",
+          "document_id": 22,
+          "chunk_id": "d22-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 01",
+          "source": "fixture://numeric-01",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 01。",
+          "document_id": 23,
+          "chunk_id": "d23-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 02",
+          "source": "fixture://numeric-02",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 02。",
+          "document_id": 24,
+          "chunk_id": "d24-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 03",
+          "source": "fixture://numeric-03",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 03。",
+          "document_id": 25,
+          "chunk_id": "d25-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 04",
+          "source": "fixture://numeric-04",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 04。",
+          "document_id": 26,
+          "chunk_id": "d26-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 05",
+          "source": "fixture://numeric-05",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 05。",
+          "document_id": 27,
+          "chunk_id": "d27-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 06",
+          "source": "fixture://numeric-06",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 06。",
+          "document_id": 28,
+          "chunk_id": "d28-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 07",
+          "source": "fixture://numeric-07",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 07。",
+          "document_id": 29,
+          "chunk_id": "d29-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 08",
+          "source": "fixture://numeric-08",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 08。",
+          "document_id": 30,
+          "chunk_id": "d30-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 09",
+          "source": "fixture://numeric-09",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 09。",
+          "document_id": 31,
+          "chunk_id": "d31-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 10",
+          "source": "fixture://numeric-10",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 10。",
+          "document_id": 32,
+          "chunk_id": "d32-p0-c1",
+          "page": null
+        },
+        {
+          "title": "独立查找资料 11",
+          "source": "fixture://numeric-11",
+          "snippet": "该资料的批次是 2024，容量为 12，各有 2 份；编号零值为 000。段落名称为样本 11。",
+          "document_id": 33,
+          "chunk_id": "d33-p0-c1",
+          "page": null
+        },
+        {
+          "title": "长前缀命中",
+          "source": "fixture://late-hit",
+          "snippet": "很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。很长的前缀只有文字。这里末尾首次出现 2，前面不含任何数字。",
+          "document_id": 34,
+          "chunk_id": "d34-p7-c7",
+          "page": 7
+        },
+        {
+          "title": "安全文本片段",
+          "source": "fixture://xss",
+          "snippet": "<img src=x onerror=\"window.numericXss=1\"> 2 <script>window.numericXss=1</script>",
+          "document_id": 35,
+          "chunk_id": "d35-p0-c1",
+          "page": null
+        },
+        {
+          "title": "星槎协议阶段",
+          "source": "fixture://normal-question",
+          "snippet": "星槎协议有 2 个阶段。第一个阶段叫对齐，第二个阶段叫确认。星槎协议用于演示问答恢复。",
+          "document_id": 37,
+          "chunk_id": "d37-p0-c1",
+          "page": null
+        },
+        {
+          "title": "跨片段长数字",
+          "source": "fixture://cross-chunk",
+          "snippet": "甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲甲314159265358979323846264338327950288419716939937510314159265358979323846264338327950288419716939937510314159265358979",
+          "document_id": 38,
+          "chunk_id": "d38-p0-c1",
+          "page": null
+        }
+      ]
+    },
+    "elapsed_ms": 6,
+    "query_id": null,
+    "auto_review": null,
+    "metrics": {
+      "total_questions": 1,
+      "refused_questions": 0,
+      "reviewed_questions": 0,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 1,
+      "model_evaluated_questions": 0,
+      "rule_evaluated_questions": 1,
+      "recall": {
+        "value": 1.0,
+        "hits": 1,
+        "total": 1
+      },
+      "citation_accuracy": {
+        "value": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "refusal_rate": {
+        "value": 0.0,
+        "refused": 0,
+        "total": 1
+      }
+    }
+  },
+  "final_metrics": {
+    "total_questions": 2,
+    "refused_questions": 0,
+    "reviewed_questions": 0,
+    "pending_questions": 0,
+    "auto_evaluated_questions": 2,
+    "model_evaluated_questions": 0,
+    "rule_evaluated_questions": 2,
+    "recall": {
+      "value": 1.0,
+      "hits": 2,
+      "total": 2
+    },
+    "citation_accuracy": {
+      "value": 1.0,
+      "correct": 2,
+      "total": 2
+    },
+    "refusal_rate": {
+      "value": 0.0,
+      "refused": 0,
+      "total": 2
+    }
+  },
+  "javascript_errors": [],
+  "passed": true
+}

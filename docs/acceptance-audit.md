@@ -26,18 +26,19 @@
 | 自建评测集、召回率、引用准确率、拒答率 | 12 篇短文、24 个可回答问题、8 个库外问题；标注来源与证据；离线和本地生成分别报告 | `eval/README.md` 定义指标；没有独立盲测集 |
 | 需求分析、功能拆解、目标、完成标准、测试验证 | `docs/SPEC.md`、`docs/feature-map.md`、`tests/test_app.py`、`docs/test-report.md` | 两分钟启动目标不包含首次约 1.2 GB 下载；首次安装耗时没有计入验收 |
 | 用户追加：不限资料领域 | 新增20张多领域知识卡；8领域离线问答、3条非 AI 真实模型问答及原 RAG 回归通过；已有文档、历史和统计保留，见 `docs/evidence/general-knowledge-*` | 内置示例不穷尽全领域知识；自动估算可能误判，实际局限见测试报告 |
+| 用户追加：数字按内容查找 | 纯数字输入列出全部正文匹配文档及片段，原文高亮；现有网站输入2返回9份文档，历史与统计不变；19项查找验收与9项指标回归通过，见 `docs/evidence/numeric-lookup-*` | 按连续子串匹配，如2也匹配12；每份文档展示首处附近原文；完整问题仍按问答处理 |
 
 ## 仓库与工程要求
 
 | 原始要求 | 当前状态与证据 | 尚需处理或边界 |
 |---|---|---|
-| AI 采访产生 SPEC，含可测试验收标准 | `transcripts/requirements-interview.md` 保留实际问答；`docs/SPEC.md` 有 A1–A14 | 已有证据 |
+| AI 采访产生 SPEC，含可测试验收标准 | `transcripts/requirements-interview.md` 保留实际问答；`docs/SPEC.md` 有 A1–A16 | 已有证据 |
 | AGENTS 或 CLAUDE，并在 Git 历史体现演化 | 初始提交 `74ed939` 与实现提交 `b35cde6` 保存上下文演化；`docs/configuration-evolution.md` 提供复核命令 | 真实提交日期，不伪造早期开发时间线 |
 | ≥2 个自定义 skill，其中一个 verify | `.claude/skills/verify`、`kb-research`；`.agents/skills/` 提供对应版本 | `docs/skill-demo.md` 保存 kb-research 流程的一次真实调用；验证命令实测见测试报告 |
 | ≥1 个 MCP server，并说明为何不用 CLI | MCP 实现及测试存在；`docs/mcp-design.md` 说明结构化客户端调用的用途及 CLI 分工 | 已有实现与说明 |
 | ≥1 个确定性 hook | `.claude/settings.json` 的 Stop hook 调用 `.claude/hooks/preflight.ps1`；脚本真实运行通过 | 记录为脚本执行通过；不声称在未使用的宿主上已触发 Stop 事件 |
 | ≥1 个自定义子智能体，如只读 reviewer | `.claude/agents/reviewer.md` 定义只读职责；`docs/evidence-review.md` 记录按该职责对32题的实际独立审阅 | 使用Codex协作工具，不声称调用Claude原生命令；审核发现真实生成错误并保留 |
-| 自动测试 + ≥1 种属性/E2E/差分测试 | 最新27项应用测试和11项自动评估测试通过；随机文本切分性质检查与临时 HTTP E2E 均存在 | 没有要求三类全部实现；不宣称做过差分测试 |
+| 自动测试 + ≥1 种属性/E2E/差分测试 | 最新35项应用测试和11项自动评估测试通过；随机文本切分性质检查与临时 HTTP E2E 均存在 | 没有要求三类全部实现；不宣称做过差分测试 |
 | AI 组件离线评测集；CI 中运行 | `.github/workflows/verify.yml` 在 push/PR 运行测试与离线评测；`eval/no-model/` 在关闭两个模型的环境通过门槛；首次远端 [Actions 45411516210](https://github.com/Steven888888986/ai-knowledge-base-qa/actions/runs/45411516210) 实际通过 | 元数据与日志节选在 `docs/evidence/github-actions*`；CI 为无模型环境 |
 | 至少一次 /goal、/loop 或 claude -p 完成任务 | `docs/goal-workflow.md` 与 `docs/evidence/goal-status.json` 保存主会话实际 Codex goal 目标和当时的 active 状态；修复后重复验证及公开发布结果见 `docs/release.md` | 工具形式与原图 slash 命令不同；没有伪造 `/goal` 或 `claude -p` 运行记录，也不自行声称课程等价；结束状态以会话实际工具返回为准 |
 
@@ -45,7 +46,7 @@
 
 | 原始要求 | 当前状态与证据 | 尚需处理或边界 |
 |---|---|---|
-| 每人 ≥1 条、组内 ≥8 条记录 | `collab-log/LOG.md` 有 22 项可核验 AI 开发与发布记录；五人模板存在 | **五位成员各自至少一条真实记录仍需本人补充**；AI 记录不能代替成员贡献 |
+| 每人 ≥1 条、组内 ≥8 条记录 | `collab-log/LOG.md` 有 23 项可核验 AI 开发与发布记录；五人模板存在 | **五位成员各自至少一条真实记录仍需本人补充**；AI 记录不能代替成员贡献 |
 | Bug 档案 ≥2，至少一个为 AI 引入 | `collab-log/bugs/` 有两份 AI 辅助实现产生的逻辑缺陷，含复现、原因、修复和回归 | 档案补明事后分析与原始记录的区别；无保存的首轮 prompt/输出不补造 |
 | 现象→复现→假设→证据→根因→修复→回归→沉淀 | 两份 Bug 档案有可运行复现、已记录错误现象、复盘假设、修复约束与回归用例；规则沉淀于 AGENTS | 当前回归可重复执行；未保留的修复前完整终端输出仍是证据边界 |
 | 保留 prompt 与关键输出原文；导出关键会话到 transcripts | `requirements-interview.md` 保存原话与当前实际 system prompt；`conversation-export.md` 保存工具能读取的已结束回合公开消息 | 导出使用 Codex `read_thread`，并非原图 `/export` 命令；覆盖范围在文件内说明，不包含内部推理 |

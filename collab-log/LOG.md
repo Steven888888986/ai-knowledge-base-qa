@@ -26,5 +26,6 @@
 | 20 | 用户要求网站随多次问答显示指标，并选择核验后真实统计 | 新增持久化问答记录、三张指标卡、正确来源与逐条引用核验；拒答率自动累计，质量指标核验后更新；修改核验不重复计数；补后端与浏览器验收 | `metrics.py`、`static/metrics.js`、`docs/live-metrics.md`、`docs/evidence/live-metrics-ui.json` |
 | 21 | 用户发现质量指标仍待核验，明确改选“自动估算，问答后立即更新” | 接入本地模型自动评估，失败时标注词项规则回退；自动与人工判断分开存储，人工优先；补评已有快照并新增自动流程回归 | `auto_eval.py`、`metrics.py`、`tests/test_auto_eval.py`、`docs/live-metrics.md` |
 | 22 | 用户要求知识库不限 AI、扩大到各领域 | 增补20张入门知识卡与参考来源；通用化首页、MCP和检索技能描述；增量导入保留原文档和3条问答；修复通用词误命中与模型漏引；27项应用、11项评估器测试及跨领域/UI验收通过，保留自动评估误判证据 | `data/knowledge/`、`docs/knowledge-sources.md`、`docs/test-report.md`、`docs/evidence/general-knowledge-*` |
+| 23 | 用户发现输入2仅有一条引用，明确选择列出全部包含该数字的文档及匹配原文 | 纯数字按正文连续子串查找，每文档一次，展示匹配片段与高亮原文；完整问题保持问答，查找不评估、不写问答历史；35项应用、11项评估器、19项查找验收和9项指标回归通过；现有网站查得9份文档，原21份文档、41片段与4条历史全部字段不变 | `app.py`、`server.py`、`static/`、`tests/test_app.py`、`docs/evidence/numeric-lookup-*` |
 
 GitHub 公开发布与实际 CI 结果见 [`docs/release.md`](../docs/release.md)，成员个人记录仍由本人据实补充。

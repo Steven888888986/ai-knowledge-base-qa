@@ -18,6 +18,29 @@
   const answer = $('#answer');
   const citations = $('#citations');
   const queryStatus = $('#query-status');
+  const isLookup = value => /^[0-9]+$/.test(value.trim());
+
+  function updateQuestionMode() {
+    const lookup = isLookup($('#question').value);
+    $('#ask-label').textContent = lookup ? '查找内容' : '检索并回答';
+    $('#retrieval-mode').disabled = lookup || Boolean(state.controller);
+    $('#question-hint').textContent = lookup ? 'Enter 查找 · 按原文内容匹配全部文档，不计入问答统计' : 'Enter 发送 · Shift + Enter 换行 · 纯数字（如 2、2024）可查找原文内容';
+  }
+  function setResultMode(lookup) {
+    $('#answer-heading').textContent = lookup ? '内容查找结果' : '知识库回答';
+    $('#evidence-heading').textContent = lookup ? '匹配文档' : '引用证据';
+    $('.results-grid').setAttribute('aria-label', lookup ? '内容查找结果' : '问答结果');
+    $('#answer-footer').textContent = lookup ? '列出全部匹配文档，每份展示一段匹配原文；可展开并查看文档全文。本次查找不计入问答统计。' : '请结合右侧引用核对回答，模型可能出现理解偏差。';
+  }
+  function appendHighlighted(node, value, term = '') {
+    const text = String(value);
+    if (!term) { node.append(document.createTextNode(text)); return; }
+    const parts = text.split(term);
+    parts.forEach((part, index) => {
+      if (index) node.append(el('mark', 'lookup-match', term));
+      node.append(document.createTextNode(part));
+    });
+  }
 
   function setModelStatus(text, kind = 'ready') {
     status.className = `service-status ${kind}`;
@@ -89,18 +112,18 @@
     }
   }
 
-  function markAnswerEmpty(message) {
+  function markAnswerEmpty(message, hint = '请检查问题或调整检索方式后重试。') {
     answer.className = 'answer-body empty';
     answer.replaceChildren();
     const iconWrap = el('div', 'empty-mark');
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('class', 'icon'); svg.setAttribute('aria-hidden', 'true');
     const use = document.createElementNS('http://www.w3.org/2000/svg', 'use'); use.setAttribute('href', '#i-spark'); svg.append(use); iconWrap.append(svg);
-    answer.append(iconWrap, el('h3', '', message), el('p', '', '请检查问题或调整检索方式后重试。'));
+    answer.append(iconWrap, el('h3', '', message), el('p', '', hint));
   }
-  function buildCitation(item, index) {
+  function buildCitation(item, index, term = '') {
     const details = el('details', 'citation');
     const summary = document.createElement('summary');
-    summary.append(el('span', 'citation-number', `[${index + 1}]`));
+    summary.append(el('span', 'citation-number', term ? String(index + 1) : `[${index + 1}]`));
     const heading = el('span', 'citation-heading');
     heading.append(el('span', 'citation-title', item.title || item.source || '来源资料'));
     const meta = [item.source];
@@ -108,12 +131,13 @@
     if (item.chunk_id) meta.push(`片段 ${item.chunk_id}`);
     heading.append(el('span', 'citation-meta', meta.filter(Boolean).join(' · ')));
     summary.append(heading, el('span', 'citation-chevron', '›'));
-    const snippet = el('p', 'citation-snippet', item.snippet || item.content || '没有返回原文片段。');
+    const snippet = el('p', 'citation-snippet');
+    appendHighlighted(snippet, item.snippet || item.content || '没有返回原文片段。', term);
     details.append(summary, snippet);
     if (item.document_id !== undefined && item.document_id !== null) {
       const open = el('button', 'source-button', '查看文档原文');
       open.type = 'button';
-      open.addEventListener('click', () => openDocument(item.document_id, item.chunk_id));
+      open.addEventListener('click', () => openDocument(item.document_id, item.chunk_id, term));
       details.append(open);
     }
     return details;
@@ -142,14 +166,25 @@
     if (cursor < sourceText.length) answer.append(document.createTextNode(sourceText.slice(cursor)));
   }
   function renderQuery(data) {
+    const lookup = data.mode === 'lookup';
+    setResultMode(lookup);
     const refs = data.citations || [];
-    addAnswerWithCitationLinks(data.answer, refs);
     citations.replaceChildren();
-    $('#citation-count').textContent = refs.length;
-    if (!refs.length) citations.append(el('p', 'evidence-empty', data.refused ? '没有找到足够证据。请先导入相关资料，或换一种问法。' : '本次回答没有关联到可展示的引用。'));
-    else refs.forEach((ref, index) => citations.append(buildCitation(ref, index)));
+    if (lookup) {
+      const { term, matches = [], matched_documents = matches.length } = data.lookup;
+      answer.className = 'answer-body';
+      answer.textContent = data.answer;
+      $('#citation-count').textContent = matched_documents;
+      if (!matches.length) citations.append(el('p', 'evidence-empty', `未找到包含“${term}”的文档。请尝试其他数字，或先导入相关资料。`));
+      else matches.forEach((match, index) => citations.append(buildCitation(match, index, term)));
+    } else {
+      addAnswerWithCitationLinks(data.answer, refs);
+      $('#citation-count').textContent = refs.length;
+      if (!refs.length) citations.append(el('p', 'evidence-empty', data.refused ? '没有找到足够证据。请先导入相关资料，或换一种问法。' : '本次回答没有关联到可展示的引用。'));
+      else refs.forEach((ref, index) => citations.append(buildCitation(ref, index)));
+    }
     const badge = $('#answer-mode');
-    const modeName = data.mode === 'llm' ? '本地模型 + 检索' : data.mode === 'refusal' || data.refused ? '缺少证据' : '离线检索';
+    const modeName = lookup ? '内容查找' : data.mode === 'llm' ? '本地模型 + 检索' : data.mode === 'refusal' || data.refused ? '缺少证据' : '离线检索';
     badge.textContent = modeName;
     badge.className = `badge ${data.mode === 'llm' ? 'llm' : data.refused ? 'refusal' : ''}`;
     $('#answer-footer').hidden = false;
@@ -164,16 +199,24 @@
   async function submitQuestion(question) {
     const clean = question.trim();
     if (!clean || state.controller) return;
+    const lookup = isLookup(clean);
     const controller = new AbortController();
     state.controller = controller;
+    updateQuestionMode();
+    setResultMode(lookup);
+    window.dispatchEvent(new CustomEvent('kbqa:query-start'));
     const started = performance.now();
     $('#ask').disabled = true;
     $('#cancel-query').hidden = false;
     $('#answer-card').setAttribute('aria-busy', 'true');
-    $('#answer-mode').textContent = '正在检索';
-    queryStatus.className = 'query-status'; queryStatus.textContent = '正在搜索知识库、生成回答并自动评估来源与引用。'; queryStatus.hidden = false;
-    answer.className = 'answer-body'; answer.textContent = '正在检索资料并生成回答…';
-    citations.replaceChildren(el('p', 'evidence-empty', '正在查找相关来源…'));
+    $('#answer-mode').className = 'badge';
+    $('#answer-mode').textContent = lookup ? '正在查找' : '正在检索';
+    $('#answer-footer').hidden = true;
+    $('#citation-count').textContent = '0';
+    $('#elapsed').textContent = '';
+    queryStatus.className = 'query-status'; queryStatus.textContent = lookup ? `正在查找原文内容包含“${clean}”的全部文档。` : '正在搜索知识库、生成回答并自动评估来源与引用。'; queryStatus.hidden = false;
+    answer.className = 'answer-body'; answer.textContent = lookup ? '正在查找匹配文档…' : '正在检索资料并生成回答…';
+    citations.replaceChildren(el('p', 'evidence-empty', lookup ? '正在查找匹配原文…' : '正在查找相关来源…'));
     try {
       const data = await api('/api/query', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: clean, retrieval_mode: $('#retrieval-mode').value, limit: 5 }), signal: controller.signal });
       renderQuery(data);
@@ -182,23 +225,25 @@
       else if (data.warning) setModelStatus('离线模式 · 请检查模型', 'warning');
     } catch (error) {
       if (error.name === 'AbortError') {
-        queryStatus.className = 'query-status'; queryStatus.textContent = '已停止等待。模型计算可能仍会在服务端继续。'; queryStatus.hidden = false;
-        markAnswerEmpty('已停止等待');
+        queryStatus.className = 'query-status'; queryStatus.textContent = lookup ? '已停止等待内容查找。' : '已停止等待。模型计算可能仍会在服务端继续。'; queryStatus.hidden = false;
+        markAnswerEmpty('已停止等待', lookup ? '可以重新查找数字或输入完整问题。' : undefined);
       } else {
         queryStatus.className = 'query-status error'; queryStatus.textContent = `请求失败：${error.message}`; queryStatus.hidden = false;
-        markAnswerEmpty('这次没有拿到回答');
+        markAnswerEmpty(lookup ? '这次没有拿到查找结果' : '这次没有拿到回答', lookup ? '请检查连接后重新查找。' : undefined);
       }
-      citations.replaceChildren(el('p', 'evidence-empty', '当前没有可展示的引用。'));
+      $('#answer-mode').textContent = lookup ? '内容查找' : '问答未完成';
+      citations.replaceChildren(el('p', 'evidence-empty', lookup ? '当前没有可展示的匹配文档。' : '当前没有可展示的引用。'));
       $('#citation-count').textContent = '0'; $('#answer-footer').hidden = true;
       $('#answer-card').setAttribute('aria-busy', 'false');
     } finally {
       $('#elapsed').textContent ||= `用时 ${((performance.now() - started) / 1000).toFixed(1)} 秒`;
       if (state.controller === controller) state.controller = null;
       $('#ask').disabled = false; $('#cancel-query').hidden = true;
+      updateQuestionMode();
     }
   }
 
-  async function openDocument(id, focusChunkId) {
+  async function openDocument(id, focusChunkId, term = '') {
     const dialog = $('#source-dialog');
     state.sourceId = id;
     $('#source-title').textContent = state.docMap.get(String(id))?.title || '原文资料';
@@ -214,7 +259,7 @@
       $('#source-meta').textContent = [doc.source, doc.kind, doc.pages ? `${doc.pages} 页` : null].filter(Boolean).join(' · ');
       const container = $('#source-content');
       const chunks = data.chunks || [];
-      if (chunks.length) {
+      if (chunks.length && !(term && focusChunkId == null)) {
         chunks.forEach((chunk, i) => {
           const section = el('section', 'source-chunk');
           section.dataset.chunkId = String(chunk.chunk_id ?? '');
@@ -222,10 +267,16 @@
           if (chunk.page) parts.push(`第 ${chunk.page} 页`);
           if (chunk.chunk_id) parts.push(`片段 ${chunk.chunk_id}`);
           section.append(el('span', 'source-chunk-title', parts.join(' · ') || `片段 ${i + 1}`));
-          section.append(el('p', '', chunk.content || ''));
+          const content = el('p');
+          appendHighlighted(content, chunk.content || '', term);
+          section.append(content);
           container.append(section);
         });
-      } else container.append(el('p', '', doc.content || '此文档没有可显示的提取文本。'));
+      } else {
+        const content = el('p');
+        appendHighlighted(content, doc.content || '此文档没有可显示的提取文本。', term);
+        container.append(content);
+      }
       if (focusChunkId != null) {
         const match = [...container.children].find(child => child.dataset.chunkId === String(focusChunkId));
         if (match) { match.scrollIntoView({ block: 'center' }); match.classList.add('focused-source'); }
@@ -264,6 +315,7 @@
   }
 
   $('#question-form').addEventListener('submit', event => { event.preventDefault(); submitQuestion($('#question').value); });
+  $('#question').addEventListener('input', updateQuestionMode);
   $('#question').addEventListener('keydown', event => {
     if (event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); $('#question-form').requestSubmit(); }
   });

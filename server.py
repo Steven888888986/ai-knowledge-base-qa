@@ -94,6 +94,9 @@ class Handler(BaseHTTPRequestHandler):
                     raise ValueError("问题不能为空")
                 retrieval_mode = payload.get("retrieval_mode", payload.get("mode", "hybrid"))
                 response = app.answer(question, int(payload.get("limit", 5)), retrieval_mode)
+                if response["mode"] == "lookup":
+                    response.update(query_id=None, auto_review=None, metrics=metrics.summary())
+                    self.send_json(response); return
                 try:
                     automatic = metrics.validated_auto_review(auto_eval.evaluate(question, response), response)
                 except Exception:

@@ -186,12 +186,24 @@
     }
     finally { saving = false; button.disabled = false; button.textContent = '保存核验并更新指标'; }
   });
+  window.addEventListener('kbqa:query-start', () => {
+    currentId = null;
+    $('#review-current').hidden = true;
+    $('#review-current').disabled = true;
+  });
   window.addEventListener('kbqa:answer', event => {
     const { question, response } = event.detail;
-    if (response.query_id == null) { refreshMetrics(); return; }
+    if (response.query_id == null) {
+      currentId = null;
+      $('#review-current').hidden = true;
+      $('#review-current').disabled = true;
+      if (response.metrics) renderMetrics(response.metrics);
+      else refreshMetrics();
+      return;
+    }
     currentId = response.query_id;
     records.set(currentId, { id: currentId, question, response, created_at: new Date().toISOString(), review: null, auto_review: response.auto_review });
-    $('#review-current').hidden = false; $('#review-current').textContent = '人工核验 / 修正';
+    $('#review-current').hidden = false; $('#review-current').disabled = false; $('#review-current').textContent = '人工核验 / 修正';
     if (response.metrics) renderMetrics(response.metrics);
     else refreshMetrics();
     if (response.evaluation_warning) {

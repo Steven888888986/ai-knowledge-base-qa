@@ -1,0 +1,67 @@
+{
+  "scope": "fresh bundled seed only; isolated temporary SQLite; no production history read",
+  "input": "2",
+  "matching_document_count": 9,
+  "matching_documents": [
+    {
+      "id": 3,
+      "title": "生物：光合作用",
+      "source": "example://general-biology-photosynthesis.md"
+    },
+    {
+      "id": 4,
+      "title": "化学：pH 与酸碱性",
+      "source": "example://general-chemistry-ph.md"
+    },
+    {
+      "id": 5,
+      "title": "经济学：机会成本",
+      "source": "example://general-economics-opportunity-cost.md"
+    },
+    {
+      "id": 8,
+      "title": "金融基础：复利",
+      "source": "example://general-finance-compound-interest.md"
+    },
+    {
+      "id": 16,
+      "title": "数学：指数与乘方",
+      "source": "example://general-math-exponents.md"
+    },
+    {
+      "id": 17,
+      "title": "计算机网络：HTTP 请求与响应",
+      "source": "example://general-network-http.md"
+    },
+    {
+      "id": 19,
+      "title": "物理：牛顿第二定律",
+      "source": "example://general-physics-newton.md"
+    },
+    {
+      "id": 20,
+      "title": "编程：Python 列表与元组",
+      "source": "example://general-programming-python.md"
+    },
+    {
+      "id": 21,
+      "title": "统计：均值与中位数",
+      "source": "example://general-statistics-center.md"
+    }
+  ],
+  "returned_citation_count": 1,
+  "returned_citations": [
+    {
+      "id": 1,
+      "title": "数学：指数与乘方",
+      "source": "example://general-math-exponents.md",
+      "snippet": "# 数学：指数与乘方 示例问题：指数运算中 2 的三次方是多少？ 正整数指数表示相同因子重复相乘。a 的 n 次方写作 a^n，其中 a 是底数，n 是指数；当 n 是正整数时，它表示 n 个 a 相乘。2 的三次方等于 2×2×2=8，而不是 2×3=6。“平方”指二次方，“立方”指三次方。 非零底数的零次方等于 1。负整数指数表示正整数次幂的倒数：当 a 不等于 0 时，a^(-n)=1/a^n，例如 2^(-3)=1/8。这里的非零条件不能省略，因为不能除以零。 计算含指数的表达式时应注意括号：(-2)^2=4，而 -2^2 按通常运算顺序等于 -(2^2)=-4。指数写法把重复乘法压缩成简洁符号，可用于面积、体积和增长问题。本卡讨论整数指数；分数指数、实数指数涉及更进一步的定义和定义域条件。",
+      "chunk_id": "d16-p0-c1",
+      "page": null,
+      "document_id": 16
+    }
+  ],
+  "retrieved_hit_count": 5,
+  "mode": "offline",
+  "lookup": null
+}
