@@ -176,6 +176,89 @@ class EvaluationDatasetTest(unittest.TestCase):
         self.assertNotIn(".runtime", scanned_roots)
 
 
+class LiveMetricsTest(unittest.TestCase):
+    def setUp(self):
+        import metrics
+        self.metrics = metrics
+        self.tmp = tempfile.TemporaryDirectory(prefix="kbqa-metrics-")
+        self.previous_path = app.DB_PATH
+        app.DB_PATH = Path(self.tmp.name) / "metrics.sqlite3"
+
+    def tearDown(self):
+        app.DB_PATH = self.previous_path
+        self.tmp.cleanup()
+
+    def sample(self, refused=False):
+        return {"answer": "没有足够证据" if refused else "RAG 使用检索证据 [1] [2]",
+                "refused": refused, "mode": "refusal" if refused else "offline",
+                "retrieval": {"hits": [{"source": "rag.md"}, {"source": "other.md"}, {"source": "third.md"}, {"source": "fourth.md"}]},
+                "citations": [] if refused else [{"id": 1, "source": "rag.md", "snippet": "RAG 使用检索证据"}, {"id": 2, "source": "other.md", "snippet": "其他资料"}]}
+
+    def test_empty_and_unreviewed_questions_do_not_invent_quality_scores(self):
+        empty = self.metrics.summary()
+        self.assertEqual(0, empty["total_questions"])
+        for name in ("recall", "citation_accuracy", "refusal_rate"):
+            self.assertIsNone(empty[name]["value"])
+        app.answer("没有资料的问题")
+        self.assertEqual(0, self.metrics.summary()["total_questions"], "direct offline evaluations must not enter live statistics")
+        self.metrics.record_query("RAG 是什么？", self.sample())
+        self.metrics.record_query("今天的天气？", self.sample(refused=True))
+        result = self.metrics.summary()
+        self.assertEqual((2, 2, 0), (result["total_questions"], result["pending_questions"], result["reviewed_questions"]))
+        self.assertIsNone(result["recall"]["value"])
+        self.assertIsNone(result["citation_accuracy"]["value"])
+        self.assertEqual({"value": 0.5, "refused": 1, "total": 2}, result["refusal_rate"])
+
+    def test_review_replaces_votes_and_uses_only_top_three_saved_sources(self):
+        first = self.metrics.record_query("RAG 是什么？", self.sample())
+        second = self.metrics.record_query("第四份资料是什么？", self.sample())
+        self.metrics.save_review(first, {"answerable": True, "expected_sources": ["rag.md"], "citation_verdicts": {"1": True}})
+        self.metrics.save_review(second, {"answerable": True, "expected_sources": ["fourth.md"], "citation_verdicts": {}})
+        result = self.metrics.summary()
+        self.assertEqual({"value": 0.5, "hits": 1, "total": 2}, result["recall"])
+        self.assertEqual({"value": 1.0, "correct": 1, "total": 1}, result["citation_accuracy"])
+        self.metrics.save_review(first, {"answerable": True, "expected_sources": ["missing.md"], "citation_verdicts": {"1": False, "2": True}})
+        result = self.metrics.summary()
+        self.assertEqual({"value": 0.0, "hits": 0, "total": 2}, result["recall"])
+        self.assertEqual({"value": 0.5, "correct": 1, "total": 2}, result["citation_accuracy"])
+        self.assertEqual(2, result["reviewed_questions"])
+        self.metrics.save_review(second, {"answerable": False, "expected_sources": [], "citation_verdicts": {}})
+        self.assertEqual(1, self.metrics.summary()["recall"]["total"])
+
+    def test_invalid_reviews_do_not_change_saved_review(self):
+        query_id = self.metrics.record_query("RAG 是什么？", self.sample())
+        valid = {"answerable": True, "expected_sources": ["rag.md"], "citation_verdicts": {"1": True}}
+        self.metrics.save_review(query_id, valid)
+        invalid = [
+            {**valid, "answerable": 1}, {**valid, "expected_sources": []},
+            {**valid, "expected_sources": ["rag.md", " rag.md "]},
+            {**valid, "expected_sources": ["x" * 2049]},
+            {**valid, "expected_sources": "rag.md"},
+            {**valid, "answerable": False},
+            {**valid, "citation_verdicts": {"99": True}},
+            {**valid, "citation_verdicts": {"1": 1}},
+            {**valid, "citation_verdicts": {"1": None}},
+        ]
+        for review in invalid:
+            with self.subTest(review=review), self.assertRaises(ValueError):
+                self.metrics.save_review(query_id, review)
+        self.assertEqual(valid, self.metrics.history()[0]["review"])
+        self.assertIsNone(self.metrics.save_review(999, valid))
+
+    def test_snapshots_survive_document_deletion_and_database_reopen(self):
+        app.index_document("RAG", "rag.md", "RAG 使用检索证据。")
+        response = app.answer("RAG 是什么？")
+        query_id = self.metrics.record_query("RAG 是什么？", response)
+        document_id = app.list_documents()[0]["id"]
+        app.delete_document(document_id)
+        self.metrics.save_review(query_id, {"answerable": True, "expected_sources": ["rag.md"], "citation_verdicts": {"1": True}})
+        item = self.metrics.history()[0]
+        self.assertEqual(response, item["response"])
+        self.assertEqual(query_id, item["id"])
+        self.assertEqual(1.0, self.metrics.summary()["recall"]["value"])
+        self.assertEqual([], app.list_documents())
+
+
 class HTTPFlowTest(unittest.TestCase):
     """Real localhost end-to-end flow using a disposable DB and port."""
 
@@ -202,6 +285,13 @@ class HTTPFlowTest(unittest.TestCase):
                 else:
                     self.fail("server did not become healthy within 12 seconds")
                 self.assertTrue(health["ok"])
+                with urlopen(base + "/api/metrics", timeout=3) as response:
+                    self.assertEqual(0, json.load(response)["total_questions"])
+                empty_question = Request(base + "/api/query", data=b'{"question":"   "}', headers={"Content-Type": "application/json"}, method="POST")
+                with self.assertRaises(HTTPError) as invalid:
+                    urlopen(empty_question, timeout=3)
+                self.assertEqual(400, invalid.exception.code)
+                invalid.exception.close()
                 # Web imports must refuse loopback targets before making a request.
                 loopback = Request(base + "/api/import-url", data=json.dumps({"url": "http://127.0.0.1:8000/api/health"}).encode(), headers={"Content-Type": "application/json"}, method="POST")
                 try:
@@ -221,12 +311,54 @@ class HTTPFlowTest(unittest.TestCase):
                     answer = json.load(response)
                 self.assertNotEqual("refusal", answer["mode"])
                 self.assertTrue(any(citation["source"].endswith("fixture.md") for citation in answer["citations"]))
+                self.assertEqual(1, answer["metrics"]["total_questions"])
+                self.assertIsNone(answer["metrics"]["citation_accuracy"]["value"])
+                self.assertIsInstance(answer["query_id"], int)
+                review = {"answerable": True, "expected_sources": ["upload://fixture.md"], "citation_verdicts": {str(answer["citations"][0]["id"]): True}}
+                request = Request(base + f'/api/history/{answer["query_id"]}/review', data=json.dumps(review).encode(), headers={"Content-Type": "application/json"}, method="POST")
+                with urlopen(request, timeout=3) as response:
+                    reviewed = json.load(response)
+                self.assertEqual(1.0, reviewed["metrics"]["recall"]["value"])
+                self.assertEqual(review, reviewed["review"])
+                request = Request(base + "/api/history/999999/review", data=json.dumps(review).encode(), headers={"Content-Type": "application/json"}, method="POST")
+                with self.assertRaises(HTTPError) as missing:
+                    urlopen(request, timeout=3)
+                self.assertEqual(404, missing.exception.code)
+                missing.exception.close()
+                request = Request(base + "/api/query", data=json.dumps({"question": "我今天午餐吃了什么？"}).encode(), headers={"Content-Type": "application/json"}, method="POST")
+                with urlopen(request, timeout=6) as response:
+                    refused = json.load(response)
+                self.assertTrue(refused["refused"])
+                self.assertEqual({"value": 0.5, "refused": 1, "total": 2}, refused["metrics"]["refusal_rate"])
                 with urlopen(base + "/api/documents", timeout=3) as response:
                     docs = json.load(response)["documents"]
                 document_id = next(doc["id"] for doc in docs if doc["source"].endswith("fixture.md"))
                 request = Request(base + f"/api/documents/{document_id}", method="DELETE")
                 with urlopen(request, timeout=3) as response:
                     self.assertTrue(json.load(response).get("ok"))
+                # A fresh server process must retain reviews and the original citation snapshot.
+                proc.terminate()
+                proc.wait(timeout=4)
+                proc.stderr.close()
+                proc = subprocess.Popen([sys.executable, str(ROOT / "server.py")], cwd=ROOT, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+                deadline = time.monotonic() + 12
+                while time.monotonic() < deadline:
+                    try:
+                        with urlopen(base + "/api/history", timeout=1) as response:
+                            history = json.load(response)["history"]
+                        break
+                    except OSError:
+                        time.sleep(0.1)
+                else:
+                    self.fail("restarted server did not return stored history")
+                self.assertEqual([refused["query_id"], answer["query_id"]], [item["id"] for item in history])
+                self.assertEqual(review, history[1]["review"])
+                self.assertEqual(answer["citations"], history[1]["response"]["citations"])
+                with urlopen(base + "/api/metrics", timeout=3) as response:
+                    persisted = json.load(response)
+                self.assertEqual(2, persisted["total_questions"])
+                self.assertEqual(1, persisted["reviewed_questions"])
+                self.assertEqual(1.0, persisted["citation_accuracy"]["value"])
             finally:
                 proc.terminate()
                 try:

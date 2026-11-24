@@ -25,6 +25,8 @@ py -3 server.py
 Invoke-RestMethod http://127.0.0.1:8765/api/query -Method Post -ContentType 'application/json' -Body '{"question":"什么是 RAG？"}'
 ```
 
+页面的“问答质量统计”随实际问答累计：拒答率自动更新；点击“核验本次回答”选择正确来源并判断每条引用后，召回率与引用准确率更新。“问答记录与核验”可以补评或修改历史判断，刷新页面后保留。未核验时显示“待核验”，不会假报准确率。具体口径见 [实时统计说明](docs/live-metrics.md)。
+
 模型文件和运行时保存在被 Git 忽略的 `models/`、`.runtime/` 目录中；下载脚本固定模型版本并验证 SHA-256。只想使用离线功能时，可跳过模型下载与启动步骤。模型来源、许可和限制见 [`docs/models.md`](docs/models.md)。
 
 文本导入接口 `/api/ingest` 接受 `title`、`source`、`content`；本地脚本用 `index_document()` 导入已提取的文本，用 `import_file()` 解析 PDF/HTML 等文件。网页界面也提供文件上传和 URL 导入。也可配置其它 OpenAI 兼容服务：`$env:OPENAI_BASE_URL='https://.../v1'`、`$env:OPENAI_API_KEY='本地填写'`、`$env:OPENAI_MODEL='...'`，不要提交密钥。

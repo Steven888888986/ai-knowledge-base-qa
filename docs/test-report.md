@@ -1,5 +1,7 @@
 # 测试与验证报告
 
+最新增量（2026-11-24）：网站实时指标功能已通过 **18 项后端/HTTP/MCP 回归**、提交前检查与32题离线评测门槛；原始输出见 [`live-metrics-preflight.txt`](evidence/live-metrics-preflight.txt)。新增的 Edge 浏览器验收通过7组检查，覆盖连续问答、人工核验、修改判断、过期请求、刷新保留与375px布局，见 [`live-metrics-ui.json`](evidence/live-metrics-ui.json)。下文14项的记录是首次发布时的历史快照。
+
 日期：2026-11-24（Asia/Shanghai）
 环境：Windows、Python `py -3`；确定性测试不依赖网络或模型 API。
 

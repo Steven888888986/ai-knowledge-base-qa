@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "environment": "headless Microsoft Edge; isolated SQLite; both models disabled",
+  "note": "Human verdicts are scripted test inputs, including intentionally incorrect/missing-source verdicts; not production quality scores.",
+  "checks": [
+    "empty denominators display pending/dash, never invented percentages",
+    "two actual HTTP questions update refusal rate from 0% to 50%; quality remains pending",
+    "missing gold source is rejected; submitted human incorrect citation produces 0/1",
+    "editing an old verdict replaces it: 0/1 -> 1/1, without duplicate samples",
+    "late old GET cannot overwrite newer question metrics; a simulated missed-source label lowers recall to 1/2",
+    "page reload retains 3 questions and saved human reviews",
+    "375px viewport and review dialog have no horizontal overflow"
+  ],
+  "final_metrics": {
+    "total_questions": 3,
+    "refused_questions": 1,
+    "reviewed_questions": 2,
+    "pending_questions": 1,
+    "recall": {
+      "value": 0.5,
+      "hits": 1,
+      "total": 2
+    },
+    "citation_accuracy": {
+      "value": 0.5,
+      "correct": 1,
+      "total": 2
+    },
+    "refusal_rate": {
+      "value": 0.3333333333333333,
+      "refused": 1,
+      "total": 3
+    }
+  },
+  "page_errors": []
+}

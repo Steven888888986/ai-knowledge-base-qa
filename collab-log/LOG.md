@@ -23,5 +23,6 @@
 | 17 | 按只读 reviewer 职责核对32题 | 发现 K04 生成角色混淆及漏答/限定词丢失；多种 prompt 试验没有稳定改善，未部署候选 | `docs/evidence-review.md`、`docs/evidence/prompt-trial*.json` |
 | 18 | 用户恢复浏览器并手动完成 GitHub 设备授权 | 创建公开仓库；发布前14项测试与32题评测再次通过；真实 Qwen/BGE 接口正常 | `docs/release.md`、`eval/release-check/` |
 | 19 | 推送并核对公开仓库 | Git 直连失败后使用既有本地代理成功推送；远端 tree 与本地一致；首次 Actions 的14项测试、32题评测通过 | `docs/release.md`、`docs/evidence/github-actions.json`、公开仓库 Actions |
+| 20 | 用户要求网站随多次问答显示指标，并选择核验后真实统计 | 新增持久化问答记录、三张指标卡、正确来源与逐条引用核验；拒答率自动累计，质量指标核验后更新；修改核验不重复计数；补后端与浏览器验收 | `metrics.py`、`static/metrics.js`、`docs/live-metrics.md`、`docs/evidence/live-metrics-ui.json` |
 
 GitHub 公开发布与实际 CI 结果见 [`docs/release.md`](../docs/release.md)，成员个人记录仍由本人据实补充。

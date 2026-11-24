@@ -10,6 +10,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 
 import app
+import metrics
 
 ROOT = app.ROOT
 MAX_BODY = 14 * 1024 * 1024
@@ -42,6 +43,10 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json({"ok": True, "service": "kbqa", "model": app.model_status(), "retrieval": "BM25 + cosine / RRF", "embedding_mode": app.embedding_status()}); return
         if parsed.path == "/api/stats":
             self.send_json(app.stats()); return
+        if parsed.path == "/api/metrics":
+            self.send_json(metrics.summary()); return
+        if parsed.path == "/api/history":
+            self.send_json({"history": metrics.history()}); return
         if parsed.path == "/api/documents":
             self.send_json({"documents": app.list_documents()}); return
         match = re.fullmatch(r"/api/documents/(\d+)", parsed.path)
@@ -60,7 +65,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_static("index.html"); return
         # Only the explicitly public frontend assets are served. Never map URL
         # paths to arbitrary workspace files (e.g. .env, databases, or source).
-        if parsed.path in {"/static/app.js", "/static/style.css"}:
+        if parsed.path in {"/static/app.js", "/static/metrics.js", "/static/style.css"}:
             self.send_static(parsed.path.rsplit("/", 1)[1]); return
         self.send_json({"error": "not found"}, 404)
 
@@ -84,8 +89,19 @@ class Handler(BaseHTTPRequestHandler):
             payload = self.read_json()
             if path == "/api/query":
                 question = payload.get("question", "")
+                if not isinstance(question, str) or not question.strip():
+                    raise ValueError("问题不能为空")
                 retrieval_mode = payload.get("retrieval_mode", payload.get("mode", "hybrid"))
-                self.send_json(app.answer(question, int(payload.get("limit", 5)), retrieval_mode)); return
+                response = app.answer(question, int(payload.get("limit", 5)), retrieval_mode)
+                response["query_id"] = metrics.record_query(question, response)
+                response["metrics"] = metrics.summary()
+                self.send_json(response); return
+            match = re.fullmatch(r"/api/history/(\d+)/review", path)
+            if match:
+                review = metrics.save_review(int(match.group(1)), payload)
+                if review is None:
+                    self.send_json({"error": "问答记录不存在"}, 404); return
+                self.send_json({"metrics": metrics.summary(), "review": review}); return
             if path == "/api/ingest":
                 count = app.index_document(payload.get("title", ""), payload.get("source", ""), payload.get("content", ""))
                 self.send_json({"ok": True, "chunks": count}); return

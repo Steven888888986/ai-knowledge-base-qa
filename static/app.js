@@ -177,6 +177,7 @@
     try {
       const data = await api('/api/query', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question: clean, retrieval_mode: $('#retrieval-mode').value, limit: 5 }), signal: controller.signal });
       renderQuery(data);
+      window.dispatchEvent(new CustomEvent('kbqa:answer', { detail: { question: clean, response: data } }));
       if (data.mode === 'llm') setModelStatus(`本地模型已连接 · ${data.model || 'ready'}`);
       else if (data.warning) setModelStatus('离线模式 · 请检查模型', 'warning');
     } catch (error) {
