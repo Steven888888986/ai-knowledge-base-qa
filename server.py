@@ -10,6 +10,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
 
 import app
+import auto_eval
 import metrics
 
 ROOT = app.ROOT
@@ -93,7 +94,13 @@ class Handler(BaseHTTPRequestHandler):
                     raise ValueError("问题不能为空")
                 retrieval_mode = payload.get("retrieval_mode", payload.get("mode", "hybrid"))
                 response = app.answer(question, int(payload.get("limit", 5)), retrieval_mode)
-                response["query_id"] = metrics.record_query(question, response)
+                try:
+                    automatic = metrics.validated_auto_review(auto_eval.evaluate(question, response), response)
+                except Exception:
+                    automatic = None
+                    response["evaluation_warning"] = "自动评估暂不可用；回答已保存，可稍后补评或人工核验。"
+                response["query_id"] = metrics.record_query(question, response, automatic)
+                response["auto_review"] = automatic
                 response["metrics"] = metrics.summary()
                 self.send_json(response); return
             match = re.fullmatch(r"/api/history/(\d+)/review", path)

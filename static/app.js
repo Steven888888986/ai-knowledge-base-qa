@@ -171,7 +171,7 @@
     $('#cancel-query').hidden = false;
     $('#answer-card').setAttribute('aria-busy', 'true');
     $('#answer-mode').textContent = '正在检索';
-    queryStatus.className = 'query-status'; queryStatus.textContent = '正在搜索知识库并整理证据。'; queryStatus.hidden = false;
+    queryStatus.className = 'query-status'; queryStatus.textContent = '正在搜索知识库、生成回答并自动评估来源与引用。'; queryStatus.hidden = false;
     answer.className = 'answer-body'; answer.textContent = '正在检索资料并生成回答…';
     citations.replaceChildren(el('p', 'evidence-empty', '正在查找相关来源…'));
     try {

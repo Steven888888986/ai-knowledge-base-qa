@@ -1,6 +1,10 @@
 # 测试与验证报告
 
-最新增量（2026-11-24）：网站实时指标功能已通过 **18 项后端/HTTP/MCP 回归**、提交前检查与32题离线评测门槛；原始输出见 [`live-metrics-preflight.txt`](evidence/live-metrics-preflight.txt)。新增的 Edge 浏览器验收通过7组检查，覆盖连续问答、人工核验、修改判断、过期请求、刷新保留与375px布局，见 [`live-metrics-ui.json`](evidence/live-metrics-ui.json)。下文14项的记录是首次发布时的历史快照。
+最新增量（2026-11-24）：网站自动估算通过 **22 项后端/HTTP/MCP 回归 + 11 项评估器测试**，编译、密钥扫描和32题离线评测门槛通过；原始输出见 [`auto-metrics-preflight.txt`](evidence/auto-metrics-preflight.txt)。隔离 Edge 浏览器的9组检查覆盖连续问答立即更新、人工覆盖/纠正、迟到 GET 与核验 POST、刷新持久化、375px布局；无页面脚本错误，见 [`auto-metrics-ui.json`](evidence/auto-metrics-ui.json)。
+
+真实本地 Qwen/BGE 的隔离 HTTP 提问返回 llm 回答、local-model 自动评估和即时非空质量指标，见 [`auto-metrics-http-model.json`](evidence/auto-metrics-http-model.json)。另一次三引用长回答的 Qwen 评估实际耗时约11.3秒，输入1882 tokens、输出93 tokens，三个编号均有判断；这只是合成案例的集成验证，不是质量基准，见 [`auto-metrics-model.json`](evidence/auto-metrics-model.json)。用户本机旧记录先备份后补评，保留问题、原回答、时间与人工判断；私人历史不进入仓库。
+
+前一版人工核验模式的18项测试和7组浏览器验收保留在 [`live-metrics-preflight.txt`](evidence/live-metrics-preflight.txt) 与 [`live-metrics-ui.json`](evidence/live-metrics-ui.json)。下文14项的记录是首次发布时的历史快照。
 
 日期：2026-11-24（Asia/Shanghai）
 环境：Windows、Python `py -3`；确定性测试不依赖网络或模型 API。

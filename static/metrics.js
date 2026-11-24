@@ -21,13 +21,14 @@
   const percent = (value, empty) => value == null ? empty : `${(value * 100).toFixed(1)}%`;
   function renderMetrics(data, message = '') {
     metricsVersion += 1;
-    $('#metric-recall').textContent = percent(data.recall.value, '待核验');
-    $('#metric-recall-count').textContent = data.recall.total ? `${data.recall.hits} / ${data.recall.total} 个已核验可回答问题` : '尚无已核验的可回答问题';
-    $('#metric-citations').textContent = percent(data.citation_accuracy.value, '待核验');
-    $('#metric-citations-count').textContent = data.citation_accuracy.total ? `${data.citation_accuracy.correct} / ${data.citation_accuracy.total} 条已核验引用` : '尚无已核验引用';
+    const empty = data.pending_questions ? '待评估' : data.total_questions ? '无样本' : '—';
+    $('#metric-recall').textContent = percent(data.recall.value, empty);
+    $('#metric-recall-count').textContent = data.recall.total ? `${data.recall.hits} / ${data.recall.total} 个可回答问题命中来源` : '暂无可回答样本';
+    $('#metric-citations').textContent = percent(data.citation_accuracy.value, empty);
+    $('#metric-citations-count').textContent = data.citation_accuracy.total ? `${data.citation_accuracy.correct} / ${data.citation_accuracy.total} 条引用判为正确` : '暂无引用样本';
     $('#metric-refusal').textContent = percent(data.refusal_rate.value, '—');
     $('#metric-refusal-count').textContent = `${data.refused_questions} / ${data.total_questions} 次完成问答`;
-    $('#metrics-summary').textContent = `${message}累计 ${data.total_questions} 次问答 · ${data.reviewed_questions} 次已提交核验 · ${data.pending_questions} 次待核验`;
+    $('#metrics-summary').textContent = `${message}累计 ${data.total_questions} 次问答 · 模型估算 ${data.model_evaluated_questions || 0} 次 · 规则估算 ${data.rule_evaluated_questions || 0} 次 · 人工核验 ${data.reviewed_questions} 次${data.pending_questions ? ` · 待评估 ${data.pending_questions} 次` : ''}`;
     $('#metrics-error').hidden = true;
   }
   async function refreshMetrics() {
@@ -58,7 +59,8 @@
         content.append(node('h3', '', item.question));
         const time = new Date(item.created_at);
         const when = Number.isNaN(time.getTime()) ? item.created_at : time.toLocaleString('zh-CN', { hour12: false });
-        content.append(node('p', '', `${when} · ${item.response.refused ? '已拒答' : '已回答'} · ${item.review ? '已提交核验' : '待核验'}`));
+        const evaluation = item.review ? '已人工核验' : item.auto_review ? (item.auto_review.method === 'local-model' ? '模型自动估算' : '规则自动估算') : '待评估';
+        content.append(node('p', '', `${when} · ${item.response.refused ? '已拒答' : '已回答'} · ${evaluation}`));
         const button = node('button', 'button secondary', item.review ? '查看并修改核验' : '查看并核验');
         button.type = 'button';
         button.addEventListener('click', () => openReview(item));
@@ -91,6 +93,9 @@
       $('#review-form').reset();
       $('#review-question').textContent = item.question;
       $('#review-answer').textContent = item.response.answer;
+      const auto = item.auto_review;
+      const scopeNames = { 'full-library': '全部知识片段', 'candidate-pool': '有限候选片段', 'saved-retrieval': '当次保存的检索片段' };
+      $('#review-auto').textContent = auto ? `自动估算（${auto.method === 'local-model' ? '本地模型' : '词项规则回退'}）：${auto.answerable ? '有资料可回答' : '未找到足够资料'}。参考来源：${auto.expected_sources.join('、') || '无'}。评估范围：${scopeNames[auto.scope?.kind] || '已保存证据'}。${auto.reason || ''} 下方仅保存你明确提交的人工判断。` : '本次尚无自动评估，可在下方人工核验。';
       $('#review-answerable').value = item.review ? (item.review.answerable ? 'yes' : 'no') : '';
       setReviewStatus(libraryUnavailable ? '当前资料列表读取失败，仍可根据保存的片段核验或手动填写来源。' : '');
       const hits = item.response.retrieval?.hits || [];
@@ -104,6 +109,7 @@
       const sources = new Map(documents.map(doc => [doc.source, doc.title]));
       for (const hit of hits) sources.set(hit.source, hit.title || hit.source);
       for (const citation of item.response.citations || []) sources.set(citation.source, citation.title || citation.source);
+      for (const source of auto?.expected_sources || []) if (!sources.has(source)) sources.set(source, source);
       for (const source of item.review?.expected_sources || []) if (!sources.has(source)) sources.set(source, source);
       const sourceList = $('#review-sources'); sourceList.replaceChildren();
       for (const [source, title] of sources) {
@@ -121,9 +127,11 @@
         article.append(node('h3', '', `[${citation.id}] ${citation.title || citation.source}`));
         article.append(node('p', 'review-source', `${citation.source}${citation.page ? ` · 第 ${citation.page} 页` : ''}`));
         article.append(node('p', 'review-snippet', citation.snippet));
+        const autoVerdict = auto?.citation_verdicts?.[String(citation.id)];
+        article.append(node('p', 'review-help', autoVerdict == null ? '尚无自动判断' : `自动估算：${autoVerdict ? '正确' : '错误'}，可在下方修正。`));
         const label = node('label', 'form-label', `引用 [${citation.id}] 是否准确支持答案？`);
         const select = node('select'); select.id = `citation-verdict-${citation.id}`; select.dataset.citationId = String(citation.id); label.htmlFor = select.id;
-        for (const [value, text] of [['', '待核验'], ['correct', '正确：来源及原文支持对应回答'], ['incorrect', '错误：来源不符或不支持对应回答']]) {
+        for (const [value, text] of [['', autoVerdict == null ? '暂不判断' : '保留自动估算'], ['correct', '正确：来源及原文支持对应回答'], ['incorrect', '错误：来源不符或不支持对应回答']]) {
           const option = node('option', '', text); option.value = value; select.append(option);
         }
         const verdict = item.review?.citation_verdicts?.[String(citation.id)];
@@ -158,13 +166,15 @@
     const button = $('#save-review'); button.disabled = true; button.textContent = '正在保存…';
     saving = true;
     setReviewStatus('');
+    const version = metricsVersion;
     try {
       const data = await request(`/api/history/${item.id}/review`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answerable, expected_sources: expectedSources, citation_verdicts: verdicts })
       });
       item.review = data.review; records.set(item.id, item);
-      renderMetrics(data.metrics, '核验已保存。');
+      if (version === metricsVersion) renderMetrics(data.metrics, '核验已保存。');
+      else refreshMetrics();
       if (currentId === item.id) $('#review-current').textContent = '修改本次核验';
       $('#review-dialog').close();
     } catch (error) {
@@ -180,10 +190,14 @@
     const { question, response } = event.detail;
     if (response.query_id == null) { refreshMetrics(); return; }
     currentId = response.query_id;
-    records.set(currentId, { id: currentId, question, response, created_at: new Date().toISOString(), review: null });
-    $('#review-current').hidden = false; $('#review-current').textContent = '核验本次回答';
+    records.set(currentId, { id: currentId, question, response, created_at: new Date().toISOString(), review: null, auto_review: response.auto_review });
+    $('#review-current').hidden = false; $('#review-current').textContent = '人工核验 / 修正';
     if (response.metrics) renderMetrics(response.metrics);
     else refreshMetrics();
+    if (response.evaluation_warning) {
+      $('#metrics-error').textContent = response.evaluation_warning;
+      $('#metrics-error').hidden = false;
+    }
   });
   window.addEventListener('focus', refreshMetrics);
   refreshMetrics();

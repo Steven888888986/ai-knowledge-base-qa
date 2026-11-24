@@ -1,0 +1,97 @@
+{
+  "environment": "isolated SQLite with seed sample; real local Qwen and BGE; no user records",
+  "question": "什么是 RAG？",
+  "response": {
+    "answer": "答案：RAG 是一种先从外部知识库检索相关片段，再把片段交给语言模型生成回答的方法。 [1]",
+    "citations": [
+      {
+        "id": 1,
+        "title": "AI 领域知识库示例",
+        "source": "data/sample.md",
+        "snippet": "# AI 领域知识库示例 ## 检索增强生成（RAG） 检索增强生成是一种先从外部知识库检索相关片段，再把片段交给语言模型生成回答的方法。它能让回答引用资料，降低模型凭空编造的风险。 一个实用的问答系统通常包含文档导入、文本切分、向量化或关键词检索、重排序、回答生成和引用展示。评估时应同时关注召回率、引用准确率、拒答率和响应时间。 # 课程项目建议 知识库问答项目应优先保证证据链完整：每个回答都展示来源、片段和检索模式；没有足够证据时明确拒答。离线模式用于无 API 密钥时的演示，配置模型服务后可切换到 LLM 模式。",
+        "chunk_id": "d1-p0-c1",
+        "page": null,
+        "document_id": 1
+      }
+    ],
+    "mode": "llm",
+    "refused": false,
+    "model": "local-qwen",
+    "retrieval": {
+      "method": "hybrid",
+      "hits": [
+        {
+          "chunk_id": "d1-p0-c1",
+          "page": null,
+          "content": "# AI 领域知识库示例 ## 检索增强生成（RAG） 检索增强生成是一种先从外部知识库检索相关片段，再把片段交给语言模型生成回答的方法。它能让回答引用资料，降低模型凭空编造的风险。 一个实用的问答系统通常包含文档导入、文本切分、向量化或关键词检索、重排序、回答生成和引用展示。评估时应同时关注召回率、引用准确率、拒答率和响应时间。 # 课程项目建议 知识库问答项目应优先保证证据链完整：每个回答都展示来源、片段和检索模式；没有足够证据时明确拒答。离线模式用于无 API 密钥时的演示，配置模型服务后可切换到 LLM 模式。",
+          "document_id": 1,
+          "title": "AI 领域知识库示例",
+          "source": "data/sample.md",
+          "bm25": 0.287682,
+          "cosine": 0.0,
+          "score": 0.016393,
+          "snippet": "# AI 领域知识库示例 ## 检索增强生成（RAG） 检索增强生成是一种先从外部知识库检索相关片段，再把片段交给语言模型生成回答的方法。它能让回答引用资料，降低模型凭空编造的风险。 一个实用的问答系统通常包含文档导入、文本切分、向量化或关键词检索、重排序、回答生成和引用展示。评估时应同时关注召回率、引用准确率、拒答率和响应时间。 # 课程项目建议 知识库问答项目应优先保证证据链完整：每个回答都展示来源、片段和检索模式；没有足够证据时明确拒答。离线模式用于无 API 密钥时的演示，配置模型服务后可切换到 LLM 模式。"
+        }
+      ],
+      "supported_hits": [
+        {
+          "chunk_id": "d1-p0-c1",
+          "page": null,
+          "content": "# AI 领域知识库示例 ## 检索增强生成（RAG） 检索增强生成是一种先从外部知识库检索相关片段，再把片段交给语言模型生成回答的方法。它能让回答引用资料，降低模型凭空编造的风险。 一个实用的问答系统通常包含文档导入、文本切分、向量化或关键词检索、重排序、回答生成和引用展示。评估时应同时关注召回率、引用准确率、拒答率和响应时间。 # 课程项目建议 知识库问答项目应优先保证证据链完整：每个回答都展示来源、片段和检索模式；没有足够证据时明确拒答。离线模式用于无 API 密钥时的演示，配置模型服务后可切换到 LLM 模式。",
+          "document_id": 1,
+          "title": "AI 领域知识库示例",
+          "source": "data/sample.md",
+          "bm25": 0.287682,
+          "cosine": 0.0,
+          "score": 0.016393,
+          "snippet": "# AI 领域知识库示例 ## 检索增强生成（RAG） 检索增强生成是一种先从外部知识库检索相关片段，再把片段交给语言模型生成回答的方法。它能让回答引用资料，降低模型凭空编造的风险。 一个实用的问答系统通常包含文档导入、文本切分、向量化或关键词检索、重排序、回答生成和引用展示。评估时应同时关注召回率、引用准确率、拒答率和响应时间。 # 课程项目建议 知识库问答项目应优先保证证据链完整：每个回答都展示来源、片段和检索模式；没有足够证据时明确拒答。离线模式用于无 API 密钥时的演示，配置模型服务后可切换到 LLM 模式。"
+        }
+      ]
+    },
+    "elapsed_ms": 1073,
+    "query_id": 1,
+    "auto_review": {
+      "answerable": true,
+      "expected_sources": [
+        "data/sample.md"
+      ],
+      "citation_verdicts": {
+        "1": true
+      },
+      "reason": "证据中明确提到了 RAG 是一种先从外部知识库检索相关片段，再把片段交给语言模型生成回答的方法。",
+      "method": "local-model",
+      "model": "local-qwen",
+      "scope": {
+        "kind": "full-library",
+        "candidate_chunks": 1,
+        "total_chunks": 1
+      },
+      "evaluated_at": "2026-11-24T15:08:42.482630+00:00",
+      "elapsed_ms": 4242
+    },
+    "metrics": {
+      "total_questions": 1,
+      "refused_questions": 0,
+      "reviewed_questions": 0,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 1,
+      "model_evaluated_questions": 1,
+      "rule_evaluated_questions": 0,
+      "recall": {
+        "value": 1.0,
+        "hits": 1,
+        "total": 1
+      },
+      "citation_accuracy": {
+        "value": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "refusal_rate": {
+        "value": 0.0,
+        "refused": 0,
+        "total": 1
+      }
+    }
+  }
+}

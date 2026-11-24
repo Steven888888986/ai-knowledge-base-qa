@@ -53,11 +53,11 @@
       <section class="metrics-panel" aria-labelledby="metrics-heading">
         <div class="metrics-heading"><div><h2 id="metrics-heading">问答质量统计</h2><p id="metrics-summary" role="status" aria-atomic="true">正在读取统计…</p></div><button id="open-history" class="button secondary" type="button">问答记录与核验</button></div>
         <div class="metric-cards">
-          <article class="metric-card"><h3>召回率 <span>Recall@3</span></h3><strong id="metric-recall">—</strong><p id="metric-recall-count">等待统计</p><small>前 3 项命中正确来源的问题占比</small></article>
-          <article class="metric-card"><h3>引用准确率</h3><strong id="metric-citations">—</strong><p id="metric-citations-count">等待统计</p><small>人工核验为正确的引用占比</small></article>
+          <article class="metric-card"><h3>召回率 <span>Recall@3 · 自动估算</span></h3><strong id="metric-recall">—</strong><p id="metric-recall-count">等待统计</p><small>前 3 项命中评估认为相关的来源占比</small></article>
+          <article class="metric-card"><h3>引用准确率 <span>自动估算</span></h3><strong id="metric-citations">—</strong><p id="metric-citations-count">等待统计</p><small>评估认为支持对应回答的引用占比</small></article>
           <article class="metric-card"><h3>拒答率</h3><strong id="metric-refusal">—</strong><p id="metric-refusal-count">等待统计</p><small>全部完成问答中拒答的占比</small></article>
         </div>
-        <div class="metrics-note"><p>拒答率自动更新，不代表拒答是否正确。召回率与引用准确率仅统计已核验样本；无样本时不显示 0%。</p><button id="review-current" type="button" class="button secondary" hidden>核验本次回答</button></div>
+        <div class="metrics-note"><p>每次问答完成后自动更新。前两项由本地模型估算，模型不可用时按词项规则估算；人工核验优先，估算可能有误。样本增加时百分比可能不变；无样本不显示 0%。拒答率不代表拒答是否正确。</p><button id="review-current" type="button" class="button secondary" hidden>人工核验 / 修正</button></div>
         <p id="metrics-error" class="form-status error" role="alert" hidden></p>
       </section>
       <div id="query-status" class="query-status" role="status" aria-live="polite" hidden></div>
@@ -87,13 +87,13 @@
   </dialog>
   <dialog id="review-dialog" class="metrics-dialog" aria-labelledby="review-title">
     <div class="dialog-heading"><div><p class="eyebrow">VERIFY THE EVIDENCE</p><h2 id="review-title">核验回答与来源</h2></div><button class="icon-button" type="button" data-close="review-dialog" aria-label="关闭核验窗口"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
-    <p id="review-question" class="review-question"></p><div id="review-answer" class="review-answer"></div>
+    <p id="review-question" class="review-question"></p><div id="review-answer" class="review-answer"></div><p id="review-auto" class="review-help"></p>
     <details class="review-retrieval"><summary>查看当次检索前 3 项</summary><div id="review-hits"></div></details>
     <form id="review-form">
       <label class="form-label" for="review-answerable">根据当时的知识库资料，这个问题是否有答案？</label>
       <select id="review-answerable" required><option value="">请选择</option><option value="yes">有答案：标注正确来源</option><option value="no">没有足够资料回答</option></select>
       <fieldset id="review-sources-field" hidden><legend>正确来源（可多选）</legend><p class="review-help">根据原文选择，不要仅凭检索排名判断。未被检索到的正确来源也应勾选。</p><div id="review-sources" class="review-sources"></div><label class="form-label" for="review-extra-sources">未列出的正确来源（每行一个来源地址）</label><textarea id="review-extra-sources" rows="2" maxlength="20000" placeholder="例如：upload://论文.pdf"></textarea></fieldset>
-      <fieldset class="review-citations-field"><legend>逐条核验引用</legend><p class="review-help">核对来源、原文，以及原文能否支持回答中的对应表述。待核验的引用不计入分母。</p><div id="review-citations"></div></fieldset>
+      <fieldset class="review-citations-field"><legend>逐条核验引用</legend><p class="review-help">核对来源、原文及其是否支持对应表述。人工判断覆盖该条自动估算；未作人工判断的引用保留自动结果。</p><div id="review-citations"></div></fieldset>
       <p id="review-status" class="form-status" role="status" tabindex="-1"></p>
       <div class="dialog-actions"><button class="button secondary" type="button" data-close="review-dialog">取消</button><button id="save-review" class="button primary" type="submit">保存核验并更新指标</button></div>
     </form>

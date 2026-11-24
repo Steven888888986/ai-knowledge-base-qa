@@ -194,6 +194,79 @@ class LiveMetricsTest(unittest.TestCase):
                 "retrieval": {"hits": [{"source": "rag.md"}, {"source": "other.md"}, {"source": "third.md"}, {"source": "fourth.md"}]},
                 "citations": [] if refused else [{"id": 1, "source": "rag.md", "snippet": "RAG 使用检索证据"}, {"id": 2, "source": "other.md", "snippet": "其他资料"}]}
 
+    def automatic_review(self, method="local-model"):
+        return {"answerable": True, "expected_sources": ["rag.md"], "citation_verdicts": {"1": True, "2": False},
+                "method": method, "model": "test-model" if method == "local-model" else None,
+                "reason": "测试用自动估算", "scope": {"kind": "candidate-pool", "candidate_chunks": 4, "total_chunks": 8},
+                "evaluated_at": "2026-11-24T12:00:00+00:00", "elapsed_ms": 1}
+
+    def test_migrates_old_history_without_changing_human_reviews(self):
+        response = self.sample()
+        review = {"answerable": True, "expected_sources": ["rag.md"], "citation_verdicts": {"1": True}}
+        database = app.db()
+        with database:
+            database.execute("CREATE TABLE query_events (id INTEGER PRIMARY KEY AUTOINCREMENT, question TEXT NOT NULL, response TEXT NOT NULL, created_at TEXT NOT NULL, review TEXT)")
+            database.execute("INSERT INTO query_events VALUES(7,?,?,?,?)", ("旧问答", json.dumps(response), "2026-11-24T12:00:00+00:00", json.dumps(review)))
+        database.close()
+        item = self.metrics.history()[0]
+        self.assertEqual((7, response, review, None), (item["id"], item["response"], item["review"], item["auto_review"]))
+        self.assertEqual(1, self.metrics.summary()["reviewed_questions"])
+        self.assertEqual(0, self.metrics.summary()["pending_questions"])
+        self.assertEqual(8, self.metrics.record_query("新问答", response, self.automatic_review()))
+
+    def test_automatic_scores_update_and_human_votes_override_individually(self):
+        first = self.metrics.record_query("RAG 是什么？", self.sample(), self.automatic_review())
+        second_auto = {**self.automatic_review("lexical-fallback"), "expected_sources": ["missing.md"], "citation_verdicts": {"1": False, "2": True}}
+        self.metrics.record_query("另一个问题", self.sample(), second_auto)
+        self.metrics.record_query("尚未评估", self.sample(refused=True))
+        summary = self.metrics.summary()
+        self.assertEqual((2, 1, 1, 0, 1), (summary["auto_evaluated_questions"], summary["model_evaluated_questions"], summary["rule_evaluated_questions"], summary["reviewed_questions"], summary["pending_questions"]))
+        self.assertEqual({"value": 0.5, "hits": 1, "total": 2}, summary["recall"])
+        self.assertEqual({"value": 0.5, "correct": 2, "total": 4}, summary["citation_accuracy"])
+        self.metrics.save_review(first, {"answerable": True, "expected_sources": ["missing.md"], "citation_verdicts": {"2": True}})
+        summary = self.metrics.summary()
+        self.assertEqual({"value": 0.0, "hits": 0, "total": 2}, summary["recall"])
+        self.assertEqual({"value": 0.75, "correct": 3, "total": 4}, summary["citation_accuracy"])
+        self.assertEqual(1, summary["reviewed_questions"])
+        self.assertEqual(self.automatic_review(), next(item for item in self.metrics.history() if item["id"] == first)["auto_review"])
+
+    def test_backfill_is_idempotent_and_preserves_manual_overrides(self):
+        first = self.metrics.record_query("待补评", self.sample())
+        manual = {"answerable": True, "expected_sources": ["missing.md"], "citation_verdicts": {"1": False}}
+        self.metrics.save_review(first, manual)
+        existing = self.automatic_review("lexical-fallback")
+        self.metrics.record_query("已有自动评估", self.sample(), existing)
+        with patch("auto_eval.evaluate", return_value=self.automatic_review()) as evaluate:
+            self.assertEqual({"evaluated": 1, "failed": 0, "total_questions": 2}, self.metrics.backfill_missing())
+            evaluate.assert_called_once_with("待补评", self.sample(), backfill=True)
+            self.assertEqual({"evaluated": 0, "failed": 0, "total_questions": 2}, self.metrics.backfill_missing())
+            self.assertEqual(1, evaluate.call_count)
+        history = self.metrics.history()
+        self.assertEqual(existing, history[0]["auto_review"])
+        self.assertEqual(manual, history[1]["review"])
+        self.assertEqual({"value": 0.5, "hits": 1, "total": 2}, self.metrics.summary()["recall"])
+
+    def test_http_evaluation_failure_keeps_the_answer_and_pending_record(self):
+        import server
+        with server.Server(("127.0.0.1", 0), server.Handler) as http:
+            thread = threading.Thread(target=http.serve_forever, daemon=True)
+            thread.start()
+            try:
+                request = Request(f"http://127.0.0.1:{http.server_port}/api/query", data=json.dumps({"question": "RAG 是什么？"}).encode(), headers={"Content-Type": "application/json"}, method="POST")
+                with patch.object(app, "answer", return_value=self.sample()), patch.object(server.auto_eval, "evaluate", side_effect=RuntimeError("unexpected evaluator failure")):
+                    with urlopen(request, timeout=3) as response:
+                        answer = json.load(response)
+                self.assertEqual(self.sample()["answer"], answer["answer"])
+                self.assertIsNone(answer["auto_review"])
+                self.assertTrue(answer["evaluation_warning"])
+                self.assertEqual(1, answer["metrics"]["pending_questions"])
+                snapshot = self.metrics.history()[0]["response"]
+                self.assertNotIn("metrics", snapshot)
+                self.assertNotIn("auto_review", snapshot)
+            finally:
+                http.shutdown()
+                thread.join(timeout=3)
+
     def test_empty_and_unreviewed_questions_do_not_invent_quality_scores(self):
         empty = self.metrics.summary()
         self.assertEqual(0, empty["total_questions"])
@@ -312,7 +385,10 @@ class HTTPFlowTest(unittest.TestCase):
                 self.assertNotEqual("refusal", answer["mode"])
                 self.assertTrue(any(citation["source"].endswith("fixture.md") for citation in answer["citations"]))
                 self.assertEqual(1, answer["metrics"]["total_questions"])
-                self.assertIsNone(answer["metrics"]["citation_accuracy"]["value"])
+                self.assertEqual("lexical-fallback", answer["auto_review"]["method"])
+                self.assertIsNotNone(answer["metrics"]["citation_accuracy"]["value"])
+                self.assertEqual(1, answer["metrics"]["auto_evaluated_questions"])
+                self.assertEqual(0, answer["metrics"]["pending_questions"])
                 self.assertIsInstance(answer["query_id"], int)
                 review = {"answerable": True, "expected_sources": ["upload://fixture.md"], "citation_verdicts": {str(answer["citations"][0]["id"]): True}}
                 request = Request(base + f'/api/history/{answer["query_id"]}/review', data=json.dumps(review).encode(), headers={"Content-Type": "application/json"}, method="POST")
@@ -354,6 +430,7 @@ class HTTPFlowTest(unittest.TestCase):
                 self.assertEqual([refused["query_id"], answer["query_id"]], [item["id"] for item in history])
                 self.assertEqual(review, history[1]["review"])
                 self.assertEqual(answer["citations"], history[1]["response"]["citations"])
+                self.assertEqual(answer["auto_review"], history[1]["auto_review"])
                 with urlopen(base + "/api/metrics", timeout=3) as response:
                     persisted = json.load(response)
                 self.assertEqual(2, persisted["total_questions"])

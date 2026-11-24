@@ -44,8 +44,8 @@ def main():
     if secrets:
         print("FAIL: probable API token found in " + ", ".join(secrets), file=sys.stderr)
         return 1
-    for command in ([sys.executable, "-m", "compileall", "-q", "app.py", "server.py", "metrics.py", "mcp_server.py", "scripts", "tests"],
-                    [sys.executable, "tests/test_app.py"]):
+    for command in ([sys.executable, "-m", "compileall", "-q", "app.py", "server.py", "metrics.py", "auto_eval.py", "mcp_server.py", "scripts", "tests"],
+                    [sys.executable, "tests/test_app.py"], [sys.executable, "tests/test_auto_eval.py"]):
         result = subprocess.run(command, cwd=ROOT)
         if result.returncode:
             print(f"FAIL: {command} exited {result.returncode}", file=sys.stderr)
