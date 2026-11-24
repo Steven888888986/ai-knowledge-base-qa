@@ -1,13 +1,18 @@
 # AI Knowledge Base QA
 
+公开仓库：[Steven888888986/ai-knowledge-base-qa](https://github.com/Steven888888986/ai-knowledge-base-qa)。[GitHub Actions](https://github.com/Steven888888986/ai-knowledge-base-qa/actions/workflows/verify.yml) 运行应用测试和离线评测；发布证据见 [发布记录](docs/release.md)。
+
 一个可离线运行的 AI 领域知识库问答系统（RAG）。导入 Markdown、HTML、纯文本；安装 `pypdf` 后支持 PDF。系统结合 BM25 与本地 BGE 向量检索；有证据时可用本地 Qwen 生成带引用的回答，模型不可用或引用格式无效时会返回原文摘录并明确显示离线模式。无需 API 密钥。
 
 小模型仍可能概括错误或漏答：独立审阅发现过 Q/K/V 角色混淆，即使引用能追溯也需要核对原文。实际失败、未采用的提示词试验和边界见 [主张审阅记录](docs/evidence-review.md)。
 
 ## 运行
 
+本地模型安装与启动脚本面向 Windows x64，要求 Python 3.11 或更新版本。首次从 GitHub 获取项目后运行：
+
 ```powershell
-cd kbqa
+git clone https://github.com/Steven888888986/ai-knowledge-base-qa.git
+cd ai-knowledge-base-qa
 py -3 -m pip install -r requirements.txt   # PDF 可选支持
 py -3 scripts/install_models.py            # 首次下载约 1.2 GB 的模型和 CPU 运行时
 powershell -ExecutionPolicy Bypass -File scripts/start-models.ps1
@@ -22,7 +27,7 @@ Invoke-RestMethod http://127.0.0.1:8765/api/query -Method Post -ContentType 'app
 
 模型文件和运行时保存在被 Git 忽略的 `models/`、`.runtime/` 目录中；下载脚本固定模型版本并验证 SHA-256。只想使用离线功能时，可跳过模型下载与启动步骤。模型来源、许可和限制见 [`docs/models.md`](docs/models.md)。
 
-导入接口接受 `title`、`source`、`content`；本地脚本可用 `index_document()` 导入 PDF/HTML。也可配置其它 OpenAI 兼容服务：`$env:OPENAI_BASE_URL='https://.../v1'`、`$env:OPENAI_API_KEY='本地填写'`、`$env:OPENAI_MODEL='...'`，不要提交密钥。
+文本导入接口 `/api/ingest` 接受 `title`、`source`、`content`；本地脚本用 `index_document()` 导入已提取的文本，用 `import_file()` 解析 PDF/HTML 等文件。网页界面也提供文件上传和 URL 导入。也可配置其它 OpenAI 兼容服务：`$env:OPENAI_BASE_URL='https://.../v1'`、`$env:OPENAI_API_KEY='本地填写'`、`$env:OPENAI_MODEL='...'`，不要提交密钥。
 
 ## 验证
 
