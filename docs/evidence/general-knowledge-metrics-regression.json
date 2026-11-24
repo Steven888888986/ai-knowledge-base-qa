@@ -1,0 +1,188 @@
+{
+  "passed": true,
+  "environment": "headless Microsoft Edge; isolated SQLite; both models disabled",
+  "note": "Automatic estimates use offline rules. Human verdicts are scripted test inputs, including intentionally incorrect/missing-source votes; these are not production quality scores. Desktop/mobile screenshots show the 3-question state before the final delayed-review regression adds question 4. Historical auto-metrics-* files were restored after this run; this artifact records the new regression result only.",
+  "checks": [
+    "no questions: all three cards show a dash, never invented percentages",
+    "offline RAG answer immediately provides explicitly labelled automatic recall and citation estimates without a human review",
+    "two HTTP questions are automatically assessed with both models disabled; refusal rate changes from 0% to 50%",
+    "automatic suggestions are separate from unfilled human review; missing source is rejected; human incorrect votes override automatic estimates to 0/N",
+    "correcting human votes replaces 0/N with N/N; question and citation denominators do not grow",
+    "late old GET cannot overwrite newer question metrics; a simulated missed-source label lowers recall to 1/2",
+    "page reload retains all 3 automatic assessments and 2 human overrides",
+    "375px viewport and review dialog have no horizontal overflow",
+    "a delayed human-review POST response cannot replace the newer fourth-answer metrics; a fresh GET retains all 4 questions"
+  ],
+  "metric_snapshots": {
+    "after_first_automatic_answer": {
+      "total_questions": 1,
+      "refused_questions": 0,
+      "reviewed_questions": 0,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 1,
+      "model_evaluated_questions": 0,
+      "rule_evaluated_questions": 1,
+      "recall": {
+        "value": 1.0,
+        "hits": 1,
+        "total": 1
+      },
+      "citation_accuracy": {
+        "value": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "refusal_rate": {
+        "value": 0.0,
+        "refused": 0,
+        "total": 1
+      }
+    },
+    "after_second_automatic_answer": {
+      "total_questions": 2,
+      "refused_questions": 1,
+      "reviewed_questions": 0,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 2,
+      "model_evaluated_questions": 0,
+      "rule_evaluated_questions": 2,
+      "recall": {
+        "value": 1.0,
+        "hits": 1,
+        "total": 1
+      },
+      "citation_accuracy": {
+        "value": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "refusal_rate": {
+        "value": 0.5,
+        "refused": 1,
+        "total": 2
+      }
+    },
+    "after_human_incorrect_override": {
+      "total_questions": 2,
+      "refused_questions": 1,
+      "reviewed_questions": 1,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 2,
+      "model_evaluated_questions": 0,
+      "rule_evaluated_questions": 2,
+      "recall": {
+        "value": 1.0,
+        "hits": 1,
+        "total": 1
+      },
+      "citation_accuracy": {
+        "value": 0.0,
+        "correct": 0,
+        "total": 1
+      },
+      "refusal_rate": {
+        "value": 0.5,
+        "refused": 1,
+        "total": 2
+      }
+    },
+    "after_human_correction": {
+      "total_questions": 2,
+      "refused_questions": 1,
+      "reviewed_questions": 1,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 2,
+      "model_evaluated_questions": 0,
+      "rule_evaluated_questions": 2,
+      "recall": {
+        "value": 1.0,
+        "hits": 1,
+        "total": 1
+      },
+      "citation_accuracy": {
+        "value": 1.0,
+        "correct": 1,
+        "total": 1
+      },
+      "refusal_rate": {
+        "value": 0.5,
+        "refused": 1,
+        "total": 2
+      }
+    },
+    "after_missed_source_override": {
+      "total_questions": 3,
+      "refused_questions": 1,
+      "reviewed_questions": 2,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 3,
+      "model_evaluated_questions": 0,
+      "rule_evaluated_questions": 3,
+      "recall": {
+        "value": 0.5,
+        "hits": 1,
+        "total": 2
+      },
+      "citation_accuracy": {
+        "value": 0.5,
+        "correct": 1,
+        "total": 2
+      },
+      "refusal_rate": {
+        "value": 0.3333333333333333,
+        "refused": 1,
+        "total": 3
+      }
+    },
+    "after_late_review_response": {
+      "total_questions": 4,
+      "refused_questions": 1,
+      "reviewed_questions": 2,
+      "pending_questions": 0,
+      "auto_evaluated_questions": 4,
+      "model_evaluated_questions": 0,
+      "rule_evaluated_questions": 4,
+      "recall": {
+        "value": 0.6666666666666666,
+        "hits": 2,
+        "total": 3
+      },
+      "citation_accuracy": {
+        "value": 0.6666666666666666,
+        "correct": 2,
+        "total": 3
+      },
+      "refusal_rate": {
+        "value": 0.25,
+        "refused": 1,
+        "total": 4
+      }
+    }
+  },
+  "final_metrics": {
+    "total_questions": 4,
+    "refused_questions": 1,
+    "reviewed_questions": 2,
+    "pending_questions": 0,
+    "auto_evaluated_questions": 4,
+    "model_evaluated_questions": 0,
+    "rule_evaluated_questions": 4,
+    "recall": {
+      "value": 0.6666666666666666,
+      "hits": 2,
+      "total": 3
+    },
+    "citation_accuracy": {
+      "value": 0.6666666666666666,
+      "correct": 2,
+      "total": 3
+    },
+    "refusal_rate": {
+      "value": 0.25,
+      "refused": 1,
+      "total": 4
+    }
+  },
+  "page_errors": [],
+  "fixture": "Starts with all 21 seeded documents, then removes only non-sample docs from the temporary DB to retain exact historical aggregation denominators; production DB is untouched."
+}

@@ -237,6 +237,15 @@ if __name__ == '__main__':
                         break
                 except OSError:
                     time.sleep(.1)
+            # This aggregation regression deliberately uses one fixed AI document.
+            # Multi-domain seed content is verified separately, not mixed into its denominators.
+            with urllib.request.urlopen(base + '/api/documents') as response:
+                documents = json.load(response)['documents']
+            for document in documents:
+                if document['source'] != 'data/sample.md':
+                    request = urllib.request.Request(base + f"/api/documents/{document['id']}", method='DELETE')
+                    with urllib.request.urlopen(request):
+                        pass
             asyncio.run(verify(base))
         finally:
             process.terminate()

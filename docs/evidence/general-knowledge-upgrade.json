@@ -1,0 +1,63 @@
+{
+  "environment": "existing local service after incremental seed; private row contents not exported",
+  "passed": true,
+  "health": {
+    "ok": true,
+    "service": "kbqa",
+    "model": {
+      "available": true,
+      "name": "local-qwen",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "retrieval": "BM25 + cosine / RRF",
+    "embedding_mode": {
+      "available": true,
+      "signature": "bge:bge-small-zh",
+      "mode": "pretrained-bge"
+    }
+  },
+  "counts": {
+    "documents": {
+      "before": 1,
+      "after": 21
+    },
+    "chunks": {
+      "before": 1,
+      "after": 41
+    },
+    "query_events": {
+      "before": 3,
+      "after": 3
+    }
+  },
+  "preservation_checks": {
+    "documents_original_rows_unchanged": true,
+    "chunks_original_rows_unchanged": true,
+    "query_events_original_rows_unchanged": true
+  },
+  "statistics_preserved": true,
+  "metrics": {
+    "total_questions": 3,
+    "refused_questions": 1,
+    "reviewed_questions": 0,
+    "pending_questions": 0,
+    "auto_evaluated_questions": 3,
+    "model_evaluated_questions": 3,
+    "rule_evaluated_questions": 0,
+    "recall": {
+      "value": 1.0,
+      "hits": 2,
+      "total": 2
+    },
+    "citation_accuracy": {
+      "value": 1.0,
+      "correct": 2,
+      "total": 2
+    },
+    "refusal_rate": {
+      "value": 0.3333333333333333,
+      "refused": 1,
+      "total": 3
+    }
+  }
+}

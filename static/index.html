@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#172033">
-  <title>知源 · AI 知识库问答</title>
+  <title>知源 · 通用知识库问答</title>
   <link rel="stylesheet" href="/static/style.css">
   <script src="/static/app.js" defer></script>
   <script src="/static/metrics.js" defer></script>
@@ -24,7 +24,7 @@
   <a class="skip-link" href="#question">跳到提问</a>
   <header class="topbar">
     <a class="brand" href="/" aria-label="知源首页"><span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg></span><span>知源<span class="brand-en">KNOWLEDGE</span></span></a>
-    <div class="topbar-center">AI 知识库 <span>/</span> 问答工作台</div>
+    <div class="topbar-center">通用知识库 <span>/</span> 问答工作台</div>
     <div id="service-status" class="service-status" role="status"><span class="status-dot"></span><span id="model-status">正在连接服务</span></div>
   </header>
   <div class="workspace">
@@ -34,21 +34,21 @@
       <div class="library-summary"><span><strong id="docs">—</strong> 份文档</span><span><strong id="chunks">—</strong> 个片段</span></div>
       <p id="library-error" class="inline-error" role="alert" hidden></p>
       <div id="document-list" class="document-list" aria-live="polite"><p class="muted">正在读取资料…</p></div>
-      <div class="library-note"><span class="small-label">支持的资料</span><p>PDF · Markdown · TXT · HTML · 网页</p><p>点击文档查看内容。回答中的引用可回溯到原文片段。</p></div>
+      <div class="library-note"><span class="small-label">不限领域，持续扩充</span><p>PDF · Markdown · TXT · HTML · 网页</p><p>可导入各领域资料。内置内容是入门示例；回答以当前库中证据为依据，点击引用可查看原文。</p></div>
       <div class="sidebar-footer"><span class="local-dot"></span>本地存储 · 证据可追溯</div>
     </aside>
     <main id="main-content" class="main-content">
       <section class="question-section" aria-labelledby="page-heading">
-        <div class="section-kicker"><span></span>AI KNOWLEDGE ASSISTANT</div>
+        <div class="section-kicker"><span></span>YOUR KNOWLEDGE ASSISTANT</div>
         <h1 id="page-heading">从资料出发，<br>找到有依据的答案。</h1>
-        <p class="intro">检索 AI 领域知识，用原文证据支持每一次回答。</p>
+        <p class="intro">科学、人文、经济、技术与生活——从已导入的各领域资料中寻找答案。</p>
         <form id="question-form" class="question-box">
           <label for="question">你想了解什么？</label>
-          <textarea id="question" name="question" rows="2" maxlength="2000" placeholder="例如：RAG 与微调有什么区别？" required aria-describedby="question-hint"></textarea>
+          <textarea id="question" name="question" rows="2" maxlength="2000" placeholder="例如：地球为什么会出现四季？" required aria-describedby="question-hint"></textarea>
           <div class="question-actions"><div class="retrieval-control"><label for="retrieval-mode">检索方式</label><select id="retrieval-mode" name="retrieval_mode"><option value="hybrid">混合检索</option><option value="bm25">BM25 关键词</option><option value="vector">向量检索</option></select></div><div class="submit-actions"><button id="cancel-query" type="button" class="button subtle" hidden>停止等待</button><button id="ask" type="submit" class="button primary">检索并回答<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div></div>
         </form>
         <div class="question-meta"><p id="question-hint">Enter 发送 · Shift + Enter 换行</p><span id="elapsed"></span></div>
-        <div class="suggestions" aria-label="示例问题"><span>试着问问</span><button type="button">什么是 RAG？</button><button type="button">如何评估问答系统？</button><button type="button">Transformer 的核心是什么？</button></div>
+        <div class="suggestions" aria-label="示例问题"><span>试着问问</span><button type="button">地球为什么会出现四季？</button><button type="button">什么是机会成本？</button><button type="button">Python 列表和元组有什么区别？</button><button type="button">什么是 RAG？</button></div>
       </section>
       <section class="metrics-panel" aria-labelledby="metrics-heading">
         <div class="metrics-heading"><div><h2 id="metrics-heading">问答质量统计</h2><p id="metrics-summary" role="status" aria-atomic="true">正在读取统计…</p></div><button id="open-history" class="button secondary" type="button">问答记录与核验</button></div>
@@ -70,7 +70,7 @@
         </article>
         <aside class="panel evidence-panel" aria-labelledby="evidence-heading"><div class="panel-heading"><h2 id="evidence-heading">引用证据</h2><span id="citation-count" class="count-badge">0</span></div><div id="citations" class="citations"><p class="evidence-empty">检索结果将在这里展示。<br>展开引用，核对原文与出处。</p></div></aside>
       </section>
-      <footer class="main-footer"><span>知源 · AI 知识库问答</span><span id="retrieval-description">关键词与向量融合检索 / RRF</span></footer>
+      <footer class="main-footer"><span>知源 · 通用知识库问答</span><span id="retrieval-description">关键词与向量融合检索 / RRF</span></footer>
     </main>
   </div>
   <dialog id="import-dialog" aria-labelledby="import-title"><div class="dialog-heading"><div><p class="eyebrow">BUILD YOUR LIBRARY</p><h2 id="import-title">导入知识资料</h2></div><button class="icon-button" type="button" data-close="import-dialog" aria-label="关闭导入窗口"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>

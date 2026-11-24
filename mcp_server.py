@@ -9,7 +9,7 @@ import app
 PROTOCOL_VERSION = "2024-11-05"
 TOOLS = [{
     "name": "search_knowledge_base",
-    "description": "Search indexed AI knowledge and return source excerpts with page/chunk citations.",
+    "description": "Search indexed knowledge across domains and return source excerpts with page/chunk citations.",
     "inputSchema": {"type": "object", "properties": {
         "query": {"type": "string", "description": "Question or search phrase"},
         "limit": {"type": "integer", "minimum": 1, "maximum": 8},

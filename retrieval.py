@@ -14,7 +14,7 @@ from collections import Counter
 DIMENSION = 512
 BGE_QUERY_PREFIX = "为这个句子生成表示以用于检索相关文章："
 EN_STOP = {"a", "an", "and", "are", "as", "at", "be", "by", "can", "could", "did", "do", "does", "for", "from", "how", "i", "in", "is", "it", "me", "my", "of", "on", "or", "please", "should", "the", "this", "to", "was", "what", "when", "where", "which", "who", "why", "will", "with", "would", "you", "your"}
-ZH_STOP = {"什么", "怎么", "如何", "哪些", "哪个", "为什么", "为何", "是否", "请问", "一下", "介绍", "概括", "总结", "关于", "有关"}
+ZH_STOP = {"什么", "怎么", "如何", "哪些", "哪个", "多少", "为什么", "为何", "是否", "请问", "一下", "介绍", "概括", "总结", "关于", "有关"}
 ZH_STOP_CHARS = set("我你他她它的是了吗呢啊吧呀和与及在于从把被将这那其可会能有请问什么怎哪为么下" )
 _embedding_failed_until = 0.0
 _embedding_status_cache = (0.0, None)

@@ -1,6 +1,6 @@
 ---
 name: kb-research
-description: Search indexed AI materials and produce a source-grounded answer with reviewable citations.
+description: Search indexed materials across domains and produce a source-grounded answer with reviewable citations.
 ---
 
 # Research the project knowledge base

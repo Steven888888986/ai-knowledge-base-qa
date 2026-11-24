@@ -1,6 +1,14 @@
 # 测试与验证报告
 
-最新增量（2026-11-24）：网站自动估算通过 **22 项后端/HTTP/MCP 回归 + 11 项评估器测试**，编译、密钥扫描和32题离线评测门槛通过；原始输出见 [`auto-metrics-preflight.txt`](evidence/auto-metrics-preflight.txt)。隔离 Edge 浏览器的9组检查覆盖连续问答立即更新、人工覆盖/纠正、迟到 GET 与核验 POST、刷新持久化、375px布局；无页面脚本错误，见 [`auto-metrics-ui.json`](evidence/auto-metrics-ui.json)。
+最新增量（2026-11-24）：知识库从 AI 扩展为不限领域，新增20张入门资料卡并保留原 AI 示例。**27 项后端/HTTP/MCP 回归 + 11 项评估器测试**、编译、密钥扫描和32题原 AI 开发集评测门槛通过，见 [`general-knowledge-preflight.txt`](evidence/general-knowledge-preflight.txt)。本轮 AI 开发集的非时间结果与原报告一致，新输出单独保存在 [报告](evidence/general-knowledge-ai-regression-report.md) 与 [逐题数据](evidence/general-knowledge-ai-regression-results.json)，不覆盖历史证据。
+
+新增跨领域验收在隔离数据库进行：8个非 AI 领域的离线问题均命中预期来源，个人密码问题拒答；真实 Qwen/BGE 完成四季、机会成本、Python 列表/元组和原 RAG 问题，生成回答均带有效引用。Edge 实际点击示例后，三项指标与 HTTP 返回一致；1440px/375px布局无横向溢出或脚本错误。见 [完整结果](evidence/general-knowledge-smoke.json)、[桌面](evidence/general-knowledge-desktop.png)、[手机](evidence/general-knowledge-mobile.png)。原指标9组回归亦通过，见 [指标回归](evidence/general-knowledge-metrics-regression.json)。这些题目取自内置示例，仅验证集成与来源链路，不代表全领域准确率。
+
+跨领域测试暴露旧长提示词漏写引用，以及通用词“多少”导致密码问题误命中。分别用简化的句末编号提示词和停用词修复，缺编号/越界编号仍必须回退为原文摘录；提示词全部试验与失败结果见 [对照记录](evidence/general-knowledge-prompt-check.json)。自动评估仍可能误判：此次 Python 问题的生成答案正确，但评估器将复利、隐喻、统计也列为相关来源，原始结果已保留。因此界面百分比只验证聚合与同步，不作为独立核验的真实质量结论。
+
+现有网站完成增量升级：文档从1份增至21份，片段从1个增至41个；原文档、片段和3条问答所有字段均与升级前备份一致，原统计不变，见 [升级核对](evidence/general-knowledge-upgrade.json)。更新后的网页通过只读 Edge 检查，累计仍为3问且页面与聚合接口一致，见 [现有网站检查](evidence/general-knowledge-live-ui.json)。私有问答正文与数据库未提交仓库。各卡来源与核验范围见 [知识资料说明](knowledge-sources.md)。
+
+前次增量：网站自动估算通过 **22 项后端/HTTP/MCP 回归 + 11 项评估器测试**，编译、密钥扫描和32题离线评测门槛通过；原始输出见 [`auto-metrics-preflight.txt`](evidence/auto-metrics-preflight.txt)。隔离 Edge 浏览器的9组检查覆盖连续问答立即更新、人工覆盖/纠正、迟到 GET 与核验 POST、刷新持久化、375px布局；无页面脚本错误，见 [`auto-metrics-ui.json`](evidence/auto-metrics-ui.json)。
 
 真实本地 Qwen/BGE 的隔离 HTTP 提问返回 llm 回答、local-model 自动评估和即时非空质量指标，见 [`auto-metrics-http-model.json`](evidence/auto-metrics-http-model.json)。另一次三引用长回答的 Qwen 评估实际耗时约11.3秒，输入1882 tokens、输出93 tokens，三个编号均有判断；这只是合成案例的集成验证，不是质量基准，见 [`auto-metrics-model.json`](evidence/auto-metrics-model.json)。用户本机旧记录先备份后补评，保留问题、原回答、时间与人工判断；私人历史不进入仓库。
 

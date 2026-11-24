@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "environment": "headless Microsoft Edge; existing localhost production service; GET/page load only",
+  "privacy": "No question sent, no import/delete action, no history endpoint opened, no private question/answer bodies read or exported.",
+  "title": "知源 · 通用知识库问答",
+  "documents": 21,
+  "chunks": 41,
+  "total_questions": 3,
+  "metrics_summary": "累计 3 次问答 · 模型估算 3 次 · 规则估算 0 次 · 人工核验 0 次",
+  "displayed_metrics": {
+    "recall": "100.0%",
+    "citation_accuracy": "100.0%",
+    "refusal_rate": "33.3%"
+  },
+  "aggregate_metrics": {
+    "total_questions": 3,
+    "refused_questions": 1,
+    "reviewed_questions": 0,
+    "pending_questions": 0,
+    "auto_evaluated_questions": 3,
+    "model_evaluated_questions": 3,
+    "rule_evaluated_questions": 0,
+    "recall": {
+      "value": 1.0,
+      "hits": 2,
+      "total": 2
+    },
+    "citation_accuracy": {
+      "value": 1.0,
+      "correct": 2,
+      "total": 2
+    },
+    "refusal_rate": {
+      "value": 0.3333333333333333,
+      "refused": 1,
+      "total": 3
+    }
+  },
+  "page_errors": [],
+  "request_methods": [
+    "GET"
+  ],
+  "checks": [
+    "General-domain page title",
+    "21 documents and 41 chunks",
+    "Original 3-question aggregate count",
+    "All displayed cards match existing aggregate API values",
+    "No JavaScript errors",
+    "Only read-only GET requests; no history body access"
+  ]
+}

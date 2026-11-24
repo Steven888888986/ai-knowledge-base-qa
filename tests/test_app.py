@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import base64
+import io
 import os
 from pathlib import Path
 import random
@@ -116,6 +117,27 @@ class IsolatedAppTest(unittest.TestCase):
             result = app.answer("RAG 如何回答？")
         self.assertNotEqual("llm", result["mode"])
         self.assertTrue(result.get("warning"), "model connection failure must be visible")
+
+    def test_generated_citation_gate_keeps_original_evidence_on_invalid_references(self):
+        with patch.dict(os.environ, {"KBQA_LLM_ENABLED": "0", "KBQA_EMBEDDINGS_ENABLED": "0"}):
+            app.index_document("RAG", "rag.md", "RAG 检索资料后生成回答。")
+            original = app.answer("RAG 如何回答？")
+        cases = (("RAG 检索资料后生成回答。", False),
+                 ("RAG 检索资料后生成回答。[99]", False),
+                 ("[1] RAG 检索资料后生成回答。", True))
+        for text, accepted in cases:
+            payload = json.dumps({"choices": [{"message": {"content": text}}]}).encode()
+            with self.subTest(output=text), patch.dict(os.environ, {"KBQA_LLM_ENABLED": "1", "KBQA_EMBEDDINGS_ENABLED": "0"}), \
+                    patch.object(app.urllib.request, "urlopen", return_value=io.BytesIO(payload)):
+                result = app.answer("RAG 如何回答？")
+            self.assertEqual(original["citations"], result["citations"])
+            if accepted:
+                self.assertEqual("llm", result["mode"])
+                self.assertEqual(text, result["answer"])
+            else:
+                self.assertEqual("offline", result["mode"])
+                self.assertTrue(result.get("warning"))
+                self.assertEqual(original["answer"], result["answer"])
 
 
 class MCPSmokeTest(unittest.TestCase):
@@ -332,6 +354,93 @@ class LiveMetricsTest(unittest.TestCase):
         self.assertEqual([], app.list_documents())
 
 
+class SeedUpgradeTest(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(prefix="kbqa-seed-")
+        self.root = Path(self.tmp.name)
+        knowledge = self.root / "data" / "knowledge"
+        knowledge.mkdir(parents=True)
+        (self.root / "data" / "sample.md").write_text("# AI 示例\nRAG 从资料检索证据。", encoding="utf-8")
+        (knowledge / "math.md").write_text("# 数学\n勾股定理适用于直角三角形。", encoding="utf-8")
+        (knowledge / "biology.md").write_text("# 生物\n光合作用把光能转化为化学能。", encoding="utf-8")
+        self.environment = patch.dict(os.environ, {"KBQA_LLM_ENABLED": "0", "KBQA_EMBEDDINGS_ENABLED": "0"})
+        self.environment.start()
+        self.paths = patch.multiple(app, ROOT=self.root, DB_PATH=self.root / "test.sqlite3")
+        self.paths.start()
+
+    def tearDown(self):
+        self.paths.stop()
+        self.environment.stop()
+        self.tmp.cleanup()
+
+    def test_fresh_seed_keeps_ai_and_adds_general_documents_once(self):
+        app.seed()
+        documents = app.list_documents()
+        self.assertEqual({"data/sample.md", "example://math.md", "example://biology.md"}, {item["source"] for item in documents})
+        app.seed()
+        self.assertEqual(documents, app.list_documents())
+        for document in documents:
+            app.delete_document(document["id"])
+        app.seed()
+        self.assertEqual([], app.list_documents())
+
+    def test_old_seed_adds_new_batch_without_replacing_content_or_history(self):
+        import metrics
+        app.index_document("旧示例", "data/sample.md", "原有 RAG 资料不可覆盖。")
+        app.index_document("用户修改的数学", "example://math.md", "用户自定义内容不可覆盖。")
+        app.index_document("用户上传", "upload://notes.md", "用户笔记保持不变。")
+        database = app.db()
+        with database:
+            database.execute("INSERT INTO metadata VALUES('sample_seed_v2','1')")
+        database.close()
+        response = {"answer": "历史回答 [1]", "refused": False,
+                    "retrieval": {"hits": [{"source": "data/sample.md"}]},
+                    "citations": [{"id": 1, "source": "data/sample.md", "snippet": "原有 RAG 资料不可覆盖。"}]}
+        automatic = {"answerable": True, "expected_sources": ["data/sample.md"], "citation_verdicts": {"1": True},
+                     "method": "lexical-fallback", "reason": "升级前的估算"}
+        ident = metrics.record_query("历史问题", response, automatic)
+        metrics.save_review(ident, {"answerable": True, "expected_sources": ["data/sample.md"], "citation_verdicts": {"1": True}})
+        history = metrics.history()
+        old_documents = {item["source"]: app.get_document(item["id"]) for item in app.list_documents()}
+        app.seed()
+        self.assertEqual(history, metrics.history())
+        self.assertEqual(4, len(app.list_documents()))
+        for source, document in old_documents.items():
+            self.assertEqual(document, app.get_document(document["document"]["id"]), source)
+        app.seed()
+        self.assertEqual(4, len(app.list_documents()))
+        self.assertEqual(history, metrics.history())
+
+    def test_upgrade_does_not_restore_a_deleted_old_sample(self):
+        database = app.db()
+        with database:
+            database.execute("INSERT INTO metadata VALUES('sample_seed_v2','1')")
+        database.close()
+        app.seed()
+        self.assertEqual({"example://math.md", "example://biology.md"}, {item["source"] for item in app.list_documents()})
+
+    def test_bundled_general_knowledge_answers_across_domains(self):
+        with patch.object(app, "ROOT", ROOT):
+            app.seed()
+        cases = (
+            ("指数运算中 2 的三次方是多少？", "general-math-exponents.md"),
+            ("均值和中位数有什么区别？", "general-statistics-center.md"),
+            ("牛顿第二定律怎样联系合力和加速度？", "general-physics-newton.md"),
+            ("光合作用利用哪些原料并释放什么气体？", "general-biology-photosynthesis.md"),
+            ("机会成本指什么？", "general-economics-opportunity-cost.md"),
+            ("Python 列表和元组在可修改性上有什么区别？", "general-programming-python.md"),
+        )
+        for question, filename in cases:
+            with self.subTest(question=question):
+                result = app.answer(question)
+                self.assertFalse(result["refused"])
+                self.assertIn("example://" + filename, {citation["source"] for citation in result["citations"]})
+                self.assertTrue(all(citation["snippet"] and citation["chunk_id"] for citation in result["citations"]))
+        for question in ("我今天午餐吃了什么？", "我的银行卡密码是多少？"):
+            with self.subTest(unsupported_question=question):
+                self.assertTrue(app.answer(question)["refused"])
+
+
 class HTTPFlowTest(unittest.TestCase):
     """Real localhost end-to-end flow using a disposable DB and port."""
 
@@ -341,7 +450,7 @@ class HTTPFlowTest(unittest.TestCase):
                 probe.bind(("127.0.0.1", 0))
                 port = probe.getsockname()[1]
             env = os.environ.copy()
-            env.update({"KBQA_DB": str(Path(td) / "http.sqlite3"), "KBQA_PORT": str(port), "KBQA_LLM_ENABLED": "0"})
+            env.update({"KBQA_DB": str(Path(td) / "http.sqlite3"), "KBQA_PORT": str(port), "KBQA_LLM_ENABLED": "0", "KBQA_EMBEDDINGS_ENABLED": "0"})
             proc = subprocess.Popen([sys.executable, str(ROOT / "server.py")], cwd=ROOT, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
             base = f"http://127.0.0.1:{port}"
             try:
