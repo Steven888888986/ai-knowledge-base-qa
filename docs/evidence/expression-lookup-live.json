@@ -1,0 +1,48 @@
+{
+  "checked_at": "2026-11-24T16:23:35.647953+00:00",
+  "site": "http://127.0.0.1:8765",
+  "health": {
+    "ok": true,
+    "service": "kbqa",
+    "model": {
+      "available": true,
+      "name": "local-qwen",
+      "base_url": "http://127.0.0.1:8081/v1"
+    },
+    "retrieval": "BM25 + cosine / RRF",
+    "embedding_mode": {
+      "available": true,
+      "signature": "bge:bge-small-zh",
+      "mode": "pretrained-bge"
+    }
+  },
+  "lookup": {
+    "matched_documents": 9,
+    "passages": 9,
+    "all_occurrences_covered": true
+  },
+  "expression": {
+    "question": "1+1",
+    "mode": "refusal",
+    "citation_count": 0,
+    "scope": "app.answer using temporary copy of current library; no production QA event"
+  },
+  "browser": {
+    "headless": true,
+    "version": "158.0.4370.33",
+    "all_passages_directly_visible_under_summary": true,
+    "source_highlight_verified": true,
+    "page_errors": []
+  },
+  "preservation": {
+    "all_columns_identical_to_prechange_backup": true,
+    "row_counts": {
+      "documents": 21,
+      "chunks": 41,
+      "query_events": 7
+    },
+    "metrics_unchanged": true,
+    "private_history_exported": false
+  },
+  "passed": true
+}

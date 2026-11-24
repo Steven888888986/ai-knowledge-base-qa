@@ -1,6 +1,12 @@
 # 测试与验证报告
 
-最新增量（2026-11-24）：用户选择将纯数字输入改为内容查找。修复前，内置资料中9份正文含 `2`，旧问答流程仅返回1条引用，见 [复现记录](evidence/numeric-lookup-repro.json)。现在纯数字按正文连续子串查找全部匹配文档，每份展示首处匹配附近原文；`2` 也匹配 `12`、`2024`。不受问答 TopK 限制，不调用生成或评估模型，不新增问答记录。完整问题仍走问答流程。
+最新增量（2026-11-25）：修复 `1+1` 因分词丢失运算符、仅凭数字 `1` 重合而引用无关文档的问题。[修复前](evidence/expression-lookup-before.json)在没有该表达式的内置资料中返回3个错误来源，[修复后](evidence/expression-lookup-after.json)拒答且引用为空。纯算式现在扫描全部片段，要求完整表达式与明确数值结果，直接摘录对应等式；只有练习题、不同算式或更长算式的局部命中均不能引用，不调用生成模型补算。分数、科学计数等未支持的结果形式保守拒答，避免截取成错误答案。
+
+数字查找改为在主结果摘要下直接列出全部匹配原文，同文档远距命中保留，重叠上下文合并；页码无法可靠定位时留空并支持查看全文。**41项应用/HTTP/MCP测试、11项评估器测试**及32题原 AI 开发集门槛通过，见 [提交前检查](evidence/expression-lookup-preflight.txt)；原 AI 评测非时间结果一致，历史报告保留，见 [比对](evidence/expression-lookup-ai-regression.json)。独立 HTTP/Edge 的17项检查通过，包括模型开启时算式分支零网络调用、仅练习题拒答、明确等式正例、23份测试文档的25个片段全部直显、原文第7页定位、文本安全、零结果、QA恢复与统计隔离、1440px/375px布局，见 [验收](evidence/expression-lookup-ui.json)、[桌面](evidence/expression-lookup-desktop.png)、[手机](evidence/expression-lookup-mobile.png)。测试截图包含合成资料。规则自动估算仍可能把操作数重合判作可回答，原始误判结果保留；这些百分比不作为真实质量分数。
+
+现有网站已更新：输入 `2` 的9份文档及全部命中均在主结果下直接显示；当前资料的临时副本中 `1+1` 返回拒答和空引用。21份文档、41个片段及7条历史的所有字段与更新前备份一致，统计未变，Qwen/BGE正常，见 [本机验收](evidence/expression-lookup-live.json)。算式验收在隔离环境完成，没有向真实历史增加测试问答。
+
+前次增量（2026-11-24）：用户选择将纯数字输入改为内容查找。修复前，内置资料中9份正文含 `2`，旧问答流程仅返回1条引用，见 [复现记录](evidence/numeric-lookup-repro.json)。当时实现纯数字按正文连续子串查找全部匹配文档，每份展示首处匹配附近原文；`2` 也匹配 `12`、`2024`。不受问答 TopK 限制，不调用生成或评估模型，不新增问答记录。完整问题仍走问答流程。
 
 本轮 **35 项后端/HTTP/MCP 回归 + 11 项评估器测试**、编译、密钥扫描与32题原 AI 开发集评测门槛通过，见 [提交前检查](evidence/numeric-lookup-preflight.txt)。原 AI 评测的非时间结果保持一致，见 [比对结果](evidence/numeric-lookup-ai-regression.json)，历史报告未覆盖。隔离 HTTP/Edge 的19项检查覆盖25份匹配全列、长前缀/跨片段数字、高亮与原文定位、文本安全、零结果、问答模式恢复、统计隔离和1440px/375px布局，见 [结果](evidence/numeric-lookup-ui.json)、[桌面](evidence/numeric-lookup-desktop.png)、[手机](evidence/numeric-lookup-mobile.png)。原指标9项回归亦通过，见 [指标回归](evidence/numeric-lookup-metrics-regression.json)；旧证据逐字节恢复。截图中的25份匹配包含合成测试资料。
 

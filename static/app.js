@@ -30,7 +30,12 @@
     $('#answer-heading').textContent = lookup ? '内容查找结果' : '知识库回答';
     $('#evidence-heading').textContent = lookup ? '匹配文档' : '引用证据';
     $('.results-grid').setAttribute('aria-label', lookup ? '内容查找结果' : '问答结果');
-    $('#answer-footer').textContent = lookup ? '列出全部匹配文档，每份展示一段匹配原文；可展开并查看文档全文。本次查找不计入问答统计。' : '请结合右侧引用核对回答，模型可能出现理解偏差。';
+    $('.results-grid').classList.toggle('lookup-mode', lookup);
+    const target = lookup ? $('#lookup-results') : $('.evidence-panel');
+    target.append($('#evidence-heading').parentElement, citations);
+    $('#lookup-results').hidden = !lookup;
+    $('.evidence-panel').hidden = lookup;
+    $('#answer-footer').textContent = lookup ? '已列出全部匹配文档及匹配原文，可查看文档全文。本次查找不计入问答统计。' : '请结合右侧引用核对回答，模型可能出现理解偏差。';
   }
   function appendHighlighted(node, value, term = '') {
     const text = String(value);
@@ -120,10 +125,10 @@
     const use = document.createElementNS('http://www.w3.org/2000/svg', 'use'); use.setAttribute('href', '#i-spark'); svg.append(use); iconWrap.append(svg);
     answer.append(iconWrap, el('h3', '', message), el('p', '', hint));
   }
-  function buildCitation(item, index, term = '') {
+  function buildCitation(item, index) {
     const details = el('details', 'citation');
     const summary = document.createElement('summary');
-    summary.append(el('span', 'citation-number', term ? String(index + 1) : `[${index + 1}]`));
+    summary.append(el('span', 'citation-number', `[${index + 1}]`));
     const heading = el('span', 'citation-heading');
     heading.append(el('span', 'citation-title', item.title || item.source || '来源资料'));
     const meta = [item.source];
@@ -131,16 +136,38 @@
     if (item.chunk_id) meta.push(`片段 ${item.chunk_id}`);
     heading.append(el('span', 'citation-meta', meta.filter(Boolean).join(' · ')));
     summary.append(heading, el('span', 'citation-chevron', '›'));
-    const snippet = el('p', 'citation-snippet');
-    appendHighlighted(snippet, item.snippet || item.content || '没有返回原文片段。', term);
+    const snippet = el('p', 'citation-snippet', item.snippet || item.content || '没有返回原文片段。');
     details.append(summary, snippet);
     if (item.document_id !== undefined && item.document_id !== null) {
       const open = el('button', 'source-button', '查看文档原文');
       open.type = 'button';
-      open.addEventListener('click', () => openDocument(item.document_id, item.chunk_id, term));
+      open.addEventListener('click', () => openDocument(item.document_id, item.chunk_id));
       details.append(open);
     }
     return details;
+  }
+  function buildLookupDocument(item, index, term) {
+    const article = el('article', 'lookup-document');
+    article.append(el('h3', '', `${index + 1}. ${item.title || item.source || '来源资料'}`), el('p', 'citation-meta', item.source || ''));
+    const passages = item.passages?.length ? item.passages : [item];
+    passages.forEach((passage, passageIndex) => {
+      const section = el('div', 'lookup-passage');
+      const meta = [`匹配原文 ${passageIndex + 1}`];
+      if (passage.page) meta.push(`第 ${passage.page} 页`);
+      if (passage.chunk_id) meta.push(`片段 ${passage.chunk_id}`);
+      section.append(el('p', 'citation-meta', meta.join(' · ')));
+      const snippet = el('p', 'citation-snippet');
+      appendHighlighted(snippet, passage.snippet || passage.content || '没有返回原文片段。', term);
+      section.append(snippet);
+      if (item.document_id != null) {
+        const open = el('button', 'source-button', '查看文档原文');
+        open.type = 'button';
+        open.addEventListener('click', () => openDocument(item.document_id, passage.chunk_id, term));
+        section.append(open);
+      }
+      article.append(section);
+    });
+    return article;
   }
   function addAnswerWithCitationLinks(text, usedCitations) {
     answer.className = 'answer-body';
@@ -176,7 +203,7 @@
       answer.textContent = data.answer;
       $('#citation-count').textContent = matched_documents;
       if (!matches.length) citations.append(el('p', 'evidence-empty', `未找到包含“${term}”的文档。请尝试其他数字，或先导入相关资料。`));
-      else matches.forEach((match, index) => citations.append(buildCitation(match, index, term)));
+      else matches.forEach((match, index) => citations.append(buildLookupDocument(match, index, term)));
     } else {
       addAnswerWithCitationLinks(data.answer, refs);
       $('#citation-count').textContent = refs.length;

@@ -144,6 +144,77 @@ class IsolatedAppTest(unittest.TestCase):
         self.assertIsNone(match["chunk_id"])
         self.assertIsNone(match["page"])
 
+    def test_numeric_lookup_returns_all_passages_and_merges_overlapping_context(self):
+        content = "甲处 2 以及附近 12。" + "间隔背景。" * 80 + "乙处 2024 年。" + "末尾背景。" * 80 + "丙处 2。"
+        app.index_document("多处记录", "many.md", content)
+        result = app.answer("2", limit=1)
+        self.assertEqual(1, result["lookup"]["matched_documents"])
+        match = result["lookup"]["matches"][0]
+        self.assertEqual(3, len(match["passages"]))
+        for text, passage in zip(("甲处 2 以及附近 12。", "乙处 2024 年。", "丙处 2。"), match["passages"]):
+            self.assertIn(text, passage["snippet"])
+            self.assertIn(passage["snippet"], content)
+        self.assertEqual(match["passages"][0], {key: match[key] for key in ("snippet", "chunk_id", "page")})
+
+    def test_numeric_lookup_preserves_later_page_locations_and_long_overlapping_matches(self):
+        app.index_pages("分页记录", "pages.pdf", [(1, "首段记录 2。" + "甲背景。" * 100), (2, "乙背景。" * 100 + "末段记录 2。")], kind="pdf")
+        passages = app.answer("2")["lookup"]["matches"][0]["passages"]
+        self.assertEqual([1, 2], [passage["page"] for passage in passages])
+        term = "2" * 300
+        content = "起点" + "2" * 301 + "分隔" * 200 + term + "终点"
+        app.index_document("长数字", "long.md", content)
+        passages = app.answer(term)["lookup"]["matches"][0]["passages"]
+        self.assertEqual(2, len(passages))
+        self.assertIn("2" * 301, passages[0]["snippet"])
+        self.assertTrue(all(term in passage["snippet"] for passage in passages))
+
+    def test_pure_expression_without_explicit_result_refuses_and_never_generates(self):
+        cases = ("第 1 页包含 1 个样例。", "练习：计算 1 + 1。", "11 + 11 = 22。", "1 + 10 = 11。",
+                 "2 + 1 + 1 = 4。", "1 + 1 + 2 = 4。", "1.1 + 1 = 2.1。")
+        for content in cases:
+            app.index_document("数字资料", "numbers.md", content)
+            with self.subTest(content=content), patch.dict(os.environ, {"KBQA_LLM_ENABLED": "1"}), \
+                    patch.object(app.urllib.request, "urlopen") as model:
+                result = app.answer("1 + 1")
+                self.assertTrue(result["refused"])
+                self.assertEqual([], result["citations"])
+                self.assertEqual("refusal", result["mode"])
+                model.assert_not_called()
+
+    def test_pure_expression_uses_explicit_equation_beyond_topk_without_generating(self):
+        for i in range(10):
+            app.index_document(f"数字 {i}", f"number-{i}.md", "1 " * 100 + "练习：计算 1+1。")
+        app.index_document("算式答案", "answer.md", "前例 8+8=16。明确记录：1 + 1 = 2。后例 3+3=6。")
+        with patch.dict(os.environ, {"KBQA_LLM_ENABLED": "1"}), patch.object(app, "query") as query, \
+                patch.object(app.urllib.request, "urlopen") as model:
+            result = app.answer(" 1\t+ 1 ", limit=1)
+        self.assertFalse(result["refused"])
+        self.assertEqual("offline", result["mode"])
+        self.assertEqual(["answer.md"], [citation["source"] for citation in result["citations"]])
+        self.assertEqual("1 + 1 = 2", result["citations"][0]["snippet"])
+        self.assertNotIn("8+8", result["answer"])
+        query.assert_not_called()
+        model.assert_not_called()
+
+    def test_pure_expression_normalizes_common_multiplication_and_division_symbols(self):
+        app.index_document("乘除", "operations.md", "2 × 3 等于 6。8 ÷ 2 = 4。")
+        for question, snippet in (("2 * 3", "2 × 3 等于 6"), ("8 / 2", "8 ÷ 2 = 4")):
+            with self.subTest(question=question):
+                result = app.answer(question)
+                self.assertFalse(result["refused"])
+                self.assertEqual(snippet, result["citations"][0]["snippet"])
+
+    def test_pure_expression_does_not_truncate_unsupported_numeric_results(self):
+        for content in ("1 / 2 = 1/2。", "1 / 2 = 5e-1。", "1 / 2 = 1 - 0.5。"):
+            with self.subTest(content=content):
+                app.index_document("除法", "fraction.md", content)
+                result = app.answer("1 / 2")
+                self.assertTrue(result["refused"])
+                self.assertEqual([], result["citations"])
+        app.index_document("负数", "negative.md", "1 - 2 = -1。")
+        result = app.answer("1 - 2")
+        self.assertEqual("1 - 2 = -1", result["citations"][0]["snippet"])
+
     def test_numbers_in_natural_questions_and_non_ascii_digits_stay_in_qa(self):
         for question in ("2 的三次方是多少？", "２", "٢", "2.0", "-2", "2 3"):
             with self.subTest(question=question), patch.object(app, "query", return_value=[]) as query:

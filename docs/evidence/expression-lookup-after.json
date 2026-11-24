@@ -1,0 +1,22 @@
+{
+  "scope": "temporary SQLite, bundled seed, offline embeddings and generation; no real database or history read",
+  "question": "1+1",
+  "tokens": [
+    "1",
+    "1"
+  ],
+  "exact_expression_sources": [],
+  "response": {
+    "answer": "知识库中没有找到足够证据。请导入相关资料，或把问题问得更具体。",
+    "citations": [],
+    "mode": "refusal",
+    "refused": true,
+    "model": null,
+    "retrieval": {
+      "method": "literal-equation",
+      "hits": [],
+      "supported_hits": []
+    },
+    "elapsed_ms": 6
+  }
+}

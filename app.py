@@ -216,20 +216,63 @@ def answer(q: str, limit: int = 5, retrieval_mode: str = "hybrid") -> dict:
     if re.fullmatch(r"[0-9]+", term):
         connection = db()
         try:
-            rows = connection.execute("SELECT d.id AS document_id,d.title,d.source,d.content,c.chunk_id,c.page FROM documents d LEFT JOIN chunks c ON c.rowid=(SELECT rowid FROM chunks WHERE doc_id=d.id AND instr(content,?)>0 ORDER BY rowid LIMIT 1) WHERE instr(d.content,?)>0 ORDER BY d.id", (term, term)).fetchall()
+            rows = connection.execute("SELECT id AS document_id,title,source,content FROM documents WHERE instr(content,?)>0 ORDER BY id", (term,)).fetchall()
+            chunks = {}
+            for chunk in connection.execute("SELECT doc_id,chunk_id,page,content FROM chunks WHERE doc_id IN (SELECT id FROM documents WHERE instr(content,?)>0) ORDER BY rowid", (term,)):
+                chunks.setdefault(chunk["doc_id"], []).append(chunk)
         finally:
             connection.close()
         matches = []
         for row in rows:
             content = row["content"]
-            position = content.index(term)
             size = max(220, len(term))
-            begin = max(0, min(position - (size - len(term)) // 2, len(content) - size))
-            matches.append({"title": row["title"], "source": row["source"], "snippet": content[begin:begin + size], "document_id": row["document_id"], "chunk_id": row["chunk_id"], "page": row["page"]})
-        summary = f"在 {len(matches)} 份文档正文中找到“{term}”，以下列出每份文档的首处匹配原文。" if matches else f"未找到正文包含“{term}”的文档。"
+            windows = []
+            for occurrence in re.finditer(f"(?={term})", content):
+                position = occurrence.start()
+                begin = max(0, min(position - (size - len(term)) // 2, len(content) - size))
+                end = min(len(content), begin + size)
+                if windows and begin <= windows[-1][1]:
+                    windows[-1][1] = max(windows[-1][1], end)
+                else:
+                    windows.append([begin, end, position])
+            normalized = re.sub(r"\s+", " ", content).strip()
+            passages = []
+            for begin, end, position in windows:
+                anchor = re.sub(r"\s+", " ", content[max(0, position - 30):position + len(term) + 30]).strip()
+                # Only attach a location when this original context is unique.
+                unique = normalized.find(anchor, normalized.find(anchor) + 1) < 0
+                chunk = next((item for item in chunks.get(row["document_id"], []) if anchor in item["content"]), None) if unique else None
+                passages.append({"snippet": content[begin:end], "chunk_id": chunk["chunk_id"] if chunk else None, "page": chunk["page"] if chunk else None})
+            matches.append({"title": row["title"], "source": row["source"], "document_id": row["document_id"], **passages[0], "passages": passages})
+        summary = f"在 {len(matches)} 份文档正文中找到“{term}”，以下列出全部匹配原文，邻近片段已合并。" if matches else f"未找到正文包含“{term}”的文档。"
         return {"answer": summary, "citations": [], "mode": "lookup", "refused": False, "model": None,
                 "retrieval": {"method": "literal", "hits": []},
                 "lookup": {"term": term, "matched_documents": len(matches), "matches": matches},
+                "elapsed_ms": round((time.monotonic() - start) * 1000)}
+    expression = re.sub(r"\s+", "", term).translate(str.maketrans("×÷−", "*/-"))
+    if re.fullmatch(r"[0-9().+\-*/%^=]+", expression) and re.search(r"[0-9)][+\-*/%^]", expression):
+        left, _, expected = expression.partition("=")
+        symbols = {"*": r"[*×]", "/": r"[/÷]", "-": r"[-−]"}
+        literal = r"\s*".join(symbols.get(token, re.escape(token)) for token in re.findall(r"[0-9]+(?:\.[0-9]+)?|.", left))
+        value = re.escape(expected) if expected else r"[-−+]?[0-9]+(?:\.[0-9]+)?"
+        equation = re.compile(r"(?:^|[^0-9A-Za-z_.\s()+\-−*/×÷%^=])\s*(?P<equation>" + literal + r"\s*(?:=|＝|等于)\s*" + value + r")(?!\s*(?:[0-9A-Za-z_()+\-−*/×÷%^=]|\.[0-9]))")
+        connection = db()
+        try:
+            rows = connection.execute("SELECT c.chunk_id,c.page,c.content,c.doc_id AS document_id,d.title,d.source FROM chunks c JOIN documents d ON d.id=c.doc_id ORDER BY c.rowid").fetchall()
+        finally:
+            connection.close()
+        hits = []
+        for row in rows:
+            found = equation.search(row["content"])
+            if found:
+                hits.append(dict(row, content=found.group("equation")))
+                if len(hits) == limit:
+                    break
+        evidence = hits[:3]
+        citations = [{"id": i, "title": hit["title"], "source": hit["source"], "snippet": hit["content"], "chunk_id": hit["chunk_id"], "page": hit["page"], "document_id": hit["document_id"]} for i, hit in enumerate(evidence, 1)]
+        return {"answer": "根据知识库原文摘录：\n\n" + "\n\n".join(f'[{i}] {hit["content"]}' for i, hit in enumerate(evidence, 1)) if hits else REFUSAL,
+                "citations": citations, "mode": "offline" if hits else "refusal", "refused": not hits, "model": None,
+                "retrieval": {"method": "literal-equation", "hits": hits, "supported_hits": evidence},
                 "elapsed_ms": round((time.monotonic() - start) * 1000)}
     hits = query(q, limit, retrieval_mode)
     result = {"answer": REFUSAL, "citations": [], "mode": "refusal", "refused": True, "model": None, "retrieval": {"method": retrieval_mode, "hits": hits}, "elapsed_ms": 0}
